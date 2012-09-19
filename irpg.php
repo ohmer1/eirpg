@@ -1,0 +1,133 @@
+#!/usr/bin/php
+<?php
+
+/*
+EpiKnet Idle RPG (EIRPG)
+Copyright (C) 2005-2012 Francis D (Homer) & EpiKnet
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU Affero General Public License,
+version 3 as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+*/
+
+
+/**
+* Fichier principal du bot IRPG
+* Fichier à exécuter pour démarrer le bot
+*
+* @author Homer
+* @created 1er juin 2005
+*/ 
+
+
+//Librairies utilisées
+include("lib/clsIRPG.php");   //lib spécifique
+include("lib/clsIRC.php");    //lib spécialisée sur la connexion IRC
+include("lib/clsDB.php");     //lib spécialisée sur la base de données mySQL
+
+
+print "Démarrage d'Idle RPG...\n";
+
+$pid = posix_getpid();
+
+
+//Initialisation des objets IRPG, IRC et DB
+$db = new DB;
+$irpg = new IRPG;
+$irc = new IRC;
+
+//Chargement et validation du fichier de configuration
+If (!$irpg->init()) 
+{
+  die ("Erreur lors du chargement du fichier de configuration.\n") ;
+}
+
+//Lecture de la liste des ignores...
+$irpg->lireIgnores();
+  
+While (true)
+{
+  //Connexion à IRC
+  If (!$irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"), $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug")))
+  {
+    $irpg->alog("Impossible de se connecter au serveur IRC.  Reconnexion dans 60 secondes...", true);
+    sleep(60);
+  }
+  Else {
+    break; 
+  }
+}
+  
+
+If ($irpg->readConfig("IRPG", "background") == "1")
+{ //On lance le bot en background
+  set_time_limit(0);
+  If (pcntl_fork())
+  { 
+    
+  }
+  Else {
+    $pid = posix_getpid(); 
+    $irpg->alog("Chargement en background (PID #$pid)...", true);
+    posix_setsid();
+  
+    While (true) 
+    {
+      start();
+    }
+  }
+}
+Else {
+  start(); 
+}
+
+
+Function start()
+{
+  global $irpg, $irc, $db;
+  
+  // On doit connecter la DB dans le même thread que la connexion IRC,
+  // car la connexion est perdue avec PHP5 (fonctionne avec PHP4.3)
+  
+  //Connexion à la base de données
+  If (!$db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"), $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix")))
+  {
+	die ("Impossible de se connecter au serveur de bases de données.\n");
+  }
+
+  // Un module peut avoir besoin de la connexion à la base de données
+  // pour s'initialiser, il faut donc charger les modules seulement
+  // après la connexion de celle-ci.
+
+  //Chargement des modules
+  $irpg->loadModules();
+
+  While (true)
+  {
+    If (!$irc->boucle())
+    {
+      if ($irc->exit) { sleep(1); die("SHUTDOWN du bot demandé.\n"); }
+      $irpg->alog("Connexion IRC perdue... reconnexion dans 20 secondes.");
+      sleep(20);
+      If ($irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"), $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug")))
+      {
+         continue;
+      }
+    }
+    Else {
+      die("Déconnexion du bot, impossible d'entrer dans la boucle !\n");
+    }
+  }
+}
+
+
+?>
