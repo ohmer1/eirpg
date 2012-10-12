@@ -40,7 +40,7 @@ class ohvstatus
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
-  Function loadModule()
+  function loadModule()
   {
     //Constructeur; initialisateur du module
     //S'éxécute lors du (re)chargement du bot ou d'un REHASH
@@ -50,19 +50,19 @@ class ohvstatus
     $this->name = "mod_ohvstatus";
     $this->version = "1.0.0";
     $this->desc = "Op, halfop ou voice les joueurs";
-    $this->depend = Array("core/0.5.0");
+    $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    If (!$irpg->checkDepd($this->depend))
+    if (!$irpg->checkDepd($this->depend))
     {
       die("$this->name: dépendance non résolue\n");
     }
 
     //Validation du fichier de configuration spécifique au module
-    $cfgKeys = Array("op", "hop", "voice", "oplvl", "hoplvl", "voicelvl");
-    $cfgKeysOpt = Array();
+    $cfgKeys = array("op", "hop", "voice", "oplvl", "hoplvl", "voicelvl");
+    $cfgKeysOpt = array();
 
-    If (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
     {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
@@ -79,7 +79,7 @@ class ohvstatus
   }
 
 ///////////////////////////////////////////////////////////////
-  Function unloadModule()
+  function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
@@ -90,14 +90,14 @@ class ohvstatus
 
 ///////////////////////////////////////////////////////////////
 
-  Function onConnect() {
+  function onConnect() {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
@@ -105,7 +105,7 @@ class ohvstatus
 ///////////////////////////////////////////////////////////////
 
 
-  Function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
     $message = trim(str_replace("\n", "", $message));
@@ -122,63 +122,63 @@ class ohvstatus
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPart($nick, $user, $host, $channel) {
+  function onPart($nick, $user, $host, $channel) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNick($nick, $user, $host, $newnick) {
+  function onNick($nick, $user, $host, $newnick) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onKick($nick, $user, $host, $channel, $nickkicked) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function on5Secondes() {
+  function on5Secondes() {
     global $irc, $irpg;
 
   }
@@ -186,7 +186,7 @@ class ohvstatus
 ///////////////////////////////////////////////////////////////
 
 
-  Function on10Secondes() {
+  function on10Secondes() {
     global $irc, $irpg;
 
   }
@@ -194,7 +194,7 @@ class ohvstatus
 ///////////////////////////////////////////////////////////////
 
 
-  Function on15Secondes() {
+  function on15Secondes() {
     global $irc, $irpg, $db;
 
 
@@ -203,13 +203,13 @@ class ohvstatus
 
 ///////////////////////////////////////////////////////////////
 
-  Function modIdle_onLvlUp($nick, $uid, $pid, $level, $next) {
+  function modIdle_onLvlUp($nick, $uid, $pid, $level, $next) {
     $this->Up($nick, $level);
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function modCore_onLogin($nick, $uid, $pid, $level, $next) {
+  function modCore_onLogin($nick, $uid, $pid, $level, $next) {
     if (!is_null($pid)) {
       $this->Up($nick, $level);
     }
@@ -218,7 +218,7 @@ class ohvstatus
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-  Function cmdUp($nick) {
+  function cmdUp($nick) {
     global $db, $irc, $irpg;
     //TODO: Valider qu'avec les persos logués plutôt que les persos enregistrés seulement
 
@@ -244,7 +244,7 @@ class ohvstatus
 
 ///////////////////////////////////////////////////////////////
 
-  Function Up($nick, $level) {
+  function Up($nick, $level) {
     global $irc;
     //TODO: vérifier si l'utilisateur n'est pas flagué NOOP
 

@@ -40,7 +40,7 @@ class credits
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
-  Function loadModule()
+  function loadModule()
   {
     //Constructeur; initialisateur du module
     //S'éxécute lors du (re)chargement du bot ou d'un REHASH
@@ -50,21 +50,21 @@ class credits
     $this->name = "mod_credits";
     $this->version = "0.9.0";
     $this->desc = "Module de gestion des crédits";
-    $this->depend = Array("core/0.5.0");
+    $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    If (!$irpg->checkDepd($this->depend))
+    if (!$irpg->checkDepd($this->depend))
     {
       die("$this->name: dépendance non résolue\n");
     }
 
     //Validation du fichier de configuration spécifique au module
-    $cfgKeys = Array("parain1_credits", "parain2_credits", "parain3_credits", "parain1_niveau", "parain2_niveau", "parain3_niveau",
+    $cfgKeys = array("parain1_credits", "parain2_credits", "parain3_credits", "parain1_niveau", "parain2_niveau", "parain3_niveau",
 				 "parain_invite", "levelup_x", "levelup_y", "levelup_z", "quete_survivant", "quete_autre",
 				 "chgClasse", "chgNom", "60minutes", "batailleManuelle");
-    $cfgKeysOpt = Array();
+    $cfgKeysOpt = array();
 
-    If (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
     {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
@@ -76,7 +76,7 @@ class credits
   }
 
 ///////////////////////////////////////////////////////////////
-  Function unloadModule()
+  function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
@@ -88,7 +88,7 @@ class credits
 ///////////////////////////////////////////////////////////////
 
 
-  Function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
 
@@ -107,7 +107,7 @@ class credits
 
 ///////////////////////////////////////////////////////////////
 
-  Function modIdle_onLvlUp($nick, $uid, $pid, $level2, $next) {
+  function modIdle_onLvlUp($nick, $uid, $pid, $level2, $next) {
 	// ajout des crédits sur le levelup...
 
     global $db, $irc, $irpg;
@@ -206,7 +206,7 @@ class credits
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-  Function cmdItems($nick, $perso = "") {
+  function cmdItems($nick, $perso = "") {
     global $irpg, $irc, $db;
     $uid = $irpg->getUsernameByNick($nick, true);
     $uid = $uid[1];
@@ -219,7 +219,7 @@ class credits
         $res = $db->getRows("SELECT Nom FROM $tbPerso WHERE Util_Id='$uid'");
 
         $i=0;
-        While ($i != count($res)) {
+        while ($i != count($res)) {
           $perso = $res[$i]["Nom"];
           $this->envoyerInfoObjets($nick, $perso);
           $i++;
@@ -243,7 +243,7 @@ class credits
   }
 
 
-  Function infoObjets($pid, $detail = false) {
+  function infoObjets($pid, $detail = false) {
     //Calcul la somme des objets pour un personnage
     global $irpg, $db;
 
@@ -264,21 +264,21 @@ class credits
 
         $tbLst = $db->prefix."ListeObjets";
         $nomObj = $db->getRows("SELECT Name FROM $tbLst WHERE Id_ListeObjets='$oid'");
-        $objets[] = Array($nomObj[0]["Name"], $level);
+        $objets[] = array($nomObj[0]["Name"], $level);
       }
       $sum = $sum + $res[$i]["Level"];
       $i++;
     }
 
     if ($detail) {
-      return Array($sum, $objets);
+      return array($sum, $objets);
     }
     else {
       return $sum;
     }
   }
 
-  Function envoyerInfoObjets($nick, $perso) {
+  function envoyerInfoObjets($nick, $perso) {
     global $db, $irpg, $irc;;
     //On retourne les stats pour le personnage spécifié
     $pid = $irpg->getPIDByPerso($perso);

@@ -40,7 +40,7 @@ class bonus
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
-  Function loadModule()
+  function loadModule()
   {
     //Constructeur; initialisateur du module
     //S'éxécute lors du (re)chargement du bot ou d'un REHASH
@@ -50,19 +50,19 @@ class bonus
     $this->name = "mod_bonus";
     $this->version = "1.0.0";
     $this->desc = "Bonus pour les dondateurs IRPG";
-    $this->depend = Array("core/0.5.0");
+    $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    If (!$irpg->checkDepd($this->depend))
+    if (!$irpg->checkDepd($this->depend))
     {
       die("$this->name: dépendance non résolue\n");
     }
 
     //Validation du fichier de configuration spécifique au module
-    $cfgKeys = Array();
-    $cfgKeysOpt = Array();
+    $cfgKeys = array();
+    $cfgKeysOpt = array();
 
-    If (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
     {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
@@ -74,7 +74,7 @@ class bonus
   }
 
 ///////////////////////////////////////////////////////////////
-  Function unloadModule()
+  function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
@@ -85,14 +85,14 @@ class bonus
 
 ///////////////////////////////////////////////////////////////
 
-  Function onConnect() {
+  function onConnect() {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
@@ -100,7 +100,7 @@ class bonus
 ///////////////////////////////////////////////////////////////
 
 
-  Function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
 
@@ -120,36 +120,28 @@ class bonus
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPart($nick, $user, $host, $channel) {
-    global $irc, $irpg, $db;
-
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  Function onNick($nick, $user, $host, $newnick) {
+  function onPart($nick, $user, $host, $channel) {
     global $irc, $irpg, $db;
 
 
@@ -157,28 +149,36 @@ class bonus
 
 ///////////////////////////////////////////////////////////////
 
-  Function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onNick($nick, $user, $host, $newnick) {
+    global $irc, $irpg, $db;
+
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onKick($nick, $user, $host, $channel, $nickkicked) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function on5Secondes() {
+  function on5Secondes() {
     global $irc, $irpg;
 
 
@@ -187,7 +187,7 @@ class bonus
 ///////////////////////////////////////////////////////////////
 
 
-  Function on10Secondes() {
+  function on10Secondes() {
     global $irc, $irpg;
 
   }
@@ -195,7 +195,7 @@ class bonus
 ///////////////////////////////////////////////////////////////
 
 
-  Function on15Secondes() {
+  function on15Secondes() {
     global $irc, $irpg, $db;
 
    // toutes les 6h, il y a une chance sur 4 de lancer le bonus
@@ -217,7 +217,7 @@ class bonus
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-  Function lanceBonus() {
+  function lanceBonus() {
     global $irpg, $irc, $db;
     $tbPerso = $db->prefix . "Personnages";
     $tbIRC = $db->prefix . "IRC";
@@ -251,7 +251,7 @@ class bonus
 
   }
 
-  Function cmdBonus($nick)
+  function cmdBonus($nick)
   {
 	global $irpg, $irc, $db;
 

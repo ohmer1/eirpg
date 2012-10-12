@@ -50,7 +50,7 @@ class admin {
         $this->name = "mod_admin";
         $this->version = "0.3.1";
         $this->desc = "Commandes d'administration'";
-        $this->depend = Array("core/0.5.0");
+        $this->depend = array("core/0.5.0");
 
         //Recherche de dépendances
         if (!$irpg->checkDepd($this->depend)) {
@@ -58,8 +58,8 @@ class admin {
         }
 
         //Validation du fichier de configuration spécifique au module
-        $cfgKeys = Array();
-        $cfgKeysOpt = Array();
+        $cfgKeys = array();
+        $cfgKeysOpt = array();
 
         //Validation du fichier de configuration spécifique au module
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {

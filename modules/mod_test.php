@@ -41,7 +41,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
-  Function loadModule()
+  function loadModule()
   {
     //Constructeur; initialisateur du module
     //S'éxécute lors du (re)chargement du bot ou d'un REHASH
@@ -51,21 +51,21 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
     $this->name = "mod_test";              /* Nom du module, préfixé de mod_ */
     $this->version = "0.1.1";              /* Important de mettre la version sous forme x.y.z */
     $this->desc = "Module expérimental";
-    $this->depend = Array("test2/0.1.1");  /* Syntaxe: nomModule/version (x.y.z) */
+    $this->depend = array("test2/0.1.1");  /* Syntaxe: nomModule/version (x.y.z) */
 
     //Recherche de dépendances
     /* Ne pas modifier ce qui suit; procédure de vérification des dépendances */
-    If (!$irpg->checkDepd($this->depend))
+    if (!$irpg->checkDepd($this->depend))
     {
       die("$this->name: dépendance non résolue\n");
     }
 
     //Validation du fichier de configuration spécifique au module
-    $cfgKeys = Array("testparam");  //Clés obligatoires
-    $cfgKeysOpt = Array("");        //Clés optionelles
+    $cfgKeys = array("testparam");  //Clés obligatoires
+    $cfgKeysOpt = array("");        //Clés optionelles
 
     /* Ne pas modifier ce qui suit; lecture et validation du fichier de configuration */
-    If (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
     {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
@@ -81,7 +81,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   }
 
 ///////////////////////////////////////////////////////////////
-  Function unloadModule()
+  function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
@@ -98,7 +98,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
 
 ///////////////////////////////////////////////////////////////
 
-  Function onConnect() {
+  function onConnect() {
     global $irc, $irpg;
     $testparam = $irpg->readConfig("mod_test", "testparam");
     $irc->privmsg("Homer", "Je viens de me connecter !");
@@ -107,7 +107,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message) {
     global $irc, $irpg;
     $irc->privmsg("Homer", "$nick!$user@$host a dit: $message");
   }
@@ -115,63 +115,63 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
 ///////////////////////////////////////////////////////////////
 
 
-  Function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message) {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host m'a dit: $message");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message) {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a dit en notice: $message");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message) {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host m'a dit en notice: $message");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel) {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a joint $channel");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPart($nick, $user, $host, $channel) {
+  function onPart($nick, $user, $host, $channel) {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quitté $channel");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNick($nick, $user, $host, $newnick) {
+  function onNick($nick, $user, $host, $newnick) {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a changé de pseudo pour $newnick");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onKick($nick, $user, $host, $channel, $nickkicked) {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a kické $nickkicked de $channel");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp) {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host m'a fait un CTCP $ctcp");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason) {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quitté IRC pour la raison suivante: $reason");
   }

@@ -43,7 +43,7 @@ class batailles
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
-  Function loadModule()
+  function loadModule()
   {
     //Constructeur; initialisateur du module
     //S'éxécute lors du (re)chargement du bot ou d'un REHASH
@@ -53,19 +53,19 @@ class batailles
     $this->name = "mod_batailles";
     $this->version = "0.5.0";
     $this->desc = "Module de gestion des batailles";
-    $this->depend = Array("core/0.5.0", "idle/1.0.0", "objets/0.9.0");
+    $this->depend = array("core/0.5.0", "idle/1.0.0", "objets/0.9.0");
 
     //Recherche de dépendances
-    If (!$irpg->checkDepd($this->depend))
+    if (!$irpg->checkDepd($this->depend))
     {
       die("$this->name: dépendance non résolue\n");
     }
 
     //Validation du fichier de configuration spécifique au module
-    $cfgKeys = Array();
-    $cfgKeysOpt = Array();
+    $cfgKeys = array();
+    $cfgKeysOpt = array();
 
-    If (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
     {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
@@ -77,7 +77,7 @@ class batailles
   }
 
 ///////////////////////////////////////////////////////////////
-  Function unloadModule()
+  function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
@@ -88,14 +88,14 @@ class batailles
 
 ///////////////////////////////////////////////////////////////
 
-  Function onConnect() {
+  function onConnect() {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
@@ -103,7 +103,7 @@ class batailles
 ///////////////////////////////////////////////////////////////
 
 
-  Function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
 
@@ -114,8 +114,8 @@ class batailles
     switch (strtoupper($message[0])) {
       case "ITEMS":
         //Retourne de l'info sur les ITEMS d'un personnage
-        If ($nb < 1) { $this->cmdItems($nick); }
-        Else { $this->cmdItems($nick, $message[1]); }
+        if ($nb < 1) { $this->cmdItems($nick); }
+        else { $this->cmdItems($nick, $message[1]); }
         break;
     }
 */
@@ -123,36 +123,28 @@ class batailles
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPart($nick, $user, $host, $channel) {
-    global $irc, $irpg, $db;
-
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  Function onNick($nick, $user, $host, $newnick) {
+  function onPart($nick, $user, $host, $channel) {
     global $irc, $irpg, $db;
 
 
@@ -160,28 +152,36 @@ class batailles
 
 ///////////////////////////////////////////////////////////////
 
-  Function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onNick($nick, $user, $host, $newnick) {
+    global $irc, $irpg, $db;
+
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onKick($nick, $user, $host, $channel, $nickkicked) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function on5Secondes() {
+  function on5Secondes() {
     global $irc, $irpg;
 
   }
@@ -189,7 +189,7 @@ class batailles
 ///////////////////////////////////////////////////////////////
 
 
-  Function on10Secondes() {
+  function on10Secondes() {
     global $irc, $irpg;
 
   }
@@ -197,7 +197,7 @@ class batailles
 ///////////////////////////////////////////////////////////////
 
 
-  Function on15Secondes() {
+  function on15Secondes() {
     global $irc, $irpg, $db;
 
 
@@ -206,7 +206,7 @@ class batailles
 
 ///////////////////////////////////////////////////////////////
 
-  Function modIdle_onLvlUp($nick, $uid, $pid, $level, $next) {
+  function modIdle_onLvlUp($nick, $uid, $pid, $level, $next) {
     // À chaque monté de niveau,
     // .. il y a 25% de chance d'avoir une bataille lorsque niveau < 10
     // .. il y a 100% de chance d'avoir une bataille lorsque niveau >= 10
@@ -225,7 +225,7 @@ class batailles
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-  Function batailleDuel($pid, $level) {
+  function batailleDuel($pid, $level) {
   	global $db, $irc, $irpg;
     $tIRC = $db->prefix . "IRC";
     $tPerso = $db->prefix . "Personnages";
@@ -315,7 +315,7 @@ class batailles
 
   /////////////////////////////////////////////////////////
   /*
-  Function BatailleManuelle($pid, $opposant = NULL ) {
+  function BatailleManuelle($pid, $opposant = NULL ) {
     global $db, $irc, $irpg;
     $tPerso = $db->prefix . "Personnages";
     $tIRC = $db->prefix."IRC";
@@ -446,7 +446,7 @@ class batailles
 
 
 
-  Function calcSomme($pid) {
+  function calcSomme($pid) {
   	// Calcul la somme des objets d'un joueur
 
     global $db;

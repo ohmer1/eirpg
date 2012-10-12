@@ -43,7 +43,7 @@ class quests
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
-  Function loadModule()
+  function loadModule()
   {
     //Constructeur; initialisateur du module
     //S'éxécute lors du (re)chargement du bot ou d'un REHASH
@@ -53,18 +53,18 @@ class quests
     $this->name = "mod_quests";
     $this->version = "0.1.0";
     $this->desc = "Quetes";
-    $this->depend = Array("core/0.5.0");
+    $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    If (!$irpg->checkDepd($this->depend))
+    if (!$irpg->checkDepd($this->depend))
     {
       die("$this->name: dépendance non résolue\n");
     }
         //Validation du fichier de configuration spécifique au module
-    $cfgKeys = Array("tempsQueteA", "tempsQueteR", "recompenseA", "recompenseR", "recompenseS", "MinPenalite", "MaxPenalite", "MinPenaliteAll", "MaxPenaliteAll", "nbrParticipants", "tempsMinIdleA", "tempsMinIdleR","tempsMinIdleS", "lvlMinimumA", "lvlMinimumR","lvlMinimumS","probaAllQuete","probaQueteA");
-    $cfgKeysOpt = Array("");
+    $cfgKeys = array("tempsQueteA", "tempsQueteR", "recompenseA", "recompenseR", "recompenseS", "MinPenalite", "MaxPenalite", "MinPenaliteAll", "MaxPenaliteAll", "nbrParticipants", "tempsMinIdleA", "tempsMinIdleR","tempsMinIdleS", "lvlMinimumA", "lvlMinimumR","lvlMinimumS","probaAllQuete","probaQueteA");
+    $cfgKeysOpt = array("");
 
-    If (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
     {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
@@ -91,7 +91,7 @@ class quests
   }
 
 ///////////////////////////////////////////////////////////////
-  Function unloadModule()
+  function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
@@ -100,13 +100,13 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  Function onConnect() {
+  function onConnect() {
     global $irc, $irpg, $db;
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message) {
 
     global $irc, $irpg, $db;
     													// SI il n'y a aucune quete en cours on ne fait rien du tout (Optimisation).
@@ -122,7 +122,7 @@ class quests
 ///////////////////////////////////////////////////////////////
 
 
-  Function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
     $message = trim(str_replace("\n", "", $message));
     $message = explode(" ", $message);
@@ -139,7 +139,7 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
    if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
 		if(readConfig("mod_penalites","penNotice") != 0)
@@ -149,7 +149,7 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  Function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
    if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
 			if($irpg->readConfig("mod_penalites","penNotice") != 0)
@@ -159,14 +159,14 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  Function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onPart($nick, $user, $host, $channel) {
+  function onPart($nick, $user, $host, $channel) {
    global $irc, $irpg, $db;
    if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
 		if($irpg->readConfig("mod_penalites","penPart") != 0)
@@ -176,7 +176,7 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-	Function onNick($nick, $user, $host, $newnick)
+	function onNick($nick, $user, $host, $newnick)
   	{
    		global $irc, $irpg, $db;
    		if($this->queteEnCours != -1 || $this->queteSurvivant)
@@ -197,7 +197,7 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  Function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onKick($nick, $user, $host, $channel, $nickkicked) {
    global $irc, $irpg, $db;
    if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
 		if($irpg->readConfig("mod_penalites","penKick") != 0)
@@ -207,14 +207,14 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  Function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp) {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason) {
    global $irc, $irpg, $db;
    if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
      	if($irpg->readConfig("mod_penalites","penQuit") != 0)
@@ -224,14 +224,14 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  Function on5Secondes() {
+  function on5Secondes() {
     global $irc, $irpg;
   }
 
 ///////////////////////////////////////////////////////////////
 
 
-  Function on10Secondes() {
+  function on10Secondes() {
     global $irc, $irpg;
 
   }
@@ -239,7 +239,7 @@ class quests
 ///////////////////////////////////////////////////////////////
 
 
-  Function on15Secondes()
+  function on15Secondes()
   {
 		global $irc, $irpg, $db;
 		$listeFinale = "";
@@ -327,7 +327,7 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  Function QueteAventure()
+  function QueteAventure()
   {
 		global $irpg, $irc, $db;
 		$tbPerso = $db->prefix . "Personnages";
@@ -365,7 +365,7 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-	Function QueteRoyaume()
+	function QueteRoyaume()
 	{
 		global $irpg, $irc, $db;
 		$tbPerso = $db->prefix . "Personnages";
@@ -401,7 +401,7 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-	Function QueteSurvivant()
+	function QueteSurvivant()
 	{
 		global $irpg, $irc, $db;
 		$tbPerso = $db->prefix . "Personnages";
@@ -430,7 +430,7 @@ class quests
 	}
 
 //////////////////////////////////////////////////////
-	Function cmdQuestStart($nick)
+	function cmdQuestStart($nick)
 	{
 		global $irpg, $irc, $db;
 		if(!$irpg->pause)
@@ -465,7 +465,7 @@ class quests
 			$irc->notice($nick, "Le jeu est en pause aucune information n'est disponible");
 	}
 ////////////////////////////////////////////////////
-	Function cmdQuest($nick)
+	function cmdQuest($nick)
 	{
 		global $irpg, $irc;
 		if(!$irpg->pause)
@@ -505,7 +505,7 @@ class quests
 	}
 ///////////////////////////////////////////////////////////////
 
-	Function VerifFinQuete($nick)
+	function VerifFinQuete($nick)
 	{
      	global $irc, $irpg, $db;
 	  	$tbPerso = $db->prefix."Personnages";

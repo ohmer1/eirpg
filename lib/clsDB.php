@@ -61,7 +61,7 @@ class DB
 
 ///////////////////////////////////////////////////////////////
 
-  Function connexion($host, $login, $pass, $base, $prefix)
+  function connexion($host, $login, $pass, $base, $prefix)
   {
     global $irpg;
 
@@ -72,19 +72,19 @@ class DB
     $this->prefix = $prefix;
 
     $irpg->alog("Connexion au serveur de bases de données...", true);
-    If (mysql_connect($this->host, $this->login, $this->pass))
+    if (mysql_connect($this->host, $this->login, $this->pass))
     {
-      If (mysql_select_db($this->base))
+      if (mysql_select_db($this->base))
       {
         $this->connected = true;
         return true;
       }
-      Else
+      else
       {
         return false;
       }
     }
-    Else {
+    else {
       return false;
     }
 
@@ -94,7 +94,7 @@ class DB
 
 ///////////////////////////////////////////////////////////////
 
-  Function deconnexion()
+  function deconnexion()
   {
     $this->connected = false;
     mysql_close();
@@ -104,36 +104,36 @@ class DB
 
 ///////////////////////////////////////////////////////////////
 
-  Function req($query, $ignoredebug = false)
+  function req($query, $ignoredebug = false)
   {
     global $irpg, $irc;
 
-   If ($this->connected)
+   if ($this->connected)
    {
-     If (($irpg->readConfig("IRPG", "debug")) And (!$ignoredebug)) { $irpg->alog("SQL: ".$query); }
+     if (($irpg->readConfig("IRPG", "debug")) And (!$ignoredebug)) { $irpg->alog("SQL: ".$query); }
 
-     If (mysql_ping())
+     if (mysql_ping())
      {
        return mysql_query($query);
      }
-     Else {
+     else {
        $this->connected = false;
        $irpg->pause = true;
        $irc->privmsg($irc->home, "Attention, jeu automatiquement désactivé!!  Raison: perte de la connexion au serveur de bases de données.  Une nouvelle tentative se fera toutes les 15 secondes...");
      }
    }
-   Else {
+   else {
 
    }
   }
 
 ///////////////////////////////////////////////////////////////
 
-  Function nbLignes($query)
+  function nbLignes($query)
   {
     global $irpg;
 
-    If ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); }
+    if ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); }
 
     return mysql_num_rows($this->req($query, true));
 
@@ -141,14 +141,14 @@ class DB
 
 ///////////////////////////////////////////////////////////////
 
-  Function getRows($query)
+  function getRows($query)
   {
     global $irpg;
 
-    If ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); }
+    if ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); }
 
     $r = $this->req($query, true);
-    While ($li = mysql_fetch_array($r)) {
+    while ($li = mysql_fetch_array($r)) {
       $enregistrements[] = $li;
     }
 
