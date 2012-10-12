@@ -26,11 +26,11 @@ class DB
 * @author Homer
 * @created 30 mai 2005
 * @modified 1er juin 2005
-*/ 
+*/
 
 {
-  
-/////////////////////////////////////////////////////////////// 
+
+///////////////////////////////////////////////////////////////
 // Variables privées
 ///////////////////////////////////////////////////////////////
   var $host;
@@ -42,64 +42,64 @@ class DB
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-  
- 
-/////////////////////////////////////////////////////////////// 
+
+
+///////////////////////////////////////////////////////////////
 // Méthodes privées, même si PHP s'en fou !
 ///////////////////////////////////////////////////////////////
-  
-  
-  
+
+
+
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
 
-/////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////
 // Méthodes publiques
 ///////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////
-  
+
   Function connexion($host, $login, $pass, $base, $prefix)
   {
     global $irpg;
-    
+
     $this->host = $host;
     $this->login = $login;
     $this->pass = $pass;
     $this->base = $base;
     $this->prefix = $prefix;
-    
+
     $irpg->alog("Connexion au serveur de bases de données...", true);
     If (mysql_connect($this->host, $this->login, $this->pass))
     {
       If (mysql_select_db($this->base))
-      { 
+      {
         $this->connected = true;
-        return true; 
+        return true;
       }
       Else
-      { 
-        return false;  
+      {
+        return false;
       }
     }
-    Else { 
+    Else {
       return false;
     }
-    
+
   }
-  
+
 ///////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////
-  
+
   Function deconnexion()
   {
     $this->connected = false;
     mysql_close();
   }
-  
+
 ///////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////
@@ -107,13 +107,13 @@ class DB
   Function req($query, $ignoredebug = false)
   {
     global $irpg, $irc;
-    
+
    If ($this->connected)
    {
-     If (($irpg->readConfig("IRPG", "debug")) And (!$ignoredebug)) { $irpg->alog("SQL: ".$query); } 
-     
+     If (($irpg->readConfig("IRPG", "debug")) And (!$ignoredebug)) { $irpg->alog("SQL: ".$query); }
+
      If (mysql_ping())
-     { 
+     {
        return mysql_query($query);
      }
      Else {
@@ -123,8 +123,8 @@ class DB
      }
    }
    Else {
-    
-   }   
+
+   }
   }
 
 ///////////////////////////////////////////////////////////////
@@ -132,30 +132,30 @@ class DB
   Function nbLignes($query)
   {
     global $irpg;
-    
-    If ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); } 
-    
+
+    If ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); }
+
     return mysql_num_rows($this->req($query, true));
-    
+
   }
 
 ///////////////////////////////////////////////////////////////
-  
+
   Function getRows($query)
   {
     global $irpg;
-    
-    If ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); } 
-    
+
+    If ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); }
+
     $r = $this->req($query, true);
     While ($li = mysql_fetch_array($r)) {
       $enregistrements[] = $li;
     }
 
-    return $enregistrements;    
+    return $enregistrements;
   }
 
 ///////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////   
-  
+///////////////////////////////////////////////////////////////
+
 }

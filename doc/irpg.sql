@@ -16,9 +16,9 @@
 --- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 ------------------------------------------------------------------------------------------
 
--- 
+--
 -- Structure de la table `Equipes`
--- 
+--
 
 CREATE TABLE `Equipes` (
   `Id_Equipes` smallint(3) unsigned NOT NULL auto_increment,
@@ -34,9 +34,9 @@ CREATE TABLE `Equipes` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Structure de la table `IRC`
--- 
+--
 
 CREATE TABLE `IRC` (
   `Id_IRC` int(5) unsigned NOT NULL auto_increment,
@@ -50,9 +50,9 @@ CREATE TABLE `IRC` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Structure de la table `ListeObjets`
--- 
+--
 
 CREATE TABLE `ListeObjets` (
   `Id_ListeObjets` tinyint(3) unsigned NOT NULL auto_increment,
@@ -69,9 +69,9 @@ CREATE TABLE `ListeObjets` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Structure de la table `Logs`
--- 
+--
 
 CREATE TABLE `Logs` (
   `Id_Logs` int(10) unsigned NOT NULL auto_increment,
@@ -88,9 +88,9 @@ CREATE TABLE `Logs` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Structure de la table `Objets`
--- 
+--
 
 CREATE TABLE `Objets` (
   `Id_Objets` int(6) unsigned NOT NULL auto_increment,
@@ -104,9 +104,9 @@ CREATE TABLE `Objets` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Structure de la table `Penalites`
--- 
+--
 
 CREATE TABLE `Penalites` (
   `Id_Penalites` int(5) unsigned NOT NULL auto_increment,
@@ -123,9 +123,9 @@ CREATE TABLE `Penalites` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Structure de la table `Personnages`
--- 
+--
 
 CREATE TABLE `Personnages` (
   `Id_Personnages` int(5) unsigned NOT NULL auto_increment,
@@ -149,9 +149,9 @@ CREATE TABLE `Personnages` (
 
 -- --------------------------------------------------------
 
--- 
+--
 -- Structure de la table `Utilisateurs`
--- 
+--
 
 CREATE TABLE `Utilisateurs` (
   `Id_Utilisateurs` int(5) unsigned NOT NULL auto_increment,
@@ -171,9 +171,9 @@ CREATE TABLE `Utilisateurs` (
   KEY `NoOp` (`NoOp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les utilisateurs du jeu';
 
--- 
+--
 -- Structure de la table `Textes`
--- 
+--
 
 CREATE TABLE `Textes` (
   `Id` int(5) unsigned NOT NULL auto_increment,
@@ -182,47 +182,46 @@ CREATE TABLE `Textes` (
   PRIMARY KEY  (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stocke différents textes (calamités, godsends..)';
 
--- 
+--
 -- Contraintes pour la table `Equipes`
--- 
+--
 ALTER TABLE `Equipes`
   ADD CONSTRAINT `Equipes_1` FOREIGN KEY (`Pers_Id`) REFERENCES `Personnages` (`Id_Personnages`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- 
+--
 -- Contraintes pour la table `IRC`
--- 
+--
 ALTER TABLE `IRC`
   ADD CONSTRAINT `IRC_1` FOREIGN KEY (`Pers_Id`) REFERENCES `Personnages` (`Id_Personnages`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- 
+--
 -- Contraintes pour la table `ListeObjets`
--- 
+--
 ALTER TABLE `ListeObjets`
   ADD CONSTRAINT `ListeObjets_ibfk_1` FOREIGN KEY (`Type`) REFERENCES `ListeObjets` (`Id_ListeObjets`) ON UPDATE CASCADE;
 
--- 
+--
 -- Contraintes pour la table `Logs`
--- 
+--
 ALTER TABLE `Logs`
   ADD CONSTRAINT `Logs_1` FOREIGN KEY (`Pers_Id`) REFERENCES `Personnages` (`Id_Personnages`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- 
+--
 -- Contraintes pour la table `Objets`
--- 
+--
 ALTER TABLE `Objets`
   ADD CONSTRAINT `Objets_1` FOREIGN KEY (`LObj_Id`) REFERENCES `ListeObjets` (`Id_ListeObjets`),
   ADD CONSTRAINT `Objets_2` FOREIGN KEY (`Pers_Id`) REFERENCES `Personnages` (`Id_Personnages`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- 
+--
 -- Contraintes pour la table `Penalites`
--- 
+--
 ALTER TABLE `Penalites`
   ADD CONSTRAINT `Penalites_1` FOREIGN KEY (`Pers_Id`) REFERENCES `Personnages` (`Id_Personnages`) ON DELETE CASCADE ON UPDATE CASCADE;
 
--- 
+--
 -- Contraintes pour la table `Personnages`
--- 
+--
 ALTER TABLE `Personnages`
   ADD CONSTRAINT `Personnages_1` FOREIGN KEY (`Equi_Id`) REFERENCES `Equipes` (`Id_Equipes`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `Personnages_2` FOREIGN KEY (`Util_Id`) REFERENCES `Utilisateurs` (`Id_Utilisateurs`) ON DELETE CASCADE ON UPDATE CASCADE;
-        

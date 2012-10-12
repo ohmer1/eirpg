@@ -24,79 +24,79 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *
 * @author Homer
 * @created 20 janvier 2007
-*/ 
+*/
 
-class top10 
+class top10
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
   var $name;        //Nom du module
   var $version;     //Version du module
   var $desc;        //Description du module
   var $depend;      //Modules dont nous sommes dépendants
-  
+
   //Variables supplémentaires
   var $timer;
-  
+
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
-  
+
 ///////////////////////////////////////////////////////////////
   Function loadModule()
   {
     //Constructeur; initialisateur du module
     //S'éxécute lors du (re)chargement du bot ou d'un REHASH
     global $irc, $irpg, $db;
-    
+
     /* Renseignement des variables importantes */
-    $this->name = "mod_top10";              
-    $this->version = "1.0.0";              
+    $this->name = "mod_top10";
+    $this->version = "1.0.0";
     $this->desc = "Top10 des joueurs";
-    $this->depend = Array("core/0.5.0");  
-    
+    $this->depend = Array("core/0.5.0");
+
     //Recherche de dépendances
     If (!$irpg->checkDepd($this->depend))
     {
       die("$this->name: dépendance non résolue\n");
     }
-    
+
     //Validation du fichier de configuration spécifique au module
-    $cfgKeys = Array();  
-    $cfgKeysOpt = Array();        
-    
+    $cfgKeys = Array();
+    $cfgKeysOpt = Array();
+
     If (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
     {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
-    
+
     //Initialisation des paramètres du fich de configuration
     $this->timer = 0;
 
-      
+
   }
-  
+
 ///////////////////////////////////////////////////////////////
   Function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-      
-      
+
+
   }
-  
+
 ///////////////////////////////////////////////////////////////
 
   Function onConnect() {
     global $irc, $irpg, $db;
-    
+
   }
-  
+
 ///////////////////////////////////////////////////////////////
 
   Function onPrivmsgCanal($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
-  
+
 ///////////////////////////////////////////////////////////////
 
 
@@ -121,119 +121,119 @@ class top10
         break;
     }
   }
-  
+
 ///////////////////////////////////////////////////////////////
-  
+
   Function onNoticeCanal($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
-  
+
 ///////////////////////////////////////////////////////////////
-  
+
   Function onNoticePrive($nick, $user, $host, $message) {
     global $irc, $irpg, $db;
 
   }
-  
+
 ///////////////////////////////////////////////////////////////
-  
+
   Function onJoin($nick, $user, $host, $channel) {
     global $irc, $irpg, $db;
-    
+
   }
-  
+
 ///////////////////////////////////////////////////////////////
-  
+
   Function onPart($nick, $user, $host, $channel) {
     global $irc, $irpg, $db;
 
-   
+
   }
-  
+
 ///////////////////////////////////////////////////////////////
-  
+
   Function onNick($nick, $user, $host, $newnick) {
     global $irc, $irpg, $db;
 
 
   }
-  
+
 ///////////////////////////////////////////////////////////////
-  
+
   Function onKick($nick, $user, $host, $channel, $nickkicked) {
     global $irc, $irpg, $db;
 
   }
-    
+
 ///////////////////////////////////////////////////////////////
 
   Function onCTCP($nick, $user, $host, $ctcp) {
     global $irc, $irpg, $db;
-   
+
   }
-  
+
 ///////////////////////////////////////////////////////////////
-  
+
   Function onQuit($nick, $user, $host, $reason) {
     global $irc, $irpg, $db;
 
   }
-  
-/////////////////////////////////////////////////////////////// 
-  
+
+///////////////////////////////////////////////////////////////
+
   Function on5Secondes() {
     global $irc, $irpg;
 
   }
 
-/////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////
 
-  
+
   Function on10Secondes() {
     global $irc, $irpg;
-    
+
   }
 
-/////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////
 
-  
+
   Function on15Secondes() {
     global $irc, $irpg, $db;
-    
+
     // on affiche le top10 une fois toutes les 3 heures
-    if ($this->timer < 720) 
+    if ($this->timer < 720)
     {
     	$this->timer++;
     }
-    else 
+    else
     {
     	$this->timer=0;
-      $this->top(10);      
+      $this->top(10);
     }
-    
+
   }
-  
-/////////////////////////////////////////////////////////////// 
-  
-  
+
+///////////////////////////////////////////////////////////////
+
+
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
   Function top($nb = 10) {
     global $irpg, $irc, $db;
-    
+
     $res = $db->getRows("SELECT Nom, Class, Level, Next FROM Personnages ORDER BY Level DESC, Next ASC LIMIT $nb");
     $i=0;
     $irc->privmsg($irc->home, "Top $nb des meilleurs idlers :");
-    while ($i != count($res)) 
+    while ($i != count($res))
     {
       $msg = "#" . ($i+1) . " " . $res[$i]["Nom"] . ", " . $res[$i]["Class"] . " de niveau " . $res[$i]["Level"] . ".  Prochain niveau dans " . $irpg->convSecondes($res[$i]["Next"]) . ".";
       $irc->privmsg($irc->home, $msg);
       $i++;
     }
-    
+
   }
 
 

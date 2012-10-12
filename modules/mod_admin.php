@@ -38,7 +38,7 @@ class admin {
 
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
- 
+
 ///////////////////////////////////////////////////////////////
 
     function loadModule() {
@@ -47,10 +47,10 @@ class admin {
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
-        $this->name = "mod_admin";              
-        $this->version = "0.3.1";              
+        $this->name = "mod_admin";
+        $this->version = "0.3.1";
         $this->desc = "Commandes d'administration'";
-        $this->depend = Array("core/0.5.0");  
+        $this->depend = Array("core/0.5.0");
 
         //Recherche de dépendances
         if (!$irpg->checkDepd($this->depend)) {
@@ -58,11 +58,11 @@ class admin {
         }
 
         //Validation du fichier de configuration spécifique au module
-        $cfgKeys = Array();  
+        $cfgKeys = Array();
         $cfgKeysOpt = Array();
 
         //Validation du fichier de configuration spécifique au module
-        if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) { 
+        if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
             die ("$this->name: Vérifiez votre fichier de configuration.\n");
         }
     }
@@ -91,7 +91,7 @@ class admin {
 
     function onPrivmsgPrive($nick, $user, $host, $message) {
         global $irc, $irpg, $db;
-    
+
         $message = trim(str_replace("\n", "", $message));
         $message = explode(" ", $message);
         $nb = count($message) - 1;
@@ -111,7 +111,7 @@ class admin {
 
         case "RESTART":
             //Redémarre le bot
-            if ($irpg->getAdminLvl($uid[1]) >= 9) { 
+            if ($irpg->getAdminLvl($uid[1]) >= 9) {
                 $raison = implode(" ", array_slice($message, 1));
                 $this->cmdRestart($nick, $uid[0], $raison);
             }
@@ -155,7 +155,7 @@ class admin {
                     $irc->notice($nick, "Syntaxe : CHGPERSO <personnage> <nouveau_personnage>");
                 }
                 else {
-                    $this->cmdChgPerso($nick, $message[1], $message[2]);	
+                    $this->cmdChgPerso($nick, $message[1], $message[2]);
                 }
 	        }
             else {
@@ -178,7 +178,7 @@ class admin {
             }
             break;
 
-        case "DELPERSO":  
+        case "DELPERSO":
             //Supprime un personnage
             if ($irpg->getAdminLvl($uid[1]) >= 7) {
                 if ($nb < 1) {
@@ -254,7 +254,7 @@ class admin {
             else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
-            break;  
+            break;
 
         case "PUSH":
             //Enlève du temps au TTL d'un personnage
@@ -340,19 +340,19 @@ class admin {
         global $irc, $irpg, $db;
     }
 
-/////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////
 
     function on5Secondes() {
         global $irc, $irpg;
     }
 
-/////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////
 
     function on10Secondes() {
         global $irc, $irpg;
     }
 
-/////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////
 
     function on15Secondes() {
         global $irc, $irpg, $db;
@@ -360,7 +360,7 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////
 
     function cmdDie($nick, $user, $raison) {
         //TODO: exécuter la méthode unload() de chaque module avant de shutdown le bot
@@ -475,7 +475,7 @@ class admin {
         }
         if (strlen($newUser) > 30) {
             $irc->notice($nick, "Désolé, le nom d'utilisateur que vous voulez donner est trop long. La limite autorisée est de \00230\002 caractères.");
-            return;    
+            return;
         }
         if (! $irpg->userExist($user)) {
             $irc->notice($nick, "L'utilisateur que vous avez spécifié n'existe pas !");
@@ -490,7 +490,7 @@ class admin {
                 $irc->notice($nick, "Vous ne pouvez pas changer le nom d'un administrateur qui a un niveau supérieur ou égal au vôtre !");
                 return;
             }
-            $userIsMe = false;  
+            $userIsMe = false;
         }
         else {
             $userIsMe = true;
@@ -585,7 +585,7 @@ class admin {
         $table = $db->prefix."Utilisateurs";
         $db->req("UPDATE `$table` SET `Admin` = '0' WHERE `Username` = '$user'");
         $irc->notice($nick, "Les privilèges d'administrateur de $user ont bien été supprimés.");
-        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELADMIN ($user)");	
+        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELADMIN ($user)");
         //TODO: Avertir l'utilisateur de la démission de ses fonctions.
     }
 

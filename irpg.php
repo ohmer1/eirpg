@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 *
 * @author Homer
 * @created 1er juin 2005
-*/ 
+*/
 
 
 //Librairies utilisées
@@ -46,14 +46,14 @@ $irpg = new IRPG;
 $irc = new IRC;
 
 //Chargement et validation du fichier de configuration
-If (!$irpg->init()) 
+If (!$irpg->init())
 {
   die ("Erreur lors du chargement du fichier de configuration.\n") ;
 }
 
 //Lecture de la liste des ignores...
 $irpg->lireIgnores();
-  
+
 While (true)
 {
   //Connexion à IRC
@@ -63,41 +63,41 @@ While (true)
     sleep(60);
   }
   Else {
-    break; 
+    break;
   }
 }
-  
+
 
 If ($irpg->readConfig("IRPG", "background") == "1")
 { //On lance le bot en background
   set_time_limit(0);
   If (pcntl_fork())
-  { 
-    
+  {
+
   }
   Else {
-    $pid = posix_getpid(); 
+    $pid = posix_getpid();
     $irpg->alog("Chargement en background (PID #$pid)...", true);
     posix_setsid();
-  
-    While (true) 
+
+    While (true)
     {
       start();
     }
   }
 }
 Else {
-  start(); 
+  start();
 }
 
 
 Function start()
 {
   global $irpg, $irc, $db;
-  
+
   // On doit connecter la DB dans le même thread que la connexion IRC,
   // car la connexion est perdue avec PHP5 (fonctionne avec PHP4.3)
-  
+
   //Connexion à la base de données
   If (!$db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"), $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix")))
   {

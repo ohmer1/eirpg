@@ -56,7 +56,7 @@ version = "0.5.0.1"		;Version du bot
 ;Modules à charger séparés par des virgules, sans espaces et sans le prefix "mod_"
 ;L'ordre a son importance pour le gestionnaire des dépendances.
 modules = "core,idle,penalites,objets,admin,ohvstatus,hog,calamites,godsends,batailles,quests,notice,top10"
-			
+
 ; -------------------------------------------------
 
 
@@ -97,7 +97,7 @@ ignoreSplit = "1"			;Ne pénalise pas les quits pour netsplit
 ; -------------------------------------------------
 
 [mod_ohvstatus]
-; Ce module gère les modes à appliquer aux 
+; Ce module gère les modes à appliquer aux
 ; utilisateurs selon leur niveau dans le jeu
 op = "1"							;Active (1) ou désactive (0) le mode OP
 hop = "1"							;Active (1) ou désactive (0) le mode HOP
@@ -116,7 +116,7 @@ recompenseA = "20"			;Recompense en pourcent d'une quete d'Aventure
 recompenseR = "30				;Recompense en pourcent d'une quete de Royaume
 recompenseS = "30"			;Recompense en pourcent d'une quete de Royaume
 MinPenalite = "10"			;Penalité minimal pour le participant d'une quete
-MaxPenalite = "15"			;Penalité maximal pour le participant d'une quete		
+MaxPenalite = "15"			;Penalité maximal pour le participant d'une quete
 MinPenaliteAll = "5"		;Penalité minimal pour tout le monde lorsqu'une quete de Royaume est ratée.
 MaxPenaliteAll = "10"		;Penalité maximal pour tout le monde lorsqu'une quete de Royaume est ratée.
 nbrParticipants = "3"		;Nombre de participants prenant part à la quête.

@@ -26,11 +26,11 @@ class IRPG
 * @author Homer
 * @created 30 mai 2005
 * @modified 1er juin 2005
-*/ 
+*/
 
 {
-  
-/////////////////////////////////////////////////////////////// 
+
+///////////////////////////////////////////////////////////////
 // Variables privées
 ///////////////////////////////////////////////////////////////
   var $config;    //Paramètres de configuration chargés en mémoire
@@ -42,9 +42,9 @@ class IRPG
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-  
- 
-/////////////////////////////////////////////////////////////// 
+
+
+///////////////////////////////////////////////////////////////
 // Méthodes privées, même si PHP s'en fou !
 ///////////////////////////////////////////////////////////////
   Function validationConfig($section, $keys, $keys_opt)
@@ -56,47 +56,47 @@ class IRPG
   * @modified 1er juin 2005
   * @return boolean - True si la config est OK, false autrement
   */
-  
-  {   
-    
+
+  {
+
     //On traite les clés obligatoires
     $i = 0;
     While ($i != count($keys))
-    { 
-      
+    {
+
       If (empty($keys[$i])) { break; } //On sort de la boucle si pas de clés obligatoires
-            
+
       $keyResult = $this->readConfig($section, $keys[$i], true);
-      
-      If ($keyResult != "") 
+
+      If ($keyResult != "")
       {
-        $this->config[$section][$keys[$i]] = $keyResult; 
+        $this->config[$section][$keys[$i]] = $keyResult;
       } Else {
-        return false; 
+        return false;
       }
       $i++;
     }
-    
+
     //Ensuite, les clés optionnelles
     $i = 0;
     While ($i != count($keys_opt))
-    { 
-      $this->config[$section][$keys_opt[$i]] = $this->readConfig($section, $keys_opt[$i], true); 
+    {
+      $this->config[$section][$keys_opt[$i]] = $this->readConfig($section, $keys_opt[$i], true);
       $i++;
     }
-    
+
     //On est évidemment pas en pause !
     $this->pause = false;
-    
-    //Si on s'est rendu ici c'est que tout fonctionne ! 
-    return true;  
+
+    //Si on s'est rendu ici c'est que tout fonctionne !
+    return true;
   }
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
 
-/////////////////////////////////////////////////////////////// 
+///////////////////////////////////////////////////////////////
 // Méthodes publiques
 ///////////////////////////////////////////////////////////////
 
@@ -109,39 +109,39 @@ class IRPG
   * @modified 1er juin 2005
   * @return boolean - True si la config est OK, false autrement
   */
-  
+
   {
 
-        
+
     $this->alog("Lecture du fichier de configuration...", true);
-    
+
     //Traitement de la section DB
     $keys = array("host", "login", "password", "base"); //clés obligatoires
     $keys_opt = array("prefix");                        //clés optionnelles
     $ok = $this->validationConfig("SQL", $keys, $keys_opt);
     If (!$ok) { return false; }
-    
-    
+
+
     //Traitement de la section IRC
     $keys = array("server", "port", "channel", "nick", "altnick", "username", "realname", "modes"); //clés obligatoires
     $keys_opt = array("password", "nspass", "bind", "key");       //clés optionnelles
     $ok = $this->validationConfig("IRC", $keys, $keys_opt);
     If (!$ok) { return false; }
-    
-    
+
+
     //Traitement de la section IRPG
     $keys = array("admin", "debug", "background", "purge", "version", "modules"); //clés obligatoires
     $keys_opt = array("");                        //clés optionnelles
     $ok = $this->validationConfig("IRPG", $keys, $keys_opt);
     If (!$ok) { return false; }
-    
+
     $this->ignoresH = array();
     $this->ignoresN = array();
-    
+
     //Si on s'est rendu ici c'est que tout est OK :)
-    return true; 
+    return true;
   }
-  
+
 ///////////////////////////////////////////////////////////////
 
   Function loadModules()
@@ -155,17 +155,17 @@ class IRPG
   * @param clsIRPG   - Référence à l'objet IRPG
   * @return none
   */
-  { 
-    
+  {
+
     global $irc, $irpg;
-    
+
     //Chargement des modules
     $this->modules = $this->readConfig("IRPG", "modules");
     $this->modules = split(",", $this->modules);
-    
+
     //On vérifie que les modules existent
     $i = 0;
-    While ($i != count($this->modules)) 
+    While ($i != count($this->modules))
     {
       If (!file_exists("modules/mod_".$this->modules[$i].".php"))
       {
@@ -179,9 +179,9 @@ class IRPG
       }
       $i++;
     }
-    
+
   }
-  
+
 ///////////////////////////////////////////////////////////////
 
   Function loadModule($nom)
@@ -194,20 +194,20 @@ class IRPG
   * @param nom       - Nom du module à charger (sans le prefixe mod_)
   * @return boolean  - True si module chargé, false autrement
   */
-  { 
+  {
 
       If (!file_exists("modules/mod_".$nom.".php"))
       { //On vérifie que le module existe
-        
+
         return false;
       }
-      
+
       ElseIf (in_array($nom, $this->modules))
       { //On s'assure que le module ne soit pas déjà chargé
-         
+
          return false;
       }
-      
+
       Else {
         include_once("modules/mod_".$nom.".php"); //TODO: rechercher le module sur REHASH (??)
         $this->modules[] = $nom;
@@ -216,25 +216,25 @@ class IRPG
         return true;
       }
 
-    
+
   }
-  
+
 ///////////////////////////////////////////////////////////////
 
   Function unloadModule($nom)
   {
     //On vérifie si le module existe
     If (!in_array($nom, $this->modules))
-    { 
+    {
       return false;  //module inexistant
     }
-    Else { 
+    Else {
       $i = 0;
       foreach($this->mod as $nomModule => $leModule)
       {
         $y = 0;
         While ($y != count($this->mod[$nom]->depend))
-        { 
+        {
           If ($this->mod[$nomModule]->depend[$y] == $nom."/".$this->mod[$nom]->version)
           {
             return false;  /* On ne peut décharger ce module car il est requis */
@@ -242,10 +242,10 @@ class IRPG
           }
           $y++;
         }
-        
+
         $i++;
       }
-      
+
       #On peut maintenant décharger le module
       //On appel l'évènement unloadmodule() avant de décharger
       $this->mod[$nom]->unloadmodule();
@@ -253,13 +253,13 @@ class IRPG
       unset ($this->mod[$nom]);
       unset ($this->modules[(array_search($nom, $this->modules))]);
       $this->modules = array_values($this->modules); //reset des indices du tableau
-      return true; 
+      return true;
     }
-    
+
   }
 
 ///////////////////////////////////////////////////////////////
-  
+
   Function readConfig($section, $key, $fromFile = false)
   /**
   * Config; interprète le fichier de configuration
@@ -272,21 +272,21 @@ class IRPG
   * @param fromFile - Si vrai lis la configuration du fichier, sinon des données en mémoire
   * @return string  - La valeur contenu dans le fichier de configuration
   */
-  
+
   {
-    
+
     If ($fromFile)
     {
       $config = parse_ini_file("irpg.conf", true);
       return $config[$section][$key];
-      
+
     } Else {
-     
+
       //Retourne ce qui a été préablement chargé en mémoire
       return $this->config[$section][$key];
-      
+
     }
-    
+
   }
 
 ///////////////////////////////////////////////////////////////
@@ -303,41 +303,41 @@ class IRPG
   * @return boolean - True si dépendances satisfaites, false autrement.
   */
   {
-    $i = 0; 
+    $i = 0;
     While ($i != count($dep))
     {
       //Nom & version de la dépendance requise
       $module = split("/", $dep[$i]);
       $nomModule = $module[0];
       $versionModule = $module[1];
-     
+
       If (empty($nomModule)) { return true; }
-       
-      //On vérifie si le module est chargé  
+
+      //On vérifie si le module est chargé
       If (!in_array($nomModule, $this->modules))
       {
         return false;
       }
       Else {
         //On vérifie que la version du module est suffisante
-        
+
         //Version requise par le module
         $versionModule = split("\.", $versionModule);
-        $vr_majeur = $versionModule[0]; 
-        $vr_mineur = $versionModule[1]; 
-        $vr_revision = $versionModule[2]; 
-        //Version actuelle du module 
+        $vr_majeur = $versionModule[0];
+        $vr_mineur = $versionModule[1];
+        $vr_revision = $versionModule[2];
+        //Version actuelle du module
         $versionActuelle = split("\.", $this->mod[$nomModule]->version);
-        $va_majeur = $versionActuelle[0]; 
+        $va_majeur = $versionActuelle[0];
         $va_mineur = $versionActuelle[1];
         $va_revision = $versionActuelle[2];
-        
+
         If ($va_majeur > $vr_majeur)
         {
           #return true;
         }
         ElseIf ($va_majeur < $vr_majeur)
-        { 
+        {
           return false;
         }
         ElseIf ($va_mineur > $vr_mineur)
@@ -363,9 +363,9 @@ class IRPG
       }
       $i++;
     }
-    
+
     return true;
-    
+
   }
 
 ///////////////////////////////////////////////////////////////
@@ -381,7 +381,7 @@ class IRPG
     $flog = fopen("irpg.log", "a+");
     fwrite($flog, "[$date] ".$msg."\n");
     fclose($flog);
-     
+
   }
 
 ///////////////////////////////////////////////////////////////
@@ -389,7 +389,7 @@ class IRPG
   Function getUsernameByNick($nick, $uid = false)
   {
     $username = array_search($nick, $this->mod["core"]->users);
-    
+
     If (($uid) And ($username))
     {
       global $db;
@@ -397,26 +397,26 @@ class IRPG
       $uid = $db->getRows("SELECT Id_Utilisateurs FROM $table WHERE Username = '$username'");
       $uid = $uid[0]["Id_Utilisateurs"];
       return Array($username, $uid);
-      
+
     } Else {
-      return $username; 
+      return $username;
     }
   }
 
 ///////////////////////////////////////////////////////////////
-  
+
   Function getNickByUID($uid)
   {
     global $db;
     $tbIRC = $db->prefix."IRC";
     $tbPerso = $db->prefix."Personnages";
-    
+
     $nick = $db->getRows("SELECT Nick FROM $tbIRC WHERE Pers_Id = (SELECT Id_Personnages FROM $tbPerso WHERE Util_Id='$uid' LIMIT 0,1)");
     return $nick[0]["Nick"];
   }
-  
+
  ///////////////////////////////////////////////////////////////
-  
+
   Function getUsernameByUID ($uid)
   {
     global $db;
@@ -426,14 +426,14 @@ class IRPG
     {
       $username = $db->getRows($q);
     }
-    Else 
+    Else
     {
       return false;
     }
   }
-  
+
   ///////////////////////////////////////////////////////////////
-  
+
   Function getNomPersoByPID ($pid)
   {
     global $db;
@@ -444,14 +444,14 @@ class IRPG
       $result = $db->getRows($q);
       return $result[0]["Nom"];
     }
-    Else 
+    Else
     {
       return false;
     }
   }
-  
+
     ///////////////////////////////////////////////////////////////
-  
+
     Function getPIDByPerso ($perso)
     {
       global $db;
@@ -462,59 +462,59 @@ class IRPG
         $result = $db->getRows($q);
         return $result[0]["Id_Personnages"];
       }
-      Else 
+      Else
       {
         return false;
       }
     }
-  
+
   ///////////////////////////////////////////////////////////////
-  
+
   Function getPersoByUsername($username) {}
-  
-  
+
+
   ///////////////////////////////////////////////////////////////
-  
-  
+
+
   Function getUIDByPID ($pid) {
   	global $db;
     $tb = $db->prefix . "Personnages";
     $res = $db->getRows("SELECT Util_Id FROM $tb WHERE Id_Personnages='$pid'");
     return $res[0]["Util_Id"];
-    
+
   }
-  
+
   ///////////////////////////////////////////////////////////////
-  
+
   Function getUIDByUsername($username)
   {
     global $db;
     $tbUtil = $db->prefix."Utilisateurs";
-    
+
     $uid = $db->getRows("SELECT Id_Utilisateurs FROM $tbUtil WHERE Username='$username'");
     return $uid[0]["Id_Utilisateurs"];
   }
-  
+
  ///////////////////////////////////////////////////////////////
-  
+
   Function convSecondes($sec) {
         If ($sec == 0)
         {
           return "00:00:00";
         }
-        Else 
+        Else
         {
           return sprintf("%d jour%s, %02d:%02d:%02d",
                        $sec/86400,intval($sec/86400)==1?"":"s",
                        ($sec%86400)/3600,($sec%3600)/60,$sec%60);
         }
-        
+
     }
  ///////////////////////////////////////////////////////////////
- 
+
   Function getAdminLvl($uid) {
     //Retourne le niveau d'accès admin d'un utilisateur
-    
+
     global $db;
     $tbUtil = $db->prefix."Utilisateurs";
     $req = "SELECT Admin FROM $tbUtil WHERE Id_Utilisateurs = '$uid'";
@@ -527,12 +527,12 @@ class IRPG
     }
 
   }
-  
+
  ///////////////////////////////////////////////////////////////
- 
+
   Function Log($pid, $type, $modif = 0, $d1 = "", $d2 = "", $d3 = "") {
-   //Ajout dans la table Logs 
-   
+   //Ajout dans la table Logs
+
     global $db;
     $tbLogs = $db->prefix."Logs";
     if ($pid == NULL) {
@@ -550,17 +550,17 @@ Function userExist($user)
 	global $db;
 	$table = $db->prefix."Utilisateurs";
 	$r = $db->req("SELECT Username FROM $table WHERE Username='$user'");
-	If (mysql_num_rows($r) != 0) return true; 
+	If (mysql_num_rows($r) != 0) return true;
 	return false;
 }
-///////////////////////////////////////////////////////////////   
+///////////////////////////////////////////////////////////////
 
 Function persoExist($perso)
 {
 	global $db;
 	$table = $db->prefix."Personnages";
 	$r = $db->req("SELECT Nom FROM $table WHERE Nom='$perso'");
-	If (mysql_num_rows($r) != 0) return true; 
+	If (mysql_num_rows($r) != 0) return true;
 	return false;
 }
 
@@ -569,20 +569,20 @@ Function equipeExist($equipe)
 	global $db;
 	$table = $db->prefix."Equipes";
 	$r = $db->req("SELECT Name FROM $table WHERE Name='$equipe'");
-	If (mysql_num_rows($r) != 0) return true; 
+	If (mysql_num_rows($r) != 0) return true;
 	return false;
 }
-///////////////////////////////////////////////////////////////   
+///////////////////////////////////////////////////////////////
 
-function lireIgnores() 
+function lireIgnores()
 {
 	// lecture de la liste d'ignore en mémoire
   $this->alog("Lecture de la liste des ignores...");
   $f = fopen("ignores.list", "r");
-  while (!feof($f)) 
+  while (!feof($f))
   {
   	$ligne = fgets($f);
-    
+
     if (substr($ligne, 0, 4) == "NICK")
     {
     	$nick = explode(":", $ligne);
@@ -597,20 +597,20 @@ function lireIgnores()
       $this->ignoresH[] = $host;
       $this->alog("L'host $host est ignoré...");
     }
-    
+
   }
   fclose($f);
-  
+
 }
 
-function getIgnoresN() 
+function getIgnoresN()
 {
 	return $this->ignoresN;
 }
 
-function getIgnoresH() 
+function getIgnoresH()
 {
   return $this->ignoresH;
 }
-  
+
 }
