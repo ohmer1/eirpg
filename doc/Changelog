@@ -1,7 +1,7 @@
 Changelog
 =========================================
 
-LÃ©gende
+Légende
 ----------------
 + ajout
 ! suppression
@@ -12,23 +12,23 @@ LÃ©gende
 Version 0.6.0
 XX avril 2007
 ----------------
-+ Module mod_admin corrigÃ© et complÃ©tÃ© (cedricpc)
-+ PossibilitÃ© de choisir le charset Ã  utiliser pour la sortie IRC et console (via irpg.conf) [bug #00027] (Homer)
-- Modification au schÃ©ma de la base de donnÃ©es [???] (causait problÃ¨me avec les versions rÃ©centes de MySQL] (cedricpc)
++ Module mod_admin corrigé et complété (cedricpc)
++ Possibilité de choisir le charset à utiliser pour la sortie IRC et console (via irpg.conf) [bug #00027] (Homer)
+- Modification au schéma de la base de données [???] (causait problème avec les versions récentes de MySQL] (cedricpc)
 
 
 
 Version 0.5.0.1
-28 janvier 2007 (non publiÃ©e)
+28 janvier 2007 (non publiée)
 ----------------
 
 + mod_notice : nouveau module permettant de configurer une notice automatique on:join (Homer)
 + Fonction d'ignore IRC de base (Homer)
-@ Le bot est maintenant en mesure de dÃ©marrer sans modifications au code (Homer)
-@ Une quÃªte de type "Survivant" ne se fait plus Ã©craser par les autres types de quÃªtes (Excelsior)
+@ Le bot est maintenant en mesure de démarrer sans modifications au code (Homer)
+@ Une quête de type "Survivant" ne se fait plus écraser par les autres types de quêtes (Excelsior)
 
 
 Version 0.5.0
 27 janvier 2007
 ----------------
-PremiÃ¨re version publiÃ©e
+Première version publiée

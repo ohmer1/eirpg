@@ -1,7 +1,7 @@
 # Ce fichier est la liste d'ignore globale du bot.
 #
 # La syntaxe est la suivante: TYPE:CE_QUE_L'ON_VEUT_IGNORER
-#    TYPE peut Ãªtre NICK OU HOST
+#    TYPE peut être NICK OU HOST
 #
 # Exemple:
 #  NICK:boulet
