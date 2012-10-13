@@ -478,7 +478,7 @@ class quests
 					} elseif($proba <= ($this->probaQueteA + round((100 -$this->probaQueteA)/2) ) ) {
 						$this->queteEnCours = $this->QueteRoyaume();
 					} else {
-						if($this->nbrParticipants > 1 || !$this->queteSurvivant) {
+						if(($this->nbrParticipants > 1) || !$this->queteSurvivant) {
 							$this->queteSurvivant = $this->QueteSurvivant();
 						} else {
 							$this->queteEnCours = $this->QueteRoyaume();
