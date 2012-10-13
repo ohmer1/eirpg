@@ -23,7 +23,7 @@
  *
  * @author Homer
  * @created 30 mai 2005
- * @modified 1er juin 2005
+ * @modified 07 Janvier 2008
  */
 class IRPG
 {
@@ -450,7 +450,7 @@ class IRPG
         if ($sec == 0) {
             return "00:00:00";
         } else {
-            return sprintf("%d jour%s, %02d:%02d:%02d", $sec / 86400, intval($sec/86400) == 1 ? "" : "s",
+            return sprintf("%d jour%s, %02d:%02d:%02d", $sec / 86400, $sec < 172800 ? "" : "s",
                 ($sec % 86400) / 3600, ($sec % 3600) / 60, $sec % 60
             );
         }
