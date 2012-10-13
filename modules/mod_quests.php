@@ -111,7 +111,7 @@ class quests
     global $irc, $irpg, $db;
 
     													// SI il n'y a aucune quete en cours on ne fait rien du tout (Optimisation).
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+   if((($this->queteEnCours != -1) || $this->queteSurvivant) && !$irpg->pause ) {
     													// On lit le fichier de config pour verifier que l'action est considérée comme pénalité.
 		if($irpg->readConfig("mod_penalites","penPrivmsg") != 0) {
 														// On verifie que le nick participe a la quete. Si c'est le cas on verifie que la quete est abandonnée ou non.
@@ -147,7 +147,8 @@ class quests
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+
+   if((($this->queteEnCours != -1) || $this->queteSurvivant) && !$irpg->pause ) {
 		if(readConfig("mod_penalites","penNotice") != 0) {
 			if($this->VerifFinQuete($nick) == -1) {
 				$this->queteEnCours = -1;
@@ -161,7 +162,8 @@ class quests
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+
+   if((($this->queteEnCours != -1) || $this->queteSurvivant) && !$irpg->pause ) {
 			if($irpg->readConfig("mod_penalites","penNotice") != 0) {
 				if($this->VerifFinQuete($nick) == -1) {
 					$this->queteEnCours = -1;
@@ -182,7 +184,8 @@ class quests
   function onPart($nick, $user, $host, $channel)
   {
    global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+
+   if((($this->queteEnCours != -1) || $this->queteSurvivant) && !$irpg->pause ) {
 		if($irpg->readConfig("mod_penalites","penPart") != 0) {
 			if($this->VerifFinQuete($nick) == -1) {
 				$this->queteEnCours = -1;
@@ -194,11 +197,12 @@ class quests
 ///////////////////////////////////////////////////////////////
 
 	function onNick($nick, $user, $host, $newnick)
-  	{
-   		global $irc, $irpg, $db;
-		if($this->queteEnCours != -1 || $this->queteSurvivant) {
-   													// On verifie que le nick changeant participe a la quete et si c'est le cas
-   													// on met a jour les informations concernant ce participant de le tableau des participants à la quete.
+	{
+		global $irc, $irpg, $db;
+
+		if(($this->queteEnCours != -1) || $this->queteSurvivant) {
+													// On verifie que le nick changeant participe a la quete et si c'est le cas
+													// on met a jour les informations concernant ce participant de le tableau des participants à la quete.
 			for($i=0;$i<$this->nbrParticipants;$i++) {
 				if($this->participants[$i][1] == $nick) {
 					$this->participants[$i][1] = $newnick;
@@ -219,7 +223,8 @@ class quests
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
    global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+
+   if((($this->queteEnCours != -1) || $this->queteSurvivant) && !$irpg->pause ) {
 		if($irpg->readConfig("mod_penalites","penKick") != 0) {
 			if($this->VerifFinQuete($nickkicked) == -1) {
 				$this->queteEnCours = -1;
@@ -240,7 +245,8 @@ class quests
   function onQuit($nick, $user, $host, $reason)
   {
    global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+
+   if((($this->queteEnCours != -1) || $this->queteSurvivant) && !$irpg->pause ) {
 	if($irpg->readConfig("mod_penalites","penQuit") != 0) {
 			if($this->VerifFinQuete($nick) == -1) {
 				$this->queteEnCours = -1;
@@ -502,7 +508,7 @@ class quests
 					$message = "Il y a une quête du survivant qui est en cours! Les participants encore en lice sont: ".$listeParticipants;
 					$irc->notice($nick, $message);
 			} else {
-			if($this->tempsQuete <= 0 || $this->queteEnCours == -1) {
+			if(($this->tempsQuete <= 0) || ($this->queteEnCours == -1)) {
 					$irc->notice($nick, "Aucune quête en cours actuellement.");
 				} else {
 					for($i=0;$i<$this->nbrParticipants;$i++) {
@@ -539,10 +545,10 @@ class quests
 	  	$nickIsParticipant = false;			// Permet de stopper la boucle for des que l'on sait que le nick est participant a la quete. (Optimisation)
 	  													// Permet aussi de ne pas verifier si la quete a ete abandonnée par tout les participant si le nick n'est pas un participant.
 														// On boucle sur chaque participant de la quete et on arrete si on a trouvé que le nick participe a la quete.
-			for($i=0;$i<$this->nbrParticipants && !$nickIsParticipant;$i++) {
+			for($i=0;($i<$this->nbrParticipants) && !$nickIsParticipant;$i++) {
 														// Si le nick est participant a la quete et qu'il n'a pas encore abandonné la quete on lui inflige une penalité et
 														// on l'annonce sur le canal, on l'inscrit dans les logs et on met la variable nickIsParticipant à vrai.
-				if($this->participants[$i][1] == $nick && $this->participants[$i][0] != -1) {
+				if(($this->participants[$i][1] == $nick) && ($this->participants[$i][0] != -1)) {
 					$pid = $this->participants[$i][0];
 					$cnext = $db->getRows("SELECT Next FROM $tbPerso WHERE Id_Personnages = '$pid'");
 					$penalite = round($cnext[0][0]*(rand($this->MinPenalite,$this->MaxPenalite) / 100));
@@ -569,7 +575,7 @@ class quests
 					}
                 }
 
-				if($this->queteSurvivant && $participantsActif == 1) {
+				if($this->queteSurvivant && ($participantsActif == 1)) {
 					for($i=0;$i<$this->nbrParticipants;$i++) {
 						if($this->participants[$i][0] != -1) {
 							$gagnant = $irpg->getNomPersoByPID($this->participants[$i][0]);

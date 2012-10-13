@@ -165,8 +165,8 @@ class IRPG
         die("Le module mod_".$this->modules[$i]." n'existe pas\n");
       } else {
         $this->alog("Chargement du module mod_".$this->modules[$i]."...", true);
-        include("modules/mod_".$this->modules[$i].".php");
-        $this->mod[$this->modules[$i]] = new $this->modules[$i];
+        include "modules/mod_".$this->modules[$i].".php";
+        $this->mod[$this->modules[$i]] = new $this->modules[$i]();
         $this->mod[$this->modules[$i]]->loadModule();
       }
       $i++;
@@ -191,7 +191,7 @@ class IRPG
       } elseif (in_array($nom, $this->modules)) { //On s'assure que le module ne soit pas déjà chargé
          return false;
       } else {
-        include_once("modules/mod_".$nom.".php"); //TODO: rechercher le module sur REHASH (??)
+        include_once "modules/mod_".$nom.".php"; //TODO: rechercher le module sur REHASH (??)
         $this->modules[] = $nom;
         $this->mod[$nom] = new $nom;
         $this->mod[$nom]->loadModule();

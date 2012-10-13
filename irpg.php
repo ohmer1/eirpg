@@ -27,18 +27,18 @@
 */
 
 //Librairies utilisées
-include("lib/clsIRPG.php");   //lib spécifique
-include("lib/clsIRC.php");    //lib spécialisée sur la connexion IRC
-include("lib/clsDB.php");     //lib spécialisée sur la base de données mySQL
+include "lib/clsIRPG.php";    //lib spécifique
+include "lib/clsIRC.php";     //lib spécialisée sur la connexion IRC
+include "lib/clsDB.php";      //lib spécialisée sur la base de données mySQL
 
 print "Démarrage d'Idle RPG...\n";
 
 $pid = posix_getpid();
 
 //Initialisation des objets IRPG, IRC et DB
-$db = new DB;
-$irpg = new IRPG;
-$irc = new IRC;
+$db = new DB();
+$irpg = new IRPG();
+$irc = new IRC();
 
 //Chargement et validation du fichier de configuration
 if (!$irpg->init()) {

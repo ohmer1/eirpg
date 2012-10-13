@@ -335,7 +335,7 @@ class core
     } elseif (!eregi("^[a-z0-9_-]+$", $username)) {
       $irc->notice($nick, "Désolé, votre nom d'utilisateur contient des caractères interdits.  Seuls les caractères \002alphanumériques\002, le \002tiret\002 et la \002barre de soulignement\002 sont autorisés.");
       return false;
-    } elseif (((strtoupper($username) == "IRPG")) || ((strtoupper($username) == "EIRPG"))) {
+    } elseif ((strtoupper($username) == "IRPG") || (strtoupper($username) == "EIRPG")) {
       $irc->notice($nick, "Désolé, ce nom d'utilisateur est réservé.");
       return false;
     } else {
