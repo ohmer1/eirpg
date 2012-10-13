@@ -195,7 +195,8 @@ class calamites
     $tbTxt = $db->prefix . "Textes";
 
     //on sélectionne d'abord un personnage en ligne
-    $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
+    $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages
+              IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
     if ($db->nbLignes($query) != 1) {
       return false;
     }
@@ -218,7 +219,8 @@ class calamites
     $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
     $message = $db->getRows("SELECT Valeur FROM $tbTxt WHERE Type='C' ORDER BY RAND() LIMIT 0,1");
     $message = $message[0][0];
-    $irc->privmsg($irc->home, "$perso $message.  Ce terrible incident le ralentis de $ctime du niveau $level2.  Prochain niveau dans $cnext.");
+    $irc->privmsg($irc->home, "$perso $message.  Ce terrible incident le ralentis de $ctime du niveau $level2. "
+      . "Prochain niveau dans $cnext.");
   }
 
 ///////////////////////////////////////////////////////////////

@@ -192,7 +192,8 @@ class godsends
     $tbTxt = $db->prefix . "Textes";
 
     //on sélectionne d'abord un personnage en ligne
-    $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
+    $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages
+              IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
     if ($db->nbLignes($query) != 1) {
       return false;
     }
@@ -215,7 +216,8 @@ class godsends
     $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
     $message = $db->getRows("SELECT Valeur FROM $tbTxt WHERE Type='G' ORDER BY RAND() LIMIT 0,1");
     $message = $message[0][0];
-    $irc->privmsg($irc->home, "$perso $message.  Cette merveilleuse aide de Dieu accélère sa course vers le niveau $level2 de $ctime.  Prochain niveau dans $cnext.");
+    $irc->privmsg($irc->home, "$perso $message.  Cette merveilleuse aide de Dieu accélère sa course vers "
+      . "le niveau $level2 de $ctime.  Prochain niveau dans $cnext.");
   }
 
 ///////////////////////////////////////////////////////////////

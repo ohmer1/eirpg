@@ -208,7 +208,9 @@ class bonus
     $tbDon = $db->prefix . "Dons";
 
     //on sélectionne d'abord un personnage en ligne
-    $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) AND Util_Id IN (SELECT Util_Id FROM $tbDon WHERE Expiration>=NOW()) ORDER BY RAND() LIMIT 0,1";
+    $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages
+              IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) AND Util_Id
+              IN (SELECT Util_Id FROM $tbDon WHERE Expiration>=NOW()) ORDER BY RAND() LIMIT 0,1";
     if ($db->nbLignes($query) != 1) {
       return false;
     }
@@ -230,7 +232,8 @@ class bonus
      $cnext = $irpg->convSecondes($next);
      $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
      $irpg->Log($pid, "BONUS_DONATEUR", "", "-$time");
-     $irc->privmsg($irc->home, "Le maître de l'idle remercie ses supporteurs et récompense $perso en lui enlevant $ctime avant d'arriver au niveau $level2.  Prochain niveau dans $cnext.");
+     $irc->privmsg($irc->home, "Le maître de l'idle remercie ses supporteurs et récompense $perso en lui "
+       . "enlevant $ctime avant d'arriver au niveau $level2.  Prochain niveau dans $cnext.");
   }
 
 ///////////////////////////////////////////////////////////////
@@ -246,7 +249,8 @@ class bonus
 
     $expiration = $db->getRows("SELECT Expiration FROM $tbDon WHERE Util_Id='$uid'");
     if (count($expiration) == 1) {
-	$irc->notice($nick, "Votre compte est en mode bonus jusqu'au " . $expiration[0]["Expiration"] . ".  Pour le prolonger : http://www.eirpg.com/app/index.php5?page=Dons");
+	$irc->notice($nick, "Votre compte est en mode bonus jusqu'au " . $expiration[0]["Expiration"]
+          . ".  Pour le prolonger : http://www.eirpg.com/app/index.php5?page=Dons");
     } else {
 	$irc->notice($nick, "Votre compte n'est pas en mode bonus.  Pour l'activer : http://www.eirpg.com/app/index.php5?page=Dons");
     }

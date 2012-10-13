@@ -186,7 +186,8 @@ class idle
     //personnages en ligne !
     $tbPerso = $db->prefix."Personnages";
     $tbIRC = $db->prefix."IRC";
-    $db->req("UPDATE $tbPerso SET Next=Next-15, Idled=Idled+15 WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id))");
+    $db->req("UPDATE $tbPerso SET Next=Next-15, Idled=Idled+15 WHERE Id_Personnages
+              IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id))");
 
     //Level up
     $i = 0;
@@ -210,8 +211,10 @@ class idle
 
       $cnext = $irpg->convSecondes($next);
 
-      $irc->notice($nick, "Votre personnage $nomPerso vient d'obtenir le niveau $level2 !  Prochain niveau dans $cnext.");
-      $irc->privmsg($irc->home, "UP!  $nomPerso, $class vient d'obtenir le niveau $level2 !  Prochain niveau dans $cnext.");
+      $irc->notice($nick, "Votre personnage $nomPerso vient d'obtenir le niveau $level2 ! "
+        . "Prochain niveau dans $cnext.");
+      $irc->privmsg($irc->home, "UP!  $nomPerso, $class vient d'obtenir le niveau $level2 ! "
+        . "Prochain niveau dans $cnext.");
 
       $y = 0;
       while ($y != count($irpg->mod)) {

@@ -114,7 +114,9 @@ class IRPG
     }
 
     //Traitement de la section IRC
-    $keys = array("server", "port", "channel", "nick", "altnick", "username", "realname", "modes"); //clés obligatoires
+    $keys = array(
+      "server", "port", "channel", "nick", "altnick", "username", "realname", "modes"
+    ); //clés obligatoires
     $keys_opt = array("password", "nspass", "bind", "key");       //clés optionnelles
 
     $ok = $this->validationConfig("IRC", $keys, $keys_opt);
@@ -361,7 +363,8 @@ class IRPG
     $tbIRC = $db->prefix."IRC";
     $tbPerso = $db->prefix."Personnages";
 
-    $nick = $db->getRows("SELECT Nick FROM $tbIRC WHERE Pers_Id = (SELECT Id_Personnages FROM $tbPerso WHERE Util_Id='$uid' LIMIT 0,1)");
+    $nick = $db->getRows("SELECT Nick FROM $tbIRC WHERE Pers_Id = (SELECT Id_Personnages FROM $tbPerso
+                          WHERE Util_Id='$uid' LIMIT 0,1)");
     return $nick[0]["Nick"];
   }
 
@@ -479,9 +482,11 @@ class IRPG
 
     $tbLogs = $db->prefix."Logs";
     if ($pid == NULL) {
-      $db->req("INSERT INTO $tbLogs (`Pers_Id`, `Date`, `Type`, `Modificateur`, `Desc1`, `Desc2`, `Desc3`) VALUES (NULL, NOW(), '$type', '$modif', '$d1', '$d2', '$d3')");
+      $db->req("INSERT INTO $tbLogs (`Pers_Id`, `Date`, `Type`, `Modificateur`, `Desc1`, `Desc2`, `Desc3`)
+                VALUES (NULL, NOW(), '$type', '$modif', '$d1', '$d2', '$d3')");
     } else {
-      $db->req("INSERT INTO $tbLogs (`Pers_Id`, `Date`, `Type`, `Modificateur`, `Desc1`, `Desc2`, `Desc3`) VALUES ('$pid', NOW(), '$type', '$modif', '$d1', '$d2', '$d3')");
+      $db->req("INSERT INTO $tbLogs (`Pers_Id`, `Date`, `Type`, `Modificateur`, `Desc1`, `Desc2`, `Desc3`)
+                VALUES ('$pid', NOW(), '$type', '$modif', '$d1', '$d2', '$d3')");
     }
   }
 

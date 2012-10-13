@@ -60,7 +60,11 @@ class quests
     }
 
         //Validation du fichier de configuration spécifique au module
-    $cfgKeys = array("tempsQueteA", "tempsQueteR", "recompenseA", "recompenseR", "recompenseS", "MinPenalite", "MaxPenalite", "MinPenaliteAll", "MaxPenaliteAll", "nbrParticipants", "tempsMinIdleA", "tempsMinIdleR","tempsMinIdleS", "lvlMinimumA", "lvlMinimumR","lvlMinimumS","probaAllQuete","probaQueteA");
+    $cfgKeys = array(
+      "tempsQueteA", "tempsQueteR", "recompenseA", "recompenseR", "recompenseS", "MinPenalite", "MaxPenalite",
+      "MinPenaliteAll", "MaxPenaliteAll", "nbrParticipants", "tempsMinIdleA", "tempsMinIdleR","tempsMinIdleS",
+      "lvlMinimumA", "lvlMinimumR","lvlMinimumS","probaAllQuete","probaQueteA",
+    );
     $cfgKeysOpt = array("");
 
     if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
@@ -114,7 +118,8 @@ class quests
    if((($this->queteEnCours != -1) || $this->queteSurvivant) && !$irpg->pause ) {
     													// On lit le fichier de config pour verifier que l'action est considérée comme pénalité.
 		if($irpg->readConfig("mod_penalites","penPrivmsg") != 0) {
-														// On verifie que le nick participe a la quete. Si c'est le cas on verifie que la quete est abandonnée ou non.
+														// On verifie que le nick participe a la quete.
+                                                        // Si c'est le cas on verifie que la quete est abandonnée ou non.
 														// Si elle est abandonnée on met a jour le variable de QueteEnCours.
 			if($this->VerifFinQuete($nick) == -1) {
 				$this->queteEnCours = -1;
@@ -280,7 +285,8 @@ class quests
 		$tbIRC = $db->prefix."IRC";
 
 														//Si il n'y a aucune quete en Cours, on a une chance sur 500 d'un mettre une en route.
-														//Si une quete est mise en route il y a 80% de chance que ce soit une quete d'aventure et 20% une quete de Royaume.
+														//Si une quete est mise en route il y a 80% de chance que ce soit une quete d'aventure
+                                                        //et 20% une quete de Royaume.
 		if(!$irpg->pause) {
 			if(($this->queteEnCours == -1) && ($this->queteSurvivant == 0)) {
 				if(rand(1,$this->probaAllQuete) == 1) {
@@ -298,8 +304,10 @@ class quests
                     }
 				}
 			} elseif($this->queteEnCours == 1) {
-															// Si il y a une quete en cours, on verifie le temps de quete restant. Si il est superieur à 0 on enlève 15 secondes
-															// Sinon on donne une recompense à tout les personnages qui ont participé jusqu'au bout (uid different de -1)
+															// Si il y a une quete en cours, on verifie le temps de quete restant. Si il est superieur à 0
+                                                            // on enlève 15 secondes
+															// Sinon on donne une recompense à tout les personnages qui ont participé jusqu'au bout
+                                                            // (uid different de -1)
 				if($this->tempsQuete > 0) {
 					$this->tempsQuete = $this->tempsQuete - 15;
 				} else {
@@ -315,9 +323,13 @@ class quests
 					}
 					$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
 					if(substr_count($listeParticipants,',') != 0) {
-						$irc->privmsg($irc->home, $listeParticipants." sont revenus de leur quête et ont remplis l'objectif! Bravo, voilà votre récompense : ".$this->recompenseA."% de votre TTL sont enlevés !");
+						$irc->privmsg($irc->home, $listeParticipants." sont revenus de leur quête et ont remplis "
+                          . "l'objectif! Bravo, voilà votre récompense : ".$this->recompenseA
+                          . "% de votre TTL sont enlevés !");
 					} else {
-						$irc->privmsg($irc->home, $listeParticipants." est revenu de sa quête et a rempli l'objectif! Bravo, voilà ta récompense : ".$this->recompenseA."% de ton TTL est enlevés !");
+						$irc->privmsg($irc->home, $listeParticipants." est revenu de sa quête et a rempli "
+                          . "l'objectif! Bravo, voilà ta récompense : ".$this->recompenseA
+                          . "% de ton TTL est enlevés !");
                     }
 					$this->queteEnCours = -1;
 				}
@@ -336,9 +348,13 @@ class quests
 					}
 					$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
 					if(substr_count($listeParticipants,',') != 0) {
-						$irc->privmsg($irc->home, $listeParticipants." sont revenus de quête à temps. Le royaume est sauvé...  Ils seront largement récompensés. ".$this->recompenseR."% de leur TTL sont enlevés !");
+						$irc->privmsg($irc->home, $listeParticipants." sont revenus de quête à temps. Le royaume "
+                          . "est sauvé...  Ils seront largement récompensés. ".$this->recompenseR
+                          . "% de leur TTL sont enlevés !");
 					} else {
-						$irc->privmsg($irc->home, $listeParticipants." est revenu de quête à temps. Le royaume est sauvé...  Il sera largement récompensé. ".$this->recompenseR."% de son TTL est enlevé !");
+						$irc->privmsg($irc->home, $listeParticipants." est revenu de quête à temps. Le royaume "
+                          . "est sauvé...  Il sera largement récompensé. ".$this->recompenseR
+                          . "% de son TTL est enlevé !");
                     }
 					$this->queteEnCours = -1;
 				}
@@ -360,7 +376,11 @@ class quests
 														// La query suivante va retourner le nombre de personnage voulu au hasard dont le level est suffisant
 														// et dont le temps d'idle est suffisant
 														// Le group by sur Util_id permet de ne recuperer qu'un personnage par user.
-		$query = "SELECT Id_Personnages, Nom, Util_id, Level FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(LastLogin))>".$this->tempsMinIdleA." AND Level >=".$this->lvlMinimumA." GROUP BY Util_id ORDER BY RAND() LIMIT 0,".$this->nbrParticipants;
+		$query = "SELECT Id_Personnages, Nom, Util_id, Level FROM $tbPerso WHERE Id_Personnages
+                  IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id))
+                  AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(LastLogin))>".$this->tempsMinIdleA."
+                  AND Level >=".$this->lvlMinimumA." GROUP BY Util_id ORDER BY RAND()
+                  LIMIT 0,".$this->nbrParticipants;
 
 														// Si le nombre de personnage retourné est inferieur au nombre voulut on ne peut pas commencé la quête
 		if ($db->nbLignes($query) != $this->nbrParticipants) {
@@ -378,13 +398,17 @@ class quests
 		$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
 														// On prend un texte de quete au hasard.
 		$message = $db->getRows("SELECT Valeur FROM $tbTxt WHERE Type='Qa' ORDER BY RAND() LIMIT 0,1");
-														// le temps de quete est etablit selon le temps de quete desiré plus un temps au hasard entre 1 et ce temps de quete desiré.
+
+														// le temps de quete est etablit selon le temps de quete desiré plus un temps au hasard entre 1
+                                                        // et ce temps de quete desiré.
 														// On peut donc passer du simple au double au hasard.
 		$this->tempsQuete = $this->tempsQueteA + rand(1,$this->tempsQueteA);
 		if(substr_count($listeParticipants,',') != 0) {
-			$irc->privmsg($irc->home, $listeParticipants." ont été choisit pour ".$message[0][0].". Ils ont ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
+			$irc->privmsg($irc->home, $listeParticipants." ont été choisit pour ".$message[0][0].". Ils ont "
+              . $irpg->convSecondes($this->tempsQuete)." pour en revenir...");
 		} else {
-			$irc->privmsg($irc->home, $listeParticipants." a été choisit pour ".$message[0][0].". Il a ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
+			$irc->privmsg($irc->home, $listeParticipants." a été choisit pour ".$message[0][0].". Il a "
+              . $irpg->convSecondes($this->tempsQuete)." pour en revenir...");
         }
 		return 1;
   }
@@ -400,7 +424,11 @@ class quests
 		$tbTxt = $db->prefix . "Textes";
 														// La query suivante va retourner le nombre de personnage voulu au hasard dont le level est suffisant
 														// et dont le temps d'idle est suffisant
-		$query = "SELECT Id_Personnages, Nom, Util_id, Level FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(LastLogin))>".$this->tempsMinIdleR." AND Level >=".$this->lvlMinimumR." GROUP BY Util_id ORDER BY RAND() LIMIT 0,".$this->nbrParticipants;
+		$query = "SELECT Id_Personnages, Nom, Util_id, Level FROM $tbPerso WHERE Id_Personnages
+                  IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id))
+                  AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(LastLogin))>".$this->tempsMinIdleR."
+                  AND Level >=".$this->lvlMinimumR." GROUP BY Util_id ORDER BY RAND()
+                  LIMIT 0,".$this->nbrParticipants;
 
 														// Si le nombre de personnage retourné est inferieur au nombre voulut on ne peut pas commencé la quête
 		if ($db->nbLignes($query) != $this->nbrParticipants) {
@@ -415,15 +443,20 @@ class quests
 			$this->participants[$i][1] = $irpg->getNickByUID($this->participants[$i][2]);
 			$listeParticipants .= $irpg->getNomPersoByPID($this->participants[$i][0]).", ";
 		}
-		$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);												// On prend un texte de quete au hasard.
+		$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
+												// On prend un texte de quete au hasard.
 		$message = $db->getRows("SELECT Valeur FROM $tbTxt WHERE Type='Qr' ORDER BY RAND() LIMIT 0,1");
-														// le temps de quete est etablit selon le temps de quete desiré plus un temps au hasard entre 1 et ce temps de quete desiré.
+
+														// le temps de quete est etablit selon le temps de quete desiré plus un temps au hasard entre 1
+                                                        // et ce temps de quete desiré.
 														// On peut donc passer du simple au double au hasard.
 		$this->tempsQuete = $this->tempsQueteR + rand(1,$this->tempsQueteR);
 		if(substr_count($listeParticipants,',') != 0) {
-			$irc->privmsg($irc->home, "Quête de Royaume!: ".$listeParticipants." ont été choisit pour ". $message[0][0].". Ils ont ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
+			$irc->privmsg($irc->home, "Quête de Royaume!: ".$listeParticipants." ont été choisit pour "
+              . $message[0][0].". Ils ont ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
 		} else {
-			$irc->privmsg($irc->home, "Quête de Royaume!: ".$listeParticipants." a été choisit pour ". $message[0][0].". Il a ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
+			$irc->privmsg($irc->home, "Quête de Royaume!: ".$listeParticipants." a été choisit pour "
+              . $message[0][0].". Il a ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
         }
 		return 2;
 	}
@@ -439,7 +472,11 @@ class quests
 		$tbTxt = $db->prefix . "Textes";
 														// La query suivante va retourner le nombre de personnage voulu au hasard dont le level est suffisant
 														// et dont le temps d'idle est suffisant
-		$query = "SELECT Id_Personnages, Nom, Util_id, Level FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(LastLogin))>".$this->tempsMinIdleR." AND Level >=".$this->lvlMinimumR." GROUP BY Util_id ORDER BY RAND() LIMIT 0,".$this->nbrParticipants;
+		$query = "SELECT Id_Personnages, Nom, Util_id, Level FROM $tbPerso WHERE Id_Personnages
+                  IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id))
+                  AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(LastLogin))>".$this->tempsMinIdleR."
+                  AND Level >=".$this->lvlMinimumR." GROUP BY Util_id ORDER BY RAND()
+                  LIMIT 0,".$this->nbrParticipants;
 
 														// Si le nombre de personnage retourné est inferieur au nombre voulut on ne peut pas commencé la quête
 		if ($db->nbLignes($query) != $this->nbrParticipants) {
@@ -454,9 +491,11 @@ class quests
 			$this->participants[$i][1] = $irpg->getNickByUID($this->participants[$i][2]);
 			$listeParticipants .= $irpg->getNomPersoByPID($this->participants[$i][0]).", ";
 		}
-		$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);												// On prend un texte de quete au hasard.
+		$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
+												// On prend un texte de quete au hasard.
 		$message = $db->getRows("SELECT Valeur FROM $tbTxt WHERE Type='Qs' ORDER BY RAND() LIMIT 0,1");
-		$irc->privmsg($irc->home, "Quête du Survivant!: ".$listeParticipants." ont été choisit pour ". $message[0][0].". Le dernier à en revenir sera déclaré vainqueu...");
+		$irc->privmsg($irc->home, "Quête du Survivant!: ".$listeParticipants." ont été choisit pour "
+          . $message[0][0].". Le dernier à en revenir sera déclaré vainqueu...");
 		return true;
 	}
 
@@ -505,7 +544,8 @@ class quests
 						$listeParticipants .= $irpg->getNomPersoByPID($this->participants[$i][0]).", ";
                     }
                 }
-					$message = "Il y a une quête du survivant qui est en cours! Les participants encore en lice sont: ".$listeParticipants;
+					$message = "Il y a une quête du survivant qui est en cours! Les participants encore en lice "
+                             . "sont: ".$listeParticipants;
 					$irc->notice($nick, $message);
 			} else {
 			if(($this->tempsQuete <= 0) || ($this->queteEnCours == -1)) {
@@ -519,11 +559,16 @@ class quests
 
 					$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
 					if($this->queteEnCours == 1) {
-						$message = "La quête d'Aventure en cours prendra fin dans ".$irpg->convSecondes($this->tempsQuete).". Participant(s): ".$listeParticipants;
+						$message = "La quête d'Aventure en cours prendra fin dans "
+                                 . $irpg->convSecondes($this->tempsQuete).". Participant(s): "
+                                 . $listeParticipants;
 					} elseif($this->queteEnCours == 2) {
-						$message = "La quête de Royaume en cours prendra fin dans ".$irpg->convSecondes($this->tempsQuete).". Participant(s): ".$listeParticipants;
+						$message = "La quête de Royaume en cours prendra fin dans "
+                                 . $irpg->convSecondes($this->tempsQuete).". Participant(s): "
+                                 . $listeParticipants;
 					} else {
-						$message = "C'est une quête du survivant qui est en cours! Les participants encore en lice sont: ".$listeParticipants;
+						$message = "C'est une quête du survivant qui est en cours! Les participants encore "
+                                 . "en lice sont: ".$listeParticipants;
                     }
 
 					$irc->notice($nick, $message);
@@ -542,18 +587,24 @@ class quests
 
 	  	$tbPerso = $db->prefix."Personnages";
 	  	$tbIRC = $db->prefix."IRC";
-	  	$nickIsParticipant = false;			// Permet de stopper la boucle for des que l'on sait que le nick est participant a la quete. (Optimisation)
-	  													// Permet aussi de ne pas verifier si la quete a ete abandonnée par tout les participant si le nick n'est pas un participant.
+
+        // Permet de stopper la boucle for des que l'on sait que le nick est participant a la quete. (Optimisation)
+		$nickIsParticipant = false;
+														// Permet aussi de ne pas verifier si la quete a ete abandonnée par tout les participant
+                                                        // si le nick n'est pas un participant.
 														// On boucle sur chaque participant de la quete et on arrete si on a trouvé que le nick participe a la quete.
 			for($i=0;($i<$this->nbrParticipants) && !$nickIsParticipant;$i++) {
-														// Si le nick est participant a la quete et qu'il n'a pas encore abandonné la quete on lui inflige une penalité et
+														// Si le nick est participant a la quete et qu'il n'a pas encore abandonné la quete
+                                                        // on lui inflige une penalité et
 														// on l'annonce sur le canal, on l'inscrit dans les logs et on met la variable nickIsParticipant à vrai.
 				if(($this->participants[$i][1] == $nick) && ($this->participants[$i][0] != -1)) {
 					$pid = $this->participants[$i][0];
 					$cnext = $db->getRows("SELECT Next FROM $tbPerso WHERE Id_Personnages = '$pid'");
 					$penalite = round($cnext[0][0]*(rand($this->MinPenalite,$this->MaxPenalite) / 100));
 					$db->req("UPDATE $tbPerso SET Next=Next + $penalite WHERE Id_Personnages= '$pid'");
-					$irc->privmsg($irc->home, $irpg->getNomPersoByPID($this->participants[$i][0])." rebrousse chemin dans cette quête ardue...Taxé par ses compatriotes de couardise le voilà blamé!");
+					$irc->privmsg($irc->home, $irpg->getNomPersoByPID($this->participants[$i][0])
+                      . " rebrousse chemin dans cette quête ardue...Taxé par ses compatriotes de couardise le voilà "
+                      . "blamé!");
 					$this->participants[$i][0] = -1;
 
           		$irpg->Log($pid, "QUETE_ABANDONNÉE", $penalite, "");
@@ -583,7 +634,8 @@ class quests
 							$i = $this->nbrParticipants;
 						}
                     }
-					$irc->privmsg($irc->home, "Nous avons un gagnant dans cette quete du Survivant! ".$gagnant." sera largement récompensé pour sa bravoure!");
+					$irc->privmsg($irc->home, "Nous avons un gagnant dans cette quete du Survivant! "
+                      . $gagnant." sera largement récompensé pour sa bravoure!");
 					$cnext = $db->getRows("SELECT Next FROM $tbPerso WHERE Id_Personnages = ".$gagnantPID);
 					$recompense = round($cnext[0][0]*($this->recompenseS / 100));
 					$db->req("UPDATE $tbPerso SET Next=Next-$recompense WHERE Id_Personnages = ".$gagnantPID);
@@ -595,7 +647,8 @@ class quests
 													// Si c'est une quete de royaume on applique une penalité a tout les connectés.
 				if($queteAbandonnee) {
 					if($this->queteEnCours == 1) {
-						$irc->privmsg($irc->home, "La quête a echouée... Les aventuriers sont tous revenus bredouilles...");
+						$irc->privmsg($irc->home, "La quête a echouée... Les aventuriers sont tous revenus "
+                          . "bredouilles...");
 					} elseif($this->queteEnCours == 2) {
 						$penaliteAll = rand($this->MinPenaliteAll,$this->MaxPenaliteAll) / 100;
 
@@ -603,8 +656,10 @@ class quests
           //je pourrais le faire maintenant, mais ça ne me tente pas :P
           //$irpg->Log($pid, "QUETE_ROYAUME_ECHOUÉE", $penalite, "");
 
-						$db->req("UPDATE $tbPerso SET Next=Next + (Next*$penaliteAll) WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id))");
-						$irc->privmsg($irc->home, "La quête a echouée... Le royaume est menacé et chaque habitant en subira les conséquences....");
+						$db->req("UPDATE $tbPerso SET Next=Next + (Next*$penaliteAll) WHERE Id_Personnages
+                                  IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id))");
+						$irc->privmsg($irc->home, "La quête a echouée... Le royaume est menacé et chaque habitant en "
+                          . "subira les conséquences...");
 					}
 					return -1;
 				}

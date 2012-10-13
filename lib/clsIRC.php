@@ -336,12 +336,15 @@ class IRC
       $tbPerso = $db->prefix."Personnages";
       $tbUtil = $db->prefix."Utilisateurs";
 
-      $query = "SELECT Pers_Id FROM $tbIRC WHERE Nick='$nick' And UserHost='$user@$host' And NOT ISNULL(Pers_Id) And Channel='$channel'";
+      $query = "SELECT Pers_Id FROM $tbIRC WHERE Nick='$nick' And UserHost='$user@$host'
+                And NOT ISNULL(Pers_Id) And Channel='$channel'";
       $nb = $db->nbLignes($query);
 
       if ($nb >= 1) {
         //L'utilisateur peut donc être relogué automatiquement
-        $username = $db->getRows("SELECT Username FROM $tbUtil WHERE Id_Utilisateurs = (SELECT Util_Id FROM $tbPerso WHERE Id_Personnages = ($query LIMIT 0,1))");
+        $username = $db->getRows("SELECT Username FROM $tbUtil WHERE Id_Utilisateurs = (
+          SELECT Util_Id FROM $tbPerso WHERE Id_Personnages = ($query LIMIT 0,1)
+        )");
         $username = $username[0]["Username"];
 
         $persodb = $db->getRows($query);
@@ -382,7 +385,9 @@ class IRC
         $auto = $irpg->mod["core"]->autologged[$i];
 
         if ($auto[1] != "") {
-          $db->req("INSERT INTO $table (`Pers_Id`, `Nick`, `UserHost`, `Channel`) VALUES ('$auto[1]', '$auto[2]', '$auto[3]', '$this->home')");
+          $db->req("INSERT INTO $table (`Pers_Id`, `Nick`, `UserHost`, `Channel`) VALUES (
+            '$auto[1]', '$auto[2]', '$auto[3]', '$this->home'
+          )");
 
           $perso = $irpg->getNomPersoByPID($auto[1]);
 
@@ -461,8 +466,10 @@ class IRC
           //Si la connexion DB est perdu; on retente une
           //nouvelle connexion toutes les 15 secondes..
           if ((!$db->connected) && (!$this->exit)) {
-            if ($db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"), $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix"))) {
-
+            if ($db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"),
+              $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"),
+              $irpg->readConfig("SQL", "prefix")
+            )) {
               //On réinitialise notre table IRC et objets, comme si le bot venait
               //d'être redémarré
               $irpg->mod["core"]->users = array();
@@ -476,7 +483,8 @@ class IRC
               //une bd à jour..
               $this->sendRaw("NAMES $this->home");  //TODO: Gérer le multi-chans
 
-              $this->privmsg($this->home, "La connexion au serveur de bases de données a été rétablie.  Le jeu est de nouveau actif.  Bon idle !");
+              $this->privmsg($this->home, "La connexion au serveur de bases de données a été rétablie. "
+                . "Le jeu est de nouveau actif.  Bon idle !");
               $irpg->pause = false; //C'est reparti !
             }
           }
@@ -723,8 +731,11 @@ class IRC
           }
 
           //Numeric 352 - /who
-          //:proxy.epiknet.org 352 IRPG2 #IRPG2 Homer server-admin.epiknet.org proxy.epiknet.org Homer Hr* :0 Homer - www.iQuotes-FR.com
-          if (preg_match_all("/^:$server 352 $this->me (.*?) (.*?) (.*?) (.*?) (.*?) .*$/", $dataregexp, $who)) {
+          //:proxy.epiknet.org 352 IRPG2 #IRPG2 Homer server-admin.epiknet.org proxy.epiknet.org --->
+          //---> Homer Hr* :0 Homer - www.iQuotes-FR.com
+          if (preg_match_all("/^:$server 352 $this->me (.*?) (.*?) (.*?) (.*?) (.*?) .*$/",
+            $dataregexp, $who
+          )) {
             $this->onWho($who[5][0], $who[2][0], $who[3][0], $who[4][0], $who[1][0]);
           }
 
@@ -873,7 +884,9 @@ class IRC
         //  $this->nbReadError++;
         //  print "READ ERROR!!: ".socket_strerror(socket_last_error())."\n\n";
         // if ($this->nbReadError > 2) {
-        //    $this->deconnexion("ARRRG! Je viens de rencontrer une erreur fatale :(.  Debug: ".socket_strerror(socket_last_error()));
+        //    $this->deconnexion("ARRRG! Je viens de rencontrer une erreur fatale :(.  Debug: "
+        //      .socket_strerror(socket_last_error())
+        //    );
         //    break;
         //  }
         //}

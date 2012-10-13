@@ -202,7 +202,8 @@ class objets
     $nomPerso = $irpg->getNomPersoByPID($pid);
 
     //Objets uniques
-    $obj = $db->getRows("SELECT Id_ListeObjets, Name, Probabilite, Type, Niveau FROM $tbLst WHERE EstUnique='O' And Minimum <= '$level2'");
+    $obj = $db->getRows("SELECT Id_ListeObjets, Name, Probabilite, Type, Niveau FROM $tbLst
+                         WHERE EstUnique='O' And Minimum <= '$level2'");
     $i = 0;
     while ($i != count($obj)) {
       $oid = $obj[$i]["Id_ListeObjets"];
@@ -219,9 +220,11 @@ class objets
           continue; //on a déjà l'objet
         } else {
           $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES ('$pid', '$oid', '$niveau')");
-          $irc->notice($nick, "Félicitations!  Ton personnage \002$nomPerso\002 vient de trouver un objet unique : \002$name\002 de niveau \002$niveau\002 !");
+          $irc->notice($nick, "Félicitations!  Ton personnage \002$nomPerso\002 vient de trouver un objet "
+            . "unique : \002$name\002 de niveau \002$niveau\002 !");
 
-          $req = "SELECT Id_Objets, Level FROM $tbObj WHERE Pers_Id='$pid' And LObj_Id IN (SELECT Id_ListeObjets FROM $tbLst WHERE Type='$type')";
+          $req = "SELECT Id_Objets, Level FROM $tbObj WHERE Pers_Id='$pid' And LObj_Id
+                  IN (SELECT Id_ListeObjets FROM $tbLst WHERE Type='$type')";
           if ($db->nbLignes($req) == 1) {
             $res = $db->getRows($req);
             $oid2 = $res[0]["Id_Objets"];
@@ -230,7 +233,8 @@ class objets
               $db->req("UPDATE $tbObj SET Level='$niveau' WHERE Id_Objets='$oid2'");
             }
           } else {
-            $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES (`$pid`, `$oid`, `$niveau`)");
+            $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`)
+                      VALUES (`$pid`, `$oid`, `$niveau`)");
           }
 
           $irpg->Log($pid, "OBJ_UNIQUE", 0, "$name (niveau $niveau)");
@@ -241,7 +245,8 @@ class objets
     }
 
     //Objets ordinaires
-    $obj = $db->getRows("SELECT Id_ListeObjets, Name FROM $tbLst WHERE EstUnique='N' ORDER BY Reverse(Rand()) LIMIT 0,1");
+    $obj = $db->getRows("SELECT Id_ListeObjets, Name FROM $tbLst WHERE EstUnique='N' ORDER BY Reverse(Rand())
+                         LIMIT 0,1");
 
     $oid = $obj[0]["Id_ListeObjets"];
     $nom = $obj[0]["Name"];
@@ -267,16 +272,20 @@ class objets
       if ($lvlObj > $niveau) {
         //Nouvel objet plus grand
         $db->req("UPDATE $tbObj SET Level='$lvlObj' WHERE Id_Objets='$oid'");
-        $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver l'objet \002$nom\002 de niveau \002$lvlObj\002.  Tu possédais déjà cet objet, mais avec un niveau $niveau, la chance est de ton côté!");
+        $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver l'objet \002$nom\002 de "
+          . "niveau \002$lvlObj\002.  Tu possédais déjà cet objet, mais avec un niveau $niveau, la chance "
+          . "est de ton côté!");
         $irpg->Log($pid, "OBJ", 0, "$nom (niveau $lvlObj)");
       } else {
         //Objet plus petit que ce qu'on a déjà
-        $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver l'objet \002$nom\002 de niveau \002$lvlObj\002.  Malheureusement, tu as déjà cet objet avec un niveau $niveau.");
+        $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver l'objet \002$nom\002 de "
+          . "niveau \002$lvlObj\002.  Malheureusement, tu as déjà cet objet avec un niveau $niveau.");
       }
     } else {
       //Nouvel objet trouvé
       $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES ('$pid', '$oid', '$lvlObj')");
-      $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver un nouvel objet !  Il s'agit de l'objet \002$nom\002 de niveau \002$lvlObj\002.");
+      $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver un nouvel objet ! "
+        . "Il s'agit de l'objet \002$nom\002 de niveau \002$lvlObj\002.");
       $irpg->Log($pid, "OBJ", 0, "$nom (niveau $lvlObj)");
     }
   }

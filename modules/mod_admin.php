@@ -356,7 +356,9 @@ class admin
         global $irc, $db, $irpg;
 
         $raison = stripslashes($raison);
-        $irpg->Log(NULL, "ADMIN", "0", "$user ($nick) a utilisé la commande SHUTDOWN".($raison != Null ? " ($raison)" : ""));
+        $irpg->Log(
+          NULL, "ADMIN", "0", "$user ($nick) a utilisé la commande SHUTDOWN".($raison != Null ? " ($raison)" : "")
+        );
         $irc->deconnexion("Arrêt du bot demandé par $nick ($user)".($raison != Null ? " : $raison" : ""));
         $db->deconnexion();
     }
@@ -365,12 +367,17 @@ class admin
 
     function cmdRestart($nick, $user, $raison)
     {
-        //TODO: Améliorer - ou pas - la gestion du redémarrage et exécuter la méthode unload() de chaque module avant l'arrêt du bot
+        //TODO: Améliorer - ou pas - la gestion du redémarrage et exécuter la méthode unload() de chaque module
+        //avant l'arrêt du bot
         global $irc, $db, $irpg;
 
         $raison = stripslashes($raison);
-        $irpg->Log(NULL, "ADMIN", "0", "$user ($nick) a utilisé la commande RESTART".($raison != Null ? " ($raison)" : ""));
-        $deconnexionIrc = $irc->deconnexion("Redémarrage du bot demandé par $nick ($user)".($raison != Null ? " : $raison" : ""));
+        $irpg->Log(
+          NULL, "ADMIN", "0", "$user ($nick) a utilisé la commande RESTART".($raison != Null ? " ($raison)" : "")
+        );
+        $deconnexionIrc = $irc->deconnexion(
+          "Redémarrage du bot demandé par $nick ($user)".($raison != Null ? " : $raison" : "")
+        );
         $db->deconnexion();
 
         if ($deconnexionIrc) {
@@ -397,7 +404,9 @@ class admin
         } else {
             $irc->notice($nick, "Le mot de passe de $user a bien été changé.");
         }
-        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGPASS ($user)");
+        $irpg->Log(
+          NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGPASS ($user)"
+        );
     }
 
 ///////////////////////////////////////////////////////////////
@@ -407,7 +416,8 @@ class admin
         global $irpg, $db, $irc;
 
         if (strlen($newClass) > 50) {
-            $irc->notice($nick, "Désolé, la classe que vous voulez donner est trop longue. La limite autorisée est de \00250\002 caractères.");
+            $irc->notice($nick, "Désolé, la classe que vous voulez donner est trop longue. "
+              . "La limite autorisée est de \00250\002 caractères.");
             return;
         }
         if (! $irpg->persoExist($perso)) {
@@ -418,7 +428,9 @@ class admin
         $table = $db->prefix."Personnages";
         $db->req("UPDATE `$table` SET `Class` = '$newClass' WHERE `Nom` = '$perso'");
         $irc->notice($nick, "La classe de $perso a bien été changée.");
-        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGCLASS ($perso -> $newClass)");
+        $irpg->Log(NULL, "ADMIN", "0",
+          "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGCLASS ($perso -> $newClass)"
+        );
     }
 
 ///////////////////////////////////////////////////////////////
@@ -428,7 +440,8 @@ class admin
         global $irpg, $db, $irc;
 
         if (strlen($newPerso) > 30) {
-            $irc->notice($nick, "Désolé, le nom du personnage que vous voulez donner est trop long. La limite autorisée est de \00230\002 caractères.");
+            $irc->notice($nick, "Désolé, le nom du personnage que vous voulez donner est trop long. "
+              . "La limite autorisée est de \00230\002 caractères.");
             return;
         }
         if (! $irpg->persoExist($perso)) {
@@ -440,8 +453,11 @@ class admin
             return;
         }
         if ($nick != $irpg->getNickByUID($irpg->getUIDByPID($irpg->getPIDByPerso($perso)))) {
-            if ($irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick))) <= $irpg->getAdminLvl($irpg->getUIDByPID($irpg->getPIDByPerso($perso)))) {
-                $irc->notice($nick, "Vous ne pouvez pas changer le nom du personnage d'un administrateur qui a un niveau supérieur ou égal au vôtre !");
+            if ($irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick))) <= $irpg->getAdminLvl(
+              $irpg->getUIDByPID($irpg->getPIDByPerso($perso))
+            )) {
+                $irc->notice($nick, "Vous ne pouvez pas changer le nom du personnage d'un administrateur "
+                  . "qui a un niveau supérieur ou égal au vôtre !");
                 return;
             }
             $persoIsMine = false;
@@ -452,7 +468,9 @@ class admin
         $table = $db->prefix."Personnages";
         $db->req("UPDATE `$table` SET `Nom` = '$newPerso' WHERE `Nom` = '$perso'");
         $irc->notice($nick, "Le nom de".($persoIsMine ? " votre personnage" : "")." $perso a bien été changé.");
-        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGPERSO ($perso -> $newPerso)");
+        $irpg->Log(NULL, "ADMIN", "0",
+          "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGPERSO ($perso -> $newPerso)"
+        );
         //TODO: donner une penalité pour mettre à jour tous les modules.
     }
 
@@ -467,7 +485,8 @@ class admin
             return;
         }
         if (strlen($newUser) > 30) {
-            $irc->notice($nick, "Désolé, le nom d'utilisateur que vous voulez donner est trop long. La limite autorisée est de \00230\002 caractères.");
+            $irc->notice($nick, "Désolé, le nom d'utilisateur que vous voulez donner est trop long. "
+              . "La limite autorisée est de \00230\002 caractères.");
             return;
         }
         if (! $irpg->userExist($user)) {
@@ -479,8 +498,11 @@ class admin
             return;
         }
         if ($user != $irpg->getUsernameByNick($nick)) {
-            if ($irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick))) <= $irpg->getAdminLvl($irpg->getUIDByUsername($user))) {
-                $irc->notice($nick, "Vous ne pouvez pas changer le nom d'un administrateur qui a un niveau supérieur ou égal au vôtre !");
+            if ($irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick))) <= $irpg->getAdminLvl(
+              $irpg->getUIDByUsername($user)
+            )) {
+                $irc->notice($nick, "Vous ne pouvez pas changer le nom d'un administrateur "
+                  . "qui a un niveau supérieur ou égal au vôtre !");
                 return;
             }
             $userIsMe = false;
@@ -495,9 +517,11 @@ class admin
         } else {
             $irc->notice($nick, "Le nom d'utilisateur de $user a bien été changé.");
         }
-        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGUSER ($user -> $newUser)");
+        $irpg->Log(NULL, "ADMIN", "0",
+          "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGUSER ($user -> $newUser)"
+        );
         //TODO: donner une penalité pour mettre à jour tous les modules.
-   	}
+	}
 
 ///////////////////////////////////////////////////////////
 
@@ -510,8 +534,11 @@ class admin
             return;
         }
         if ($nick != $irpg->getNickByUID($irpg->getUIDByPID($irpg->getPIDByPerso($perso)))) {
-            if ($irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick))) <= $irpg->getAdminLvl($irpg->getUIDByPID($irpg->getPIDByPerso($perso)))) {
-                $irc->notice($nick, "Vous ne pouvez pas supprimer le personnage d'un administrateur qui a un niveau supérieur ou égal au vôtre !");
+            if ($irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick))) <= $irpg->getAdminLvl(
+              $irpg->getUIDByPID($irpg->getPIDByPerso($perso))
+            )) {
+                $irc->notice($nick, "Vous ne pouvez pas supprimer le personnage d'un administrateur "
+                  . "qui a un niveau supérieur ou égal au vôtre !");
                 return;
             }
             $persoIsMine = false;
@@ -522,8 +549,11 @@ class admin
         $table = $db->prefix."Personnages";
         $db->req("DELETE FROM `$table` WHERE `Nom` = '$perso'");
         $irc->notice($nick, ($persoIsMine ? "Votre" : "Le")." personnage $perso a bien été supprimé.");
-        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELPERSO ($perso)");
-        //TODO: mettre une penalité tel un kick a l'utilisateur qui est supprimer pour mettre a jour tout les autres modules
+        $irpg->Log(
+          NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELPERSO ($perso)"
+        );
+        //TODO: mettre une penalité tel un kick à l'utilisateur qui est supprimé
+        //      pour mettre à jour tous les autres modules
     }
 
 ///////////////////////////////////////////////////////////////
@@ -540,16 +570,22 @@ class admin
             $irc->notice($nick, "Vous ne pouvez pas supprimer votre propre compte !");
             return;
         }
-        if ($irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick))) <= $irpg->getAdminLvl($irpg->getUIDByUsername($user))) {
-            $irc->notice($nick, "Vous ne pouvez pas supprimer le compte d'un administrateur qui a un niveau supérieur ou égal au vôtre !");
+        if ($irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick))) <= $irpg->getAdminLvl(
+          $irpg->getUIDByUsername($user)
+        )) {
+            $irc->notice($nick, "Vous ne pouvez pas supprimer le compte d'un administrateur "
+              . "qui a un niveau supérieur ou égal au vôtre !");
             return;
         }
 
         $table = $db->prefix."Utilisateurs";
         $db->req("DELETE FROM `$table` WHERE `Username` = '$user'");
         $irc->notice($nick, "L'utilisateur $user a bien été supprimé.");
-        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELUSER ($user)");
-        //TODO: mettre une penalité tel un kick a l'utilisateur qui est supprimer pour mettre a jour tout les autres modules
+        $irpg->Log(
+          NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELUSER ($user)"
+        );
+        //TODO: mettre une penalité tel un kick à l'utilisateur qui est supprimé
+        //      pour mettre à jour tous les autres modules
 	}
 
 ///////////////////////////////////////////////////////////////
@@ -571,14 +607,17 @@ class admin
             return;
         }
         if ($irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick))) <= $userNiveau) {
-            $irc->notice($nick, "Vous ne pouvez pas supprimer les droits d'un administrateur qui a un niveau supérieur ou égal au vôtre !");
+            $irc->notice($nick, "Vous ne pouvez pas supprimer les droits d'un administrateur "
+              . "qui a un niveau supérieur ou égal au vôtre !");
             return;
         }
 
         $table = $db->prefix."Utilisateurs";
         $db->req("UPDATE `$table` SET `Admin` = '0' WHERE `Username` = '$user'");
         $irc->notice($nick, "Les privilèges d'administrateur de $user ont bien été supprimés.");
-        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELADMIN ($user)");
+        $irpg->Log(
+          NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELADMIN ($user)"
+        );
         //TODO: Avertir l'utilisateur de la démission de ses fonctions.
     }
 
@@ -589,7 +628,8 @@ class admin
         global $irpg, $db, $irc;
 
         if ($niveau <= 0) {
-            $irc->notice($nick, "Le niveau d'administration doit être plus grand que 0 ! Utilisez la commande DELADMIN pour retirer les privilèges d'un aministrateur.");
+            $irc->notice($nick, "Le niveau d'administration doit être plus grand que 0 ! "
+              . "Utilisez la commande DELADMIN pour retirer les privilèges d'un aministrateur.");
             return;
         }
         if (! $irpg->userExist($user)) {
@@ -600,8 +640,11 @@ class admin
             $irc->notice($nick, "Vous ne pouvez pas changer votre propre niveau d'administration !");
             return;
         }
-        if (($nickNiveau = $irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick($nick)))) <= ($userNiveau = $irpg->getAdminLvl($irpg->getUIDByUsername($user)))) {
-            $irc->notice($nick, "Vous ne pouvez pas modifier les droits d'un administrateur qui a un niveau supérieur ou égal au vôtre !");
+        if (($nickNiveau = $irpg->getAdminLvl($irpg->getUIDByUsername($irpg->getUsernameByNick(
+          $nick
+        )))) <= ($userNiveau = $irpg->getAdminLvl($irpg->getUIDByUsername($user)))) {
+            $irc->notice($nick, "Vous ne pouvez pas modifier les droits d'un administrateur "
+              . "qui a un niveau supérieur ou égal au vôtre !");
             return;
         }
         if ($nickNiveau <= $niveau) {
@@ -615,7 +658,9 @@ class admin
 
         $table = $db->prefix."Utilisateurs";
         $db->req("UPDATE `$table` SET `Admin` = '$niveau' WHERE `Username` = '$user'");
-        $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande ADDADMIN ($user -> $niveau)");
+        $irpg->Log(NULL, "ADMIN", "0",
+          "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande ADDADMIN ($user -> $niveau)"
+        );
         if ($userNiveau > 0) {
             $irc->notice($nick, "Les privilèges d'administrateur de $user ont bien été modifiés.");
         } else {
@@ -637,19 +682,23 @@ class admin
 
         $table = $db->prefix.'Personnages';
 
-        $data  = $db->getRows('SELECT `Id_Personnages`, `Util_Id`, `Nom`, `Level`, `Class`, `Next` FROM `'.$table.'` WHERE `Nom` = \''.$perso.'\'');
+        $data  = $db->getRows('SELECT `Id_Personnages`, `Util_Id`, `Nom`, `Level`, `Class`, `Next`
+                               FROM `'.$table.'` WHERE `Nom` = \''.$perso.'\'');
         $next  = $data[0]['Next'];
         $temps = ($next > $temps ? $temps : $next);
 
         $db->req('UPDATE `'.$table.'` SET `Next` = `Next` - '.$temps.' WHERE `Nom` = \''.$perso.'\'');
         $irc->notice($nick, 'Le temps de '.$perso.' a bien été avancé de '.$irpg->convSecondes($temps).'.');
-        $irpg->Log(NULL, 'ADMIN', '0', $irpg->getUsernameByNick($nick).' ('.$nick.') a utilisé la commande PUSH ('.$perso.' -> '.$temps.')');
+        $irpg->Log(NULL, 'ADMIN', '0', $irpg->getUsernameByNick($nick).' ('.$nick
+          . ') a utilisé la commande PUSH ('.$perso.' -> '.$temps.')');
         if ($temps >= $next) {
-            $irc->privmsg($irc->home, $nick.' a accéléré la progression de '.$perso.' de '.$irpg->convSecondes($temps).'.');
+            $irc->privmsg($irc->home, $nick.' a accéléré la progression de '.$perso.' de '
+              . $irpg->convSecondes($temps).'.');
             $data[0]['Next'] = 0;
             $irpg->mod['idle']->cmdLvlUp($data[0]['Id_Personnages'], array($data[0]));
         } else {
-            $irc->privmsg($irc->home, $nick.' a accéléré la progression de '.$perso.' de '.$irpg->convSecondes($temps).'. Prochain niveau dans '.$irpg->convSecondes($next - $temps).'.');
+            $irc->privmsg($irc->home, $nick.' a accéléré la progression de '.$perso.' de '
+              . $irpg->convSecondes($temps).'. Prochain niveau dans '.$irpg->convSecondes($next - $temps).'.');
         }
     }
 
@@ -668,10 +717,12 @@ class admin
 
         $db->req('UPDATE `'.$table.'` SET `Next` = `Next` + '.$temps.' WHERE `Nom` = \''.$perso.'\'');
         $irc->notice($nick, 'Le temps de '.$perso.' a bien été reculé de '.$irpg->convSecondes($temps).'.');
-        $irpg->Log(NULL, 'ADMIN', '0', $irpg->getUsernameByNick($nick).' ('.$nick.') a utilisé la commande PULL ('.$perso.' -> '.$temps.')');
+        $irpg->Log(NULL, 'ADMIN', '0', $irpg->getUsernameByNick($nick).' ('.$nick
+          . ') a utilisé la commande PULL ('.$perso.' -> '.$temps.')');
 
         $data = $db->getRows('SELECT `Next` FROM `'.$table.'` WHERE `Nom` = \''.$perso.'\'');
-        $irc->privmsg($irc->home, $nick.' a ralenti la progression de '.$perso.' vers son prochain niveau de '.$irpg->convSecondes($temps).'. Prochain niveau dans '.$irpg->convSecondes($data[0]['Next']).'.');
+        $irc->privmsg($irc->home, $nick.' a ralenti la progression de '.$perso.' vers son prochain niveau de '
+          . $irpg->convSecondes($temps).'. Prochain niveau dans '.$irpg->convSecondes($data[0]['Next']).'.');
     }
 
 ///////////////////////////////////////////////////////////////

@@ -50,7 +50,10 @@ $irpg->lireIgnores();
 
 while (true) {
   //Connexion à IRC
-  if (!$irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"), $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug"))) {
+  if (!$irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"),
+    $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"),
+    $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug")
+  )) {
     $irpg->alog("Impossible de se connecter au serveur IRC.  Reconnexion dans 60 secondes...", true);
     sleep(60);
   } else {
@@ -83,7 +86,9 @@ function start()
   // car la connexion est perdue avec PHP5 (fonctionne avec PHP4.3)
 
   //Connexion à la base de données
-  if (!$db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"), $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix"))) {
+  if (!$db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"),
+    $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix")
+  )) {
 	die ("Impossible de se connecter au serveur de bases de données.\n");
   }
 
@@ -103,7 +108,11 @@ function start()
 
       $irpg->alog("Connexion IRC perdue... reconnexion dans 20 secondes.");
       sleep(20);
-      if ($irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"), $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug"))) {
+      if ($irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"),
+        $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"),
+        $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"),
+        $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug")
+      )) {
          continue;
       }
     } else {

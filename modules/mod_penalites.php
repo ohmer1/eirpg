@@ -252,7 +252,8 @@ class penalites
     $tbIRC = $db->prefix."IRC";
 
     $i = 0;
-    $req = $db->getRows("SELECT Id_Personnages, Level FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE Nick='$nick' And NOT ISNULL(Pers_Id))");
+    $req = $db->getRows("SELECT Id_Personnages, Level FROM $tbPerso WHERE Id_Personnages
+                         IN (SELECT Pers_Id FROM $tbIRC WHERE Nick='$nick' And NOT ISNULL(Pers_Id))");
 
     while ($i != count($req)) {
       $level = $req[$i]["Level"];
@@ -270,7 +271,8 @@ class penalites
         $irpg->Log($pid, "PENAL_$quoi", "$penalite", "$next");
 
         if ($quoi != "QUIT") { //Le contraire serait débile, non? :)
-          $irc->notice($nick, "Pénalité d'une durée de $cpenalite ajouté à votre personnage $perso pour $quoi.  Prochain niveau dans $cnext.");
+          $irc->notice($nick, "Pénalité d'une durée de $cpenalite ajouté à votre personnage $perso "
+            . "pour $quoi.  Prochain niveau dans $cnext.");
         }
       }
       $i++;

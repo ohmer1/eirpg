@@ -207,7 +207,8 @@ class hog
     $tbIRC = $db->prefix . "IRC";
 
     //on sélectionne d'abord un personnage en ligne
-    $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
+    $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages
+              IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
     if ($db->nbLignes($query) != 1) {
       return false;
     }
@@ -235,7 +236,8 @@ class hog
       $next = $next - $time;
       $cnext = $irpg->convSecondes($next);
       $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
-      $irc->privmsg($irc->home, "Dieu s'est levé du bon pied ce matin et décide d'aider $perso en lui enlevant $ctime avant d'arriver au niveau $level2.  Prochain niveau dans $cnext.");
+      $irc->privmsg($irc->home, "Dieu s'est levé du bon pied ce matin et décide d'aider $perso en lui "
+        . "enlevant $ctime avant d'arriver au niveau $level2.  Prochain niveau dans $cnext.");
     } else {
       //hog négative
       $time = round($next * ($time/100), 0);
@@ -243,7 +245,8 @@ class hog
       $next = $next + $time;
       $cnext = $irpg->convSecondes($next);
       $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
-      $irc->privmsg($irc->home, "Dieu en a marre de ne plus vous voir à l'Église et se venge sur $perso en lui ajoutant $ctime avant d'arriver au niveau $level2.  Prochain niveau dans $cnext.");
+      $irc->privmsg($irc->home, "Dieu en a marre de ne plus vous voir à l'Église et se venge sur $perso "
+        . "en lui ajoutant $ctime avant d'arriver au niveau $level2.  Prochain niveau dans $cnext.");
     }
   }
 

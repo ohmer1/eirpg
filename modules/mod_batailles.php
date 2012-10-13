@@ -226,8 +226,9 @@ class batailles
     $ttl = $ttl[0]["Next"];
 
     // Sélectionne un autre joueur en ligne pour duel
-    $q = "SELECT Pers_Id FROM $tIRC WHERE Pers_Id Not IN (SELECT Id_Personnages FROM $tPerso WHERE Util_Id='$uid') And Not IsNULL(Pers_Id) ORDER BY RAND() LIMIT 0,1";
-
+    $q = "SELECT Pers_Id FROM $tIRC WHERE Pers_Id Not
+          IN (SELECT Id_Personnages FROM $tPerso WHERE Util_Id='$uid') And Not IsNULL(Pers_Id)
+          ORDER BY RAND() LIMIT 0,1";
     if ($db->nbLignes($q) == 0) {
     	return false;
     } else {
@@ -263,8 +264,9 @@ class batailles
 
         $irpg->Log($pid, "DUEL_AUTO", "GAGNÉ", "-$mod");
 
-        $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqué en duel $opposant [$randOpp/$sommeOpp] et a gagné !  Cette victoire lui donne droit à un bonus de $cmod avant d'accéder au niveau $level2.  Prochain niveau dans $cnext.");
-
+        $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqué en duel $opposant "
+          . "[$randOpp/$sommeOpp] et a gagné !  Cette victoire lui donne droit à un bonus de $cmod "
+          . "avant d'accéder au niveau $level2.  Prochain niveau dans $cnext.");
       } elseif ($rand < $randOpp) {
       	//perdu..
         $mod = $levelOpp/7;
@@ -282,13 +284,14 @@ class batailles
 
         $irpg->Log($pid, "DUEL_AUTO", "PERDU", "$mod");
 
-        $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqué en duel $opposant [$randOpp/$sommeOpp] et a perdu !  Cette défaite lui donne droit à une pénalité de $cmod avant d'accéder au niveau $level2.  Prochain niveau dans $cnext.");
-
+        $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqué en duel $opposant "
+          . "[$randOpp/$sommeOpp] et a perdu !  Cette défaite lui donne droit à une pénalité de $cmod "
+          . "avant d'accéder au niveau $level2.  Prochain niveau dans $cnext.");
       } else {
       	//match nul..
         $irpg->Log($pid, "DUEL_AUTO", "NUL", 0);
-        $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqué en duel $opposant [$randOpp/$sommeOpp].  Match  nul !");
-
+        $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqué en duel $opposant "
+          . "[$randOpp/$sommeOpp].  Match  nul !");
       }
     }
   }
@@ -323,16 +326,20 @@ class batailles
     if ($ChallengeNext) {
       //Temps avant challenge non terminé
       $cChallengeNext = $irpg->convSecondes($ChallengeNext);
-      $irc->notice($nick,"Vous ne pouvez entreprendre de combats manuels en ce moment. Vous devez encore attendre $cChallengeNext avant d'initier un combat");
+      $irc->notice($nick,"Vous ne pouvez entreprendre de combats manuels en ce moment. "
+        . "Vous devez encore attendre $cChallengeNext avant d'initier un combat");
       return false ;
       }
 
     //Selection aléatoire d'un personnage à combattre s'il n'a pas été spécifié
     if ( !$opposant ) {
-      $q = "SELECT Pers_Id FROM $tIRC WHERE Pers_Id Not IN (SELECT Id_Personnages FROM $tPerso WHERE Util_Id='$uid') And Not IsNULL(Pers_Id) ORDER BY RAND() LIMIT 0,1";
+      $q = "SELECT Pers_Id FROM $tIRC WHERE Pers_Id Not IN (SELECT Id_Personnages FROM $tPerso
+            WHERE Util_Id='$uid') And Not IsNULL(Pers_Id) ORDER BY RAND() LIMIT 0,1";
     } else {
       //Recherche du personnage spécifié
-      if (!$db->nbLignes("SELECT Id_Personnages FROM $tPerso WHERE Nom='$opposant' And Not Util_Id='$uid' LIMIT 0,1")) {
+      if (!$db->nbLignes(
+        "SELECT Id_Personnages FROM $tPerso WHERE Nom='$opposant' And Not Util_Id='$uid' LIMIT 0,1"
+      )) {
         $irc->notice($nick,"Le personnage que vous désirez combattre n'existe pas");
         return false ;
         } else {
@@ -344,7 +351,8 @@ class batailles
 
     //On verifie que la cible du combat est légale
     if (!$db->nbLignes($q)) {
-      $irc->notice($nick,"Désolé, vous ne pouvez combattre actuellement, aucun personnage ne correspond aux critères requis");
+      $irc->notice($nick,"Désolé, vous ne pouvez combattre actuellement, aucun personnage ne correspond "
+        . "aux critères requis");
       return false;
       } else {
       $res = $db->getRows($q);
@@ -372,7 +380,8 @@ class batailles
       }
 
       $cmod = $irpg->convSecondes($mod);
-      $message = $message . " et lui a fait mordre la poussière ! Cette victoire lui donne droit à un bonus de $cmod pour progresser vers le niveau $level.";
+      $message = $message . " et lui a fait mordre la poussière ! "
+               . "Cette victoire lui donne droit à un bonus de $cmod pour progresser vers le niveau $level.";
 
       if ( rand (1,35) == 1 ) {
         //Coup critique
@@ -384,7 +393,9 @@ class batailles
         $db->req("UPDATE $tPerso SET Next=Next+$oppMod WHERE Id_Personnages='$pidOpp'");
         $cnextOpp = $nextOpp + $oppMod ;
         $cnextOpp = $irpg->convSecondes($cnextOpp);
-        $message = $message . " COUP CRITIQUE !!!! $opposant reçoit un violent coup sur le crâne qui l'estourbi et le ralenti de $coppMod vers le niveau $levelOpp. Il atteindra ce niveau dans $cnextOpp." ;
+        $message = $message . " COUP CRITIQUE !!! $opposant reçoit un violent coup sur le crâne qui "
+                 . "l'estourbi et le ralenti de $coppMod vers le niveau $levelOpp. "
+                 . "Il atteindra ce niveau dans $cnextOpp." ;
         }
       } elseif ( $rand < $randOpp ) {
       //Si défaite ($mod négatif)
@@ -395,11 +406,13 @@ class batailles
       }
 
       $cmod = $irpg->convSecondes(-$mod);
-      $message = $message . " et s'est fait corriger ! Cette défaite lui ajoute une pénalite de $cmod pour progresser vers le niveau $level.";
+      $message = $message . " et s'est fait corriger ! Cette défaite lui ajoute une pénalite de $cmod "
+               . "pour progresser vers le niveau $level.";
       } else {
       //Match nul
       $mod = 0;
-      $message = $message . ". Le combat s'est soldé sur un match nul. Les deux combattants se séparent sous la huée des spectateurs.";
+      $message = $message . ". Le combat s'est soldé sur un match nul. Les deux combattants se séparent "
+               . "sous la huée des spectateurs.";
       }
 
     //Mise à jour du temps avant prochain niveau et du nombre de victoires
