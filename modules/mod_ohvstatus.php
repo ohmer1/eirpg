@@ -63,7 +63,7 @@ class ohvstatus
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
-    //Initialisation des paramètres du fich de configuration
+        //Initialisation des paramètres du fichier de configuration
     $this->op = $irpg->readConfig($this->name, "op");
     $this->hop = $irpg->readConfig($this->name, "hop");
     $this->voice = $irpg->readConfig($this->name, "voice");

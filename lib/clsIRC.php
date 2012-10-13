@@ -17,7 +17,6 @@
  * along with this program. if not, see <http://www.gnu.org/licenses/>.
  */
 
-class IRC
 /**
 * Classe IRC; gère tout le côté IRC du bot
 *
@@ -25,6 +24,7 @@ class IRC
 * @created 30 mai 2005
 * @modified 23 juillet 2005
 */
+class IRC
 {
 ///////////////////////////////////////////////////////////////
 // Variables privées
@@ -510,7 +510,6 @@ class IRC
 // Méthodes publiques
 ///////////////////////////////////////////////////////////////
 
-  function sendRaw($data)
   /**
   * Envoi des données au serveur IRC
   *
@@ -518,8 +517,9 @@ class IRC
   * @created 30 mai 2005
   * @modified 19 juin 2005
   * @param data     - Données à envoyer
-  * @return boolean - True si l'envoi a réussi', false sinon.
+  * @return boolean - true si l'envoi a réussi, false sinon.
   */
+  function sendRaw($data)
   {
     global $irpg;
 
@@ -539,7 +539,6 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function join($channel, $key = "")
   /**
   * JOIN : join un canal IRC
   *
@@ -550,6 +549,7 @@ class IRC
   * @param key      - Clé du canal à joindre (facultatif)
   * @return boolean - True si la déconnexion réussie, false sinon.
   */
+  function join($channel, $key = "")
   {
     $ok = $this->sendRaw("JOIN $channel $key");
     if ($ok) {
@@ -562,7 +562,6 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function connexion($server, $port, $user, $realname, $nick, $bind, $pass = "", $debug = false)
   /**
   * Constructeur; connexion à un serveur IRC
   *
@@ -577,6 +576,7 @@ class IRC
   * @param debug 		- Flag debug
   * @return boolean - True si connexion réussie, false sinon.
   */
+  function connexion($server, $port, $user, $realname, $nick, $bind, $pass = "", $debug = false)
   {
     global $irpg;
 
@@ -597,8 +597,8 @@ class IRC
     if ($this->sirc) {
       $irpg->alog("Connexion au serveur IRC...", true);
       if ($pass != "") {
-        $this->sendRaw("PASS $pass");
-      } //Mot de passe d'accès au serveur
+        $this->sendRaw("PASS $pass"); //Mot de passe d'accès au serveur
+      }
       $this->sendRaw("NICK $nick");
       $ok = $this->sendRaw("USER $user localhost $server :$realname");
 
@@ -610,7 +610,6 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function boucle()
   /**
   * Méthode d'écoute du socket IRC
   * Boucle tant que le socket est ouvert
@@ -621,6 +620,7 @@ class IRC
   * @param none
   * @return none
   */
+  function boucle()
   {
     global $irpg;
 
@@ -641,7 +641,7 @@ class IRC
       }
 
       $buf = @socket_read($this->sirc, 4096);
-      // l'encadage interne du bot est en ISO-8859-15, il faut donc convertir ce qui vient d'IRC en ISO
+      // l'encodage interne du bot est en ISO-8859-15, il faut donc convertir ce qui vient d'IRC en ISO
       //$buf = iconv($charset, "ISO-8859-15", $buf);
 
       if (empty($buf)) {
@@ -707,7 +707,7 @@ class IRC
         //Traitement des évènements serveur<->bot
         if (isset($server)) {
           //Numeric 376 - Fin du /MOTD
-          #:proxy.epiknet.org 376 IRPG2 :End of /MOTD command.
+          //:proxy.epiknet.org 376 IRPG2 :End of /MOTD command.
           //if (ereg("^:$server 376", $dataregexp)) {
           //  $this->onMOTD($dataregexp);
           //}
@@ -716,33 +716,33 @@ class IRC
           }
 
           //Numeric 353 - /names
-          #:proxy.epiknet.org 353 IRPG2 @ #IRPG2 :IRPG2 @Homer
-          #:proxy.epiknet.org 353 IRPG2 = #irpg :IRPG2 %coolman_ +Shelby Suisse[Po`la] %Brendan
+          //:proxy.epiknet.org 353 IRPG2 @ #IRPG2 :IRPG2 @Homer
+          //:proxy.epiknet.org 353 IRPG2 = #irpg :IRPG2 %coolman_ +Shelby Suisse[Po`la] %Brendan
           if (preg_match_all("/^:$server 353 (.*?) (@|=) #(.*?) :(.*?)$/", $dataregexp, $names)) {
             $this->onNames($names[3][0], $names[4][0]);
           }
 
           //Numeric 352 - /who
-          #:proxy.epiknet.org 352 IRPG2 #IRPG2 Homer server-admin.epiknet.org proxy.epiknet.org Homer Hr* :0 Homer - www.iQuotes-FR.com
+          //:proxy.epiknet.org 352 IRPG2 #IRPG2 Homer server-admin.epiknet.org proxy.epiknet.org Homer Hr* :0 Homer - www.iQuotes-FR.com
           if (preg_match_all("/^:$server 352 $this->me (.*?) (.*?) (.*?) (.*?) (.*?) .*$/", $dataregexp, $who)) {
             $this->onWho($who[5][0], $who[2][0], $who[3][0], $who[4][0], $who[1][0]);
           }
 
           //Numeric 315 - End of /who
-          #:irc-homer.epiknet.org 315 IRPG2 #IRPG2 :End of /WHO list.
+          //:irc-homer.epiknet.org 315 IRPG2 #IRPG2 :End of /WHO list.
           if (preg_match("/^:$server 315 (.*?) (.*?) .*$/", $dataregexp, $channel)) {
             $this->onEndWho($channel[2]);
           }
-          #if (ereg("^:$server 315.*$", $dataregexp)) {
+          //if (ereg("^:$server 315.*$", $dataregexp)) {
           //  $this->onEndWho();
           //}
 
           //Message "ERROR"
-          #if (ereg("^ERROR :.*", $dataregexp)) {
-          #  $irpg->alog("RECEPTION d'un message ERROR, déconnexion du serveur.");
-          #  socket_close($this->sirc);
-          #  return false;
-          #}
+          //if (ereg("^ERROR :.*", $dataregexp)) {
+          //  $irpg->alog("RECEPTION d'un message ERROR, déconnexion du serveur.");
+          //  socket_close($this->sirc);
+          //  return false;
+          //}
         }
 
         //Traitement des évènements utilisateur<->bot
@@ -766,7 +766,7 @@ class IRC
           if (ereg("^:$userhost PRIVMSG #", $dataregexp)) {
             /* Sur le canal */
             //On extrait le message
-            #:Homer!Homer@server-admin.epiknet.org PRIVMSG #IRPG2 :dsgs : dgsdg : gdgdfg : dgsdgsd
+            //:Homer!Homer@server-admin.epiknet.org PRIVMSG #IRPG2 :dsgs : dgsdg : gdgdfg : dgsdgsd
             $message = substr($dataregexp, strpos($dataregexp, ':', 1)+1);
             $this->onPrivmsgCanal(trim($nick), trim($user), trim($host), trim($message));
           } elseif (ereg("^:$userhost PRIVMSG ", $dataregexp)) {
@@ -810,7 +810,7 @@ class IRC
 
          //Traitement du JOIN
          if (ereg("^:$userhost JOIN :#", $dataregexp)) {
-            #On extrait le canal
+            //On extrait le canal
             $channel = split(":", $dataregexp);
             $channel = $channel[2];
             $this->onJoin(trim($nick), trim($user), trim($host), trim($channel));
@@ -820,7 +820,7 @@ class IRC
 
          //Traitement du PART
          if (ereg("^:$userhost PART #", $dataregexp)) {
-            #On extrait le canal
+            //On extrait le canal
             $channel = split(" ", $dataregexp);
             $channel = $channel[2];
             $this->onPart(trim($nick), trim($user), trim($host), trim($channel));
@@ -830,7 +830,7 @@ class IRC
 
          //Traitement du NICK
          if (ereg("^:$userhost NICK :", $dataregexp)) {
-            #On extrait le nouveau nick
+            //On extrait le nouveau nick
             $newnick = split(":", $dataregexp);
             $newnick = $newnick[2];
             $this->onNick(trim($nick), trim($user), trim($host), trim($newnick));
@@ -840,7 +840,7 @@ class IRC
 
          //Traitement du KICK
          if (ereg("^:$userhost KICK #", $dataregexp)) {
-            #On extrait le canal et le kické
+            //On extrait le canal et le kické
             $kick = split(" ", $dataregexp);
             $channel = $kick[2];
             $nickkicked = $kick[3];
@@ -851,7 +851,7 @@ class IRC
 
          //Traitement du QUIT
          if (ereg("^:$userhost QUIT :", $dataregexp)) {
-            #On extrait la raison du QUIT
+            //On extrait la raison du QUIT
             preg_match("/^:$userhost QUIT :(.*?$)/", $dataregexp, $reason);
             $reason = $reason[1];
             $this->onQuit(trim($nick), trim($user), trim($host), trim($reason));
@@ -867,23 +867,22 @@ class IRC
         unset($server, $userhost, $message, $newnick, $reason, $nickkicked, $channel);
       }
 
-        ####$read = array($this->sirc);
-        ####socket_select($read, $write = NULL, $except = NULL, 0);
-        ####if (count($read) > 0) {
-        ####  $this->nbReadError++;
-        ####  print "READ ERROR!!: ".socket_strerror(socket_last_error())."\n\n";
-        #### if ($this->nbReadError > 2) {
-        ####    $this->deconnexion("ARRRG! Je viens de rencontrer une erreur fatale :(.  Debug: ".socket_strerror(socket_last_error()));
-        ####    break;
-        ####  }
-        ####}
+        //$read = array($this->sirc);
+        //socket_select($read, $write = NULL, $except = NULL, 0);
+        //if (count($read) > 0) {
+        //  $this->nbReadError++;
+        //  print "READ ERROR!!: ".socket_strerror(socket_last_error())."\n\n";
+        // if ($this->nbReadError > 2) {
+        //    $this->deconnexion("ARRRG! Je viens de rencontrer une erreur fatale :(.  Debug: ".socket_strerror(socket_last_error()));
+        //    break;
+        //  }
+        //}
     }
   }
 
 
 ///////////////////////////////////////////////////////////////
 
-  function deconnexion($reason)
   /**
   * Destructeur; termine la connexion au serveur IRC
   *
@@ -893,6 +892,7 @@ class IRC
   * @param reason 	- Raison de la déconnexion
   * @return boolean - True si la déconnexion réussie, false sinon.
   */
+  function deconnexion($reason)
   {
     $ok = $this->sendRaw("QUIT :$reason");
     if ($ok) {
@@ -907,7 +907,6 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function privmsg($dest, $message)
   /**
   * Envoit un privmsg au destinataire
   *
@@ -918,13 +917,13 @@ class IRC
   * @param message  - Message à envoyer
   * @return none
   */
+  function privmsg($dest, $message)
   {
     $this->sendRaw("PRIVMSG $dest :$message");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function notice($dest, $message)
   /**
   * Envoit une notice au destinataire (ou un privmsg)
   *
@@ -935,6 +934,7 @@ class IRC
   * @param message  - Message à envoyer
   * @return none
   */
+  function notice($dest, $message)
   {
     global $db, $irpg;
 
@@ -950,7 +950,6 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function isOn($channel, $nickname)
    /**
   * Vérifie la présence d'un utilisateur sur un canal
   *
@@ -961,6 +960,7 @@ class IRC
   * @param nickname  - Pseudo à vérifier
   * @return boolean  - True si présent, False si absent
   */
+  function isOn($channel, $nickname)
   {
     global $db;
 

@@ -68,7 +68,7 @@ class idle
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
-    //Initialisation des paramètres du fich de configuration
+        //Initialisation des paramètres du fichier de configuration
     $this->idleBase = $irpg->readConfig($this->name, "idleBase");
     $this->expLvlUp = $irpg->readConfig($this->name, "expLvlUp");
   }

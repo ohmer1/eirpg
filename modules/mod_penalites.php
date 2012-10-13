@@ -17,6 +17,8 @@
  * along with this program. if not, see <http://www.gnu.org/licenses/>.
  */
 
+//TODO : Ignorer les netsplits
+
 /**
 * Module mod_penalites
 * Gestion des pénalités
@@ -26,8 +28,6 @@
 * @created 10 septembre 2005
 * @modified 10 septembre 2005
 */
-
-//TODO : Ignorer les netsplits
 class penalites
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -68,7 +68,7 @@ class penalites
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
-    //Initialisation des paramètres du fich de configuration
+        //Initialisation des paramètres du fichier de configuration
     $this->expPenalite = $irpg->readConfig($this->name, "expPenalite");
     $this->penPrivmsg = $irpg->readConfig($this->name, "penPrivmsg");
     $this->penNotice = $irpg->readConfig($this->name, "penNotice");

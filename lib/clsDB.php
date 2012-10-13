@@ -17,7 +17,6 @@
  * along with this program. if not, see <http://www.gnu.org/licenses/>.
  */
 
-class DB
 /**
 * Classe DB; classe de connexion et de requêtes
 * vers la base de données mySQL
@@ -26,6 +25,7 @@ class DB
 * @created 30 mai 2005
 * @modified 1er juin 2005
 */
+class DB
 {
 ///////////////////////////////////////////////////////////////
 // Variables privées

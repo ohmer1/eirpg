@@ -63,7 +63,7 @@ class calamites
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
-    //Initialisation des paramètres du fich de configuration
+        //Initialisation des paramètres du fichier de configuration
   }
 
 ///////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ class calamites
   {
     global $irc, $irpg;
 
-     //il y a une chance sur 4000 d'avoir une calamités'..
+     //il y a une chance sur 4000 d'avoir une calamités.
      if (rand(1, 4000) == 1) {
        $this->cmdCalamites();
      }

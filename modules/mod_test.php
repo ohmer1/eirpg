@@ -68,7 +68,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
     }
 
     /*
-     * Ajoutez votre programmation à éxécuter lors du
+     * Ajoutez votre programmation à exécuter lors du
      * chargement du module à partir d'ici
      *
      */

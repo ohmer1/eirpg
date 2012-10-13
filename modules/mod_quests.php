@@ -601,7 +601,7 @@ class quests
 
           //TODO : Ajouter le log à tous les joueurs en ligne..
           //je pourrais le faire maintenant, mais ça ne me tente pas :P
-          #$irpg->Log($pid, "QUETE_ROYAUME_ECHOUÉE", $penalite, "");
+          //$irpg->Log($pid, "QUETE_ROYAUME_ECHOUÉE", $penalite, "");
 
 						$db->req("UPDATE $tbPerso SET Next=Next + (Next*$penaliteAll) WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id))");
 						$irc->privmsg($irc->home, "La quête a echouée... Le royaume est menacé et chaque habitant en subira les conséquences....");

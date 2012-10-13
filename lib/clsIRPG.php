@@ -17,7 +17,6 @@
  * along with this program. if not, see <http://www.gnu.org/licenses/>.
  */
 
-class IRPG
 /**
 * Classe IRPG; classe très large qui regroupe plusieurs
 * fonctions utilisées par le bot
@@ -26,6 +25,7 @@ class IRPG
 * @created 30 mai 2005
 * @modified 1er juin 2005
 */
+class IRPG
 {
 ///////////////////////////////////////////////////////////////
 // Variables privées
@@ -44,22 +44,22 @@ class IRPG
 // Méthodes privées, même si PHP s'en fou !
 ///////////////////////////////////////////////////////////////
 
-  function validationConfig($section, $keys, $keys_opt)
   /**
   * Valide une section fdu fichier de configuration
   *
   * @author Homer
   * @created 1er juin 2005
   * @modified 1er juin 2005
-  * @return boolean - True si la config est OK, false autrement
+  * @return boolean - true si la config est OK, false autrement
   */
+  function validationConfig($section, $keys, $keys_opt)
   {
     //On traite les clés obligatoires
     $i = 0;
     while ($i != count($keys)) {
       if (empty($keys[$i])) {
-        break;
-      } //On sort de la boucle si pas de clés obligatoires
+        break; //On sort de la boucle si pas de clés obligatoires
+      }
 
       $keyResult = $this->readConfig($section, $keys[$i], true);
 
@@ -92,15 +92,15 @@ class IRPG
 // Méthodes publiques
 ///////////////////////////////////////////////////////////////
 
-  function init()
   /**
   * Constructeur; valide et charge la configuration
   *
   * @author Homer
   * @created 30 mai 2005
   * @modified 1er juin 2005
-  * @return boolean - True si la config est OK, false autrement
+  * @return boolean - true si la config est OK, false autrement
   */
+  function init()
   {
     $this->alog("Lecture du fichier de configuration...", true);
 
@@ -140,7 +140,6 @@ class IRPG
 
 ///////////////////////////////////////////////////////////////
 
-  function loadModules()
   /**
   * Charge les modules
   *
@@ -151,6 +150,7 @@ class IRPG
   * @param clsIRPG   - Référence à l'objet IRPG
   * @return none
   */
+  function loadModules()
   {
     global $irc, $irpg;
 
@@ -175,7 +175,6 @@ class IRPG
 
 ///////////////////////////////////////////////////////////////
 
-  function loadModule($nom)
   /**
   * Charge un module
   *
@@ -183,8 +182,9 @@ class IRPG
   * @created 22 juin 2005
   * @modified 22 juin 2005
   * @param nom       - Nom du module à charger (sans le prefixe mod_)
-  * @return boolean  - True si module chargé, false autrement
+  * @return boolean  - true si module chargé, false autrement
   */
+  function loadModule($nom)
   {
       if (!file_exists("modules/mod_".$nom.".php")) { //On vérifie que le module existe
         return false;
@@ -212,8 +212,8 @@ class IRPG
         $y = 0;
         while ($y != count($this->mod[$nom]->depend)) {
           if ($this->mod[$nomModule]->depend[$y] == $nom."/".$this->mod[$nom]->version) {
-            return false;  /* On ne peut décharger ce module car il est requis */
-            break;         /* par un autre module actuellement chargé          */
+            return false;  // On ne peut décharger ce module car il est requis
+            break;         // par un autre module actuellement chargé
           }
           $y++;
         }
@@ -221,7 +221,7 @@ class IRPG
         $i++;
       }
 
-      #On peut maintenant décharger le module
+      //On peut maintenant décharger le module
       //On appel l'évènement unloadmodule() avant de décharger
       $this->mod[$nom]->unloadmodule();
       //On retire le module des tableaux de modules
@@ -234,7 +234,6 @@ class IRPG
 
 ///////////////////////////////////////////////////////////////
 
-  function readConfig($section, $key, $fromFile = false)
   /**
   * Config; interprète le fichier de configuration
   *
@@ -246,6 +245,7 @@ class IRPG
   * @param fromFile - Si vrai lis la configuration du fichier, sinon des données en mémoire
   * @return string  - La valeur contenu dans le fichier de configuration
   */
+  function readConfig($section, $key, $fromFile = false)
   {
     if ($fromFile) {
       $config = parse_ini_file("irpg.conf", true);
@@ -258,7 +258,6 @@ class IRPG
 
 ///////////////////////////////////////////////////////////////
 
-  function checkDepd($dep)
   /**
   * Vérifie si les dépendances d'un
   * module sont satisfaites
@@ -269,6 +268,7 @@ class IRPG
   * @param dep[]    - Tableau contenant les modules nécessaires
   * @return boolean - True si dépendances satisfaites, false autrement.
   */
+  function checkDepd($dep)
   {
     $i = 0;
     while ($i != count($dep)) {
@@ -300,15 +300,15 @@ class IRPG
         $va_revision = $versionActuelle[2];
 
         if ($va_majeur > $vr_majeur) {
-          #return true;
+          //return true;
         } elseif ($va_majeur < $vr_majeur) {
           return false;
         } elseif ($va_mineur > $vr_mineur) {
-          #return true;
+          //return true;
         } elseif ($va_mineur < $vr_mineur) {
           return false;
         } elseif ($va_revision >= $vr_revision) {
-          #return true;
+          //return true;
         } elseif ($va_revision < $vr_revision) {
           return false;
         } else {

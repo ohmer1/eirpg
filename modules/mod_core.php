@@ -494,7 +494,7 @@ class core
       $username = $irpg->getUsernameByNick($nick);
 
       if ($username) {
-        #$irc->notice($nick, "Vous n'êtes plus authentifié.  Une pénalité P20 a été appliquée à vos personnages en ligne.");
+        //$irc->notice($nick, "Vous n'êtes plus authentifié.  Une pénalité P20 a été appliquée à vos personnages en ligne.");
 
         //On enlève l'utilisateur du tableau des utilisateurs en ligne'
         unset($this->users["$username"]);

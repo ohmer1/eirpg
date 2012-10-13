@@ -63,7 +63,7 @@ class notice
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
-    //Initialisation des paramètres du fich de configuration
+        //Initialisation des paramètres du fichier de configuration
     $this->message = $irpg->readConfig($this->name, "message");
     $this->actif = $irpg->readConfig($this->name, "actif");
   }
