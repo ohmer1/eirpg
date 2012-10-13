@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /**
 * Fichier principal du bot IRPG
 * Fichier à exécuter pour démarrer le bot
@@ -27,17 +26,14 @@
 * @created 1er juin 2005
 */
 
-
 //Librairies utilisées
 include("lib/clsIRPG.php");   //lib spécifique
 include("lib/clsIRC.php");    //lib spécialisée sur la connexion IRC
 include("lib/clsDB.php");     //lib spécialisée sur la base de données mySQL
 
-
 print "Démarrage d'Idle RPG...\n";
 
 $pid = posix_getpid();
-
 
 //Initialisation des objets IRPG, IRC et DB
 $db = new DB;
@@ -66,7 +62,6 @@ while (true) {
 if ($irpg->readConfig("IRPG", "background") == "1") { //On lance le bot en background
   set_time_limit(0);
   if (pcntl_fork()) {
-
   } else {
     $pid = posix_getpid();
     $irpg->alog("Chargement en background (PID #$pid)...", true);
@@ -106,6 +101,7 @@ function start()
         sleep(1);
         die("SHUTDOWN du bot demandé.\n");
       }
+
       $irpg->alog("Connexion IRC perdue... reconnexion dans 20 secondes.");
       sleep(20);
       if ($irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"), $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug"))) {
@@ -116,6 +112,4 @@ function start()
     }
   }
 }
-
-
 ?>

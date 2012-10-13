@@ -28,7 +28,6 @@
 */
 
 //TODO : Ignorer les netsplits
-
 class penalites
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -40,10 +39,10 @@ class penalites
   //Variables supplémentaires
   var $expPenalite;
   var $penPrivmsg, $penNotice, $penNick, $penQuit, $penPart, $penKick;
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -77,18 +76,15 @@ class penalites
     $this->penQuit = $irpg->readConfig($this->name, "penQuit");
     $this->penPart = $irpg->readConfig($this->name, "penPart");
     $this->penKick = $irpg->readConfig($this->name, "penKick");
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -96,7 +92,6 @@ class penalites
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -113,7 +108,6 @@ class penalites
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -121,6 +115,7 @@ class penalites
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
+
     $this->penalite($nick, "NOTICE", $this->penNotice, strlen($message));
   }
 
@@ -129,6 +124,7 @@ class penalites
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
+
     $this->penalite($nick, "NOTICE", $this->penNotice, strlen($message));
   }
 
@@ -137,7 +133,6 @@ class penalites
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -158,7 +153,6 @@ class penalites
       $username = $irpg->getUsernameByNick($nick);
       unset($irpg->mod["core"]->users["$username"]);
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -205,7 +199,6 @@ class penalites
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -213,6 +206,7 @@ class penalites
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
+
     $this->penalite($nick, "QUIT", $this->penQuit);
 
     //Suppression de l'utilisateur de la table IRC
@@ -230,16 +224,13 @@ class penalites
   function on5Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -248,18 +239,15 @@ class penalites
   function on15Secondes()
   {
     global $irc, $irpg, $db;
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-
   function penalite($nick, $quoi, $valeur, $multiplicateur = 1)
   {
     global $irc, $irpg, $db;
+
     $tbPerso = $db->prefix."Personnages";
     $tbIRC = $db->prefix."IRC";
 
@@ -289,6 +277,6 @@ class penalites
     }
   }
 
+///////////////////////////////////////////////////////////////
 }
-
 ?>

@@ -24,7 +24,6 @@
 * @author Homer
 * @created 1 avril 2007
 */
-
 class bonus
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -35,10 +34,10 @@ class bonus
 
   //Variables supplémentaires
   var $timer;
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -65,19 +64,15 @@ class bonus
     }
 
     //Initialisation des paramètres du fich de configuration
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -85,7 +80,6 @@ class bonus
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -93,21 +87,17 @@ class bonus
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
 
-
     $message = trim(str_replace("\n", "", $message));
     $message = explode(" ", $message);
     $nb = count($message) - 1;
-
 
     switch (strtoupper($message[0])) {
       case "BONUS":
@@ -115,7 +105,6 @@ class bonus
           $this->cmdBonus($nick);
           break;
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -123,7 +112,6 @@ class bonus
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -131,7 +119,6 @@ class bonus
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -139,7 +126,6 @@ class bonus
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -147,8 +133,6 @@ class bonus
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -156,8 +140,6 @@ class bonus
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -165,7 +147,6 @@ class bonus
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -173,7 +154,6 @@ class bonus
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -181,7 +161,6 @@ class bonus
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -189,21 +168,16 @@ class bonus
   function on5Secondes()
   {
     global $irc, $irpg;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on15Secondes()
   {
@@ -219,10 +193,8 @@ class bonus
           $this->lanceBonus();
         }
       }
-
      }
    }
-
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -230,6 +202,7 @@ class bonus
   function lanceBonus()
   {
     global $irpg, $irc, $db;
+
     $tbPerso = $db->prefix . "Personnages";
     $tbIRC = $db->prefix . "IRC";
     $tbDon = $db->prefix . "Dons";
@@ -258,11 +231,9 @@ class bonus
      $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
      $irpg->Log($pid, "BONUS_DONATEUR", "", "-$time");
      $irc->privmsg($irc->home, "Le maître de l'idle remercie ses supporteurs et récompense $perso en lui enlevant $ctime avant d'arriver au niveau $level2.  Prochain niveau dans $cnext.");
-
-
-
-
   }
+
+///////////////////////////////////////////////////////////////
 
   function cmdBonus($nick)
   {
@@ -281,5 +252,6 @@ class bonus
     }
   }
 
+///////////////////////////////////////////////////////////////
 }
 ?>

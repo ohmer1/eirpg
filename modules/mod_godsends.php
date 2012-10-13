@@ -36,10 +36,10 @@ class godsends
 
   //Variables supplémentaires
 
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -66,19 +66,15 @@ class godsends
     }
 
     //Initialisation des paramètres du fich de configuration
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -86,7 +82,6 @@ class godsends
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -94,17 +89,13 @@ class godsends
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -112,7 +103,6 @@ class godsends
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -120,7 +110,6 @@ class godsends
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -128,7 +117,6 @@ class godsends
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -136,8 +124,6 @@ class godsends
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -145,8 +131,6 @@ class godsends
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -154,7 +138,6 @@ class godsends
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -162,7 +145,6 @@ class godsends
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -170,7 +152,6 @@ class godsends
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -187,25 +168,17 @@ class godsends
 
 ///////////////////////////////////////////////////////////////
 
-
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function on15Secondes()
   {
     global $irc, $irpg, $db;
-
-
-
   }
-
-
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -213,6 +186,7 @@ class godsends
   function cmdGodsends()
   {
     global $irpg, $irc, $db;
+
     $tbPerso = $db->prefix . "Personnages";
     $tbIRC = $db->prefix . "IRC";
     $tbTxt = $db->prefix . "Textes";
@@ -242,11 +216,8 @@ class godsends
     $message = $db->getRows("SELECT Valeur FROM $tbTxt WHERE Type='G' ORDER BY RAND() LIMIT 0,1");
     $message = $message[0][0];
     $irc->privmsg($irc->home, "$perso $message.  Cette merveilleuse aide de Dieu accélère sa course vers le niveau $level2 de $ctime.  Prochain niveau dans $cnext.");
-
-
-
-
   }
 
+///////////////////////////////////////////////////////////////
 }
 ?>

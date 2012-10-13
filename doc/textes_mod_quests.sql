@@ -15,7 +15,6 @@
 -- along with this program. if not, see <http://www.gnu.org/licenses/>.
 -- ----------------------------------------------------------------------------------------
 
-
 --
 -- Textes de quete aventure et royaume.
 --

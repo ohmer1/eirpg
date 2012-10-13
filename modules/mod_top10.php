@@ -24,7 +24,6 @@
 * @author Homer
 * @created 20 janvier 2007
 */
-
 class top10
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -35,10 +34,10 @@ class top10
 
   //Variables supplémentaires
   var $timer;
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -66,18 +65,15 @@ class top10
 
     //Initialisation des paramètres du fich de configuration
     $this->timer = 0;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -85,7 +81,6 @@ class top10
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -93,7 +88,6 @@ class top10
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -102,7 +96,6 @@ class top10
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
 
     $message = trim(str_replace("\n", "", $message));
     $message = explode(" ", $message);
@@ -129,7 +122,6 @@ class top10
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -137,7 +129,6 @@ class top10
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -145,7 +136,6 @@ class top10
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -154,7 +144,6 @@ class top10
   {
     global $irc, $irpg, $db;
 
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -162,8 +151,6 @@ class top10
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -171,7 +158,6 @@ class top10
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -179,7 +165,6 @@ class top10
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -187,7 +172,6 @@ class top10
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -195,20 +179,16 @@ class top10
   function on5Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on15Secondes()
   {
@@ -221,12 +201,7 @@ class top10
     	$this->timer=0;
       $this->top(10);
     }
-
   }
-
-///////////////////////////////////////////////////////////////
-
-
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -243,9 +218,8 @@ class top10
       $irc->privmsg($irc->home, $msg);
       $i++;
     }
-
   }
 
-
+///////////////////////////////////////////////////////////////
 }
 ?>

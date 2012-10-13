@@ -38,10 +38,10 @@ class quests
   var $recompenseA,$recompenseR, $queteSurvivant = false;
   var $MinPenalite,$MaxPenalite,$MinPenaliteAll,$MaxPenaliteAll;
   var $nbrParticipants, $tempsMinIdleA, $tempsMinIdleR, $lvlMinimumA, $lvlMinimumR;
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -58,6 +58,7 @@ class quests
     if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
+
         //Validation du fichier de configuration spécifique au module
     $cfgKeys = array("tempsQueteA", "tempsQueteR", "recompenseA", "recompenseR", "recompenseS", "MinPenalite", "MaxPenalite", "MinPenaliteAll", "MaxPenaliteAll", "nbrParticipants", "tempsMinIdleA", "tempsMinIdleR","tempsMinIdleS", "lvlMinimumA", "lvlMinimumR","lvlMinimumS","probaAllQuete","probaQueteA");
     $cfgKeysOpt = array("");
@@ -88,6 +89,7 @@ class quests
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
@@ -106,8 +108,8 @@ class quests
 
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
-
     global $irc, $irpg, $db;
+
     													// SI il n'y a aucune quete en cours on ne fait rien du tout (Optimisation).
    if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
     													// On lit le fichier de config pour verifier que l'action est considérée comme pénalité.
@@ -123,10 +125,10 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
+
     $message = trim(str_replace("\n", "", $message));
     $message = explode(" ", $message);
     switch (strtoupper($message[0])) {
@@ -173,7 +175,6 @@ class quests
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -232,7 +233,6 @@ class quests
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -258,22 +258,21 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function on15Secondes()
   {
 		global $irc, $irpg, $db;
+
 		$listeFinale = "";
 		$tbPerso = $db->prefix."Personnages";
 		$tbIRC = $db->prefix."IRC";
+
 														//Si il n'y a aucune quete en Cours, on a une chance sur 500 d'un mettre une en route.
 														//Si une quete est mise en route il y a 80% de chance que ce soit une quete d'aventure et 20% une quete de Royaume.
 		if(!$irpg->pause) {
@@ -314,7 +313,6 @@ class quests
 					} else {
 						$irc->privmsg($irc->home, $listeParticipants." est revenu de sa quête et a rempli l'objectif! Bravo, voilà ta récompense : ".$this->recompenseA."% de ton TTL est enlevés !");
                     }
-
 					$this->queteEnCours = -1;
 				}
 			} elseif($this->queteEnCours == 2) {
@@ -336,22 +334,23 @@ class quests
 					} else {
 						$irc->privmsg($irc->home, $listeParticipants." est revenu de quête à temps. Le royaume est sauvé...  Il sera largement récompensé. ".$this->recompenseR."% de son TTL est enlevé !");
                     }
-
 					$this->queteEnCours = -1;
 				}
-
 			}
 		}
 	}
 
 ///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 
   function QueteAventure()
   {
 		global $irpg, $irc, $db;
+
 		$tbPerso = $db->prefix . "Personnages";
 		$tbIRC = $db->prefix . "IRC";
 		$tbTxt = $db->prefix . "Textes";
+
 														// La query suivante va retourner le nombre de personnage voulu au hasard dont le level est suffisant
 														// et dont le temps d'idle est suffisant
 														// Le group by sur Util_id permet de ne recuperer qu'un personnage par user.
@@ -389,6 +388,7 @@ class quests
 	function QueteRoyaume()
 	{
 		global $irpg, $irc, $db;
+
 		$tbPerso = $db->prefix . "Personnages";
 		$tbIRC = $db->prefix . "IRC";
 		$tbTxt = $db->prefix . "Textes";
@@ -427,6 +427,7 @@ class quests
 	function QueteSurvivant()
 	{
 		global $irpg, $irc, $db;
+
 		$tbPerso = $db->prefix . "Personnages";
 		$tbIRC = $db->prefix . "IRC";
 		$tbTxt = $db->prefix . "Textes";
@@ -454,6 +455,7 @@ class quests
 	}
 
 //////////////////////////////////////////////////////
+
 	function cmdQuestStart($nick)
 	{
 		global $irpg, $irc, $db;
@@ -467,7 +469,6 @@ class quests
 					$proba = rand(1,100);
 					if ($proba <= $this->probaQueteA) {
 						$this->queteEnCours = $this->QueteAventure();
-
 					} elseif($proba <= ($this->probaQueteA + round((100 -$this->probaQueteA)/2) ) ) {
 						$this->queteEnCours = $this->QueteRoyaume();
 					} else {
@@ -485,7 +486,9 @@ class quests
 			$irc->notice($nick, "Le jeu est en pause aucune information n'est disponible");
         }
 	}
+
 ////////////////////////////////////////////////////
+
 	function cmdQuest($nick)
 	{
 		global $irpg, $irc;
@@ -524,11 +527,13 @@ class quests
 			$irc->notice($nick, "Le jeu est en pause aucune information n'est disponible");
         }
 	}
+
 ///////////////////////////////////////////////////////////////
 
 	function VerifFinQuete($nick)
 	{
      	global $irc, $irpg, $db;
+
 	  	$tbPerso = $db->prefix."Personnages";
 	  	$tbIRC = $db->prefix."IRC";
 	  	$nickIsParticipant = false;			// Permet de stopper la boucle for des que l'on sait que le nick est participant a la quete. (Optimisation)
@@ -544,6 +549,7 @@ class quests
 					$db->req("UPDATE $tbPerso SET Next=Next + $penalite WHERE Id_Personnages= '$pid'");
 					$irc->privmsg($irc->home, $irpg->getNomPersoByPID($this->participants[$i][0])." rebrousse chemin dans cette quête ardue...Taxé par ses compatriotes de couardise le voilà blamé!");
 					$this->participants[$i][0] = -1;
+
           		$irpg->Log($pid, "QUETE_ABANDONNÉE", $penalite, "");
           		$nickIsParticipant = true;
 				}
@@ -553,6 +559,7 @@ class quests
 													// Si il ne fait pas partie de la quete on saute toute cette partie. (Optimisation)
 			if($nickIsParticipant) {
 				$queteAbandonnee = true;		// On considere que la quete est abandonnée.
+
 													// Si on trouve un des participants qui n'a pas abandonnée on mettra la variable à zero
 				$participantsActif = 0;
 				for($i=0;$i<$this->nbrParticipants;$i++) {
@@ -598,8 +605,7 @@ class quests
 			}
 			return $this->queteEnCours;
 	}
-}
 
 ///////////////////////////////////////////////////////////////
-
+}
 ?>

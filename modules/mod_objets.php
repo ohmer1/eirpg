@@ -24,7 +24,6 @@
 * @author Homer
 * @created 19 novembre 2005
 */
-
 class objets
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -35,10 +34,10 @@ class objets
 
   //Variables supplémentaires
 
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -65,19 +64,15 @@ class objets
     }
 
     //Initialisation des paramètres du fich de configuration
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -85,7 +80,6 @@ class objets
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -93,16 +87,13 @@ class objets
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
 
     $message = trim(str_replace("\n", "", $message));
     $message = explode(" ", $message);
@@ -125,7 +116,6 @@ class objets
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -133,7 +123,6 @@ class objets
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -141,7 +130,6 @@ class objets
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -149,8 +137,6 @@ class objets
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -158,8 +144,6 @@ class objets
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -167,7 +151,6 @@ class objets
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -175,7 +158,6 @@ class objets
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -183,7 +165,6 @@ class objets
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -191,7 +172,6 @@ class objets
   function on5Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -200,7 +180,6 @@ class objets
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -209,9 +188,6 @@ class objets
   function on15Secondes()
   {
     global $irc, $irpg, $db;
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -219,12 +195,11 @@ class objets
   function modIdle_onLvlUp($nick, $uid, $pid, $level2, $next)
   {
     //Les objets sont distribués lors de la monté de niveau..
-
     global $db, $irc, $irpg;
+
     $tbLst = $db->prefix."ListeObjets";
     $tbObj = $db->prefix."Objets";
     $nomPerso = $irpg->getNomPersoByPID($pid);
-
 
     //Objets uniques
     $obj = $db->getRows("SELECT Id_ListeObjets, Name, Probabilite, Type, Niveau FROM $tbLst WHERE EstUnique='O' And Minimum <= '$level2'");
@@ -298,15 +273,12 @@ class objets
         //Objet plus petit que ce qu'on a déjà
         $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver l'objet \002$nom\002 de niveau \002$lvlObj\002.  Malheureusement, tu as déjà cet objet avec un niveau $niveau.");
       }
-
     } else {
       //Nouvel objet trouvé
       $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES ('$pid', '$oid', '$lvlObj')");
       $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver un nouvel objet !  Il s'agit de l'objet \002$nom\002 de niveau \002$lvlObj\002.");
       $irpg->Log($pid, "OBJ", 0, "$nom (niveau $lvlObj)");
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -315,11 +287,11 @@ class objets
   function cmdItems($nick, $perso = "")
   {
     global $irpg, $irc, $db;
+
     $uid = $irpg->getUsernameByNick($nick, true);
     $uid = $uid[1];
 
     if ($uid) {
-
       if (empty($perso)) {
         //On retourne les stats pour les personnages du joueur
         $tbPerso = $db->prefix."Personnages";
@@ -331,8 +303,6 @@ class objets
           $this->envoyerInfoObjets($nick, $perso);
           $i++;
         }
-
-
       } else {
         if ($irpg->getPIDByPerso($perso)) {
           $this->envoyerInfoObjets($nick, $perso);
@@ -346,6 +316,7 @@ class objets
 
   }
 
+///////////////////////////////////////////////////////////////
 
   function infoObjets($pid, $detail = false)
   {
@@ -381,9 +352,12 @@ class objets
     }
   }
 
+///////////////////////////////////////////////////////////////
+
   function envoyerInfoObjets($nick, $perso)
   {
     global $db, $irpg, $irc;;
+
     //On retourne les stats pour le personnage spécifié
     $pid = $irpg->getPIDByPerso($perso);
     $objets = $this->infoObjets($pid, true);
@@ -408,5 +382,6 @@ class objets
     }
   }
 
+///////////////////////////////////////////////////////////////
 }
 ?>

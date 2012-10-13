@@ -28,7 +28,6 @@
 * @author Homer
 * @created 23 juin 2005
 */
-
 class core
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -45,10 +44,10 @@ class core
   var $motd;        //MOTD affiché lors d'un LOGIN
   var $timerPing;   //Timer envoi du ping
   var $loginAllowed; //Permet de bloquer la commande LOGIN
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -87,6 +86,7 @@ class core
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
@@ -95,8 +95,6 @@ class core
 
     $irc->deconnexion("SHUTDOWN: mod_core a été déchargé!");
     $db->deconnexion();
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -104,6 +102,7 @@ class core
   function onConnect()
   {
     global $irc, $irpg, $db;
+
     //Effacement de la table IRC lors de la connexion
     $table = $db->prefix."IRC";
     $channel = $irpg->readConfig("IRC", "channel");
@@ -115,11 +114,9 @@ class core
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
@@ -218,7 +215,6 @@ class core
           }
 	  break;
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -226,7 +222,6 @@ class core
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -234,7 +229,6 @@ class core
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -256,10 +250,7 @@ class core
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
-
   }
-
 
 ///////////////////////////////////////////////////////////////
 
@@ -277,8 +268,6 @@ class core
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -286,7 +275,6 @@ class core
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -294,7 +282,6 @@ class core
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -302,20 +289,16 @@ class core
   function on5Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on15Secondes()
   {
@@ -331,14 +314,12 @@ class core
 
     //On autorise le LOGIN
     $this->loginAllowed = true;
-
   }
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
 /* Fonctions reliés aux commandes reçues par le bot */
-
   function cmdRegister($nick, $username, $password, $email)
   {
     global $irc, $irpg, $db;
@@ -376,7 +357,6 @@ class core
       return false;
     }
 
-
     //Requête SQL maintenant :)
     $db->req("INSERT INTO $table (`Username`, `Password`, `Email`, `Created`) VALUES ('$username', '$password', '$email', NOW())");
     $irc->notice($nick, "Votre compte \002$username\002 a été créé avec succès !");
@@ -384,13 +364,12 @@ class core
     $irc->privmsg($irc->home, "Bienvenue à notre nouveau joueur $username, connecté sous le pseudo $nick !");
   }
 
-
 ///////////////////////////////////////////////////////////////
-
 
   function cmdLogin($nick, $user, $host, $username, $password, $perso = null)
   {
     global $irc, $irpg, $db;
+
     $tbUtil = $db->prefix."Utilisateurs";
     $tbPerso = $db->prefix."Personnages";
     $tbIRC = $db->prefix."IRC";
@@ -486,20 +465,13 @@ class core
 				$pub = $pub[0]["Valeur"];
 
         $irc->notice($nick, "\002Publicité\002 -- ".$pub);
-
-
-
-
       }
-
 
       //Dans les 2 cas..
       $this->users["$username"] = $nick;
 
       //On update aussi le lastlogin du compte
       $db->req("UPDATE $tbUtil SET LastLogin = NOW() WHERE Id_Utilisateurs = '$uid'");
-
-
     } else {
       //Login à un personnage spécifique
         $irc->notice($nick, "Fonction non développée actuellement.");
@@ -511,11 +483,10 @@ class core
   function cmdLogout($nick, $user = null, $host = null, $username = null, $password = null)
   {
     global $irpg, $db, $irc;
+
     if (isset($username)) {
       //Logout "distant"..
       $irc->notice($nick, "Désolé, cette fonction n'est pas encore développée.");
-
-
     } else {
       //Logout du compte utilisé actuellement
       $tbIRC = $db->prefix."IRC";
@@ -559,8 +530,6 @@ class core
 
         //On lui retire ses modes..
         $irc->sendRaw("MODE $irc->home -ohv $nick $nick $nick");
-
-
       } else {
         $irc->notice($nick, "Impossible de vous déloguer, car vous n'êtes actuellement pas authentifié.");
       }
@@ -603,7 +572,6 @@ class core
         $irc->privmsg($irc->home, "Bienvenue à $personnage, ".stripslashes($classe)." appartenant à $username/$nick. Premier niveau dans ".$irpg->convSecondes($base).".");
       }
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -611,8 +579,8 @@ class core
   function cmdHelp($nick, $message = "")
   {
     global $irc;
-    $irc->notice($nick, "Aide non disponible.");
 
+    $irc->notice($nick, "Aide non disponible.");
   }
 
 ///////////////////////////////////////////////////////////////
@@ -620,8 +588,8 @@ class core
   function cmdSendPass($nick, $user, $pass)
   {
     global $irc;
-    $irc->notice($nick, "Commande non disponible.");
 
+    $irc->notice($nick, "Commande non disponible.");
   }
 
 ///////////////////////////////////////////////////////////////
@@ -629,6 +597,7 @@ class core
   function cmdNotice($nick, $flag)
   {
     global $irc, $db, $irpg;
+
     if ((strtolower($flag) != "on") and (strtolower($flag) != "off")) {
       $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: NOTICE <on/off>.");
     } else {
@@ -644,7 +613,6 @@ class core
         $irc->notice($nick, "Vous recevrez maintenant vos messages par privmsg.");
       }
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -679,29 +647,23 @@ class core
 
         $i++;
       }
-
     } else {
       $irc->notice($nick, "Vous n'êtes pas authentifié actuellement.");
     }
   }
 
-
 ///////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 
 /* Fonctions diverses */
-
   function validerMail($mail)
   {
-
   return ereg('^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+'.
                '@'.
                '[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.'.
                '[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$',
                $mail);
-
   }
-
 
 ////////////////////////////////////////////////////////////////
 
@@ -715,12 +677,6 @@ class core
     }
   }
 
-
-
 ///////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////
-
-
 }
-
 ?>

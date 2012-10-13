@@ -25,7 +25,6 @@
 * @created 19 juin 2005
 * @modified 19 juin 2005
 */
-
 class test2
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -36,6 +35,7 @@ class test2
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -58,24 +58,17 @@ class test2
     if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg;
 
-
-
     /* Placer les instructions de déchargement de module entre ici et la fin */
-
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -83,7 +76,6 @@ class test2
   function onConnect()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -91,7 +83,6 @@ class test2
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -100,6 +91,7 @@ class test2
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg;
+
     /* test */
     //Ajout de la commande UNLOADMODULE
     $message = trim(str_replace("\n", "", $message));
@@ -117,16 +109,12 @@ class test2
       } else {
         $irc->notice($nick, "/!\ Erreur lors du chargement du module");
       }
-
     } elseif ($message[0] == "MODULES") {
        print_r($irpg->mod);
        print_r($irpg->modules);
-
     } else {
       $irc->notice($nick, "Commande invalide");
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -134,7 +122,6 @@ class test2
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -142,7 +129,6 @@ class test2
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -150,7 +136,6 @@ class test2
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -158,7 +143,6 @@ class test2
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -166,7 +150,6 @@ class test2
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -174,7 +157,6 @@ class test2
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -182,7 +164,6 @@ class test2
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -190,7 +171,6 @@ class test2
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -198,32 +178,22 @@ class test2
   function on5Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on15Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
-
 }
-
-
-
 ?>

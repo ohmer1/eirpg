@@ -24,7 +24,6 @@
 * @author Homer
 * @created 11 mars 2006
 */
-
 class hog
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -35,10 +34,10 @@ class hog
 
   //Variables supplémentaires
 
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -65,19 +64,15 @@ class hog
     }
 
     //Initialisation des paramètres du fich de configuration
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -85,7 +80,6 @@ class hog
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -93,21 +87,17 @@ class hog
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
 
-
     $message = trim(str_replace("\n", "", $message));
     $message = explode(" ", $message);
     $nb = count($message) - 1;
-
 
     switch (strtoupper($message[0])) {
       case "HOG":
@@ -120,7 +110,6 @@ class hog
         }
         break;
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -128,7 +117,6 @@ class hog
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -136,7 +124,6 @@ class hog
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -144,7 +131,6 @@ class hog
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -152,8 +138,6 @@ class hog
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -161,8 +145,6 @@ class hog
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -170,7 +152,6 @@ class hog
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -178,7 +159,6 @@ class hog
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -186,7 +166,6 @@ class hog
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -205,25 +184,17 @@ class hog
 
 ///////////////////////////////////////////////////////////////
 
-
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function on15Secondes()
   {
     global $irc, $irpg, $db;
-
-
-
   }
-
-
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -231,6 +202,7 @@ class hog
   function cmdHog($nick = "")
   {
     global $irpg, $irc, $db;
+
     $tbPerso = $db->prefix . "Personnages";
     $tbIRC = $db->prefix . "IRC";
 
@@ -273,10 +245,8 @@ class hog
       $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
       $irc->privmsg($irc->home, "Dieu en a marre de ne plus vous voir à l'Église et se venge sur $perso en lui ajoutant $ctime avant d'arriver au niveau $level2.  Prochain niveau dans $cnext.");
     }
-
-
-
   }
 
+///////////////////////////////////////////////////////////////
 }
 ?>

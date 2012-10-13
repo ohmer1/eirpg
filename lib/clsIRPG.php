@@ -26,9 +26,7 @@ class IRPG
 * @created 30 mai 2005
 * @modified 1er juin 2005
 */
-
 {
-
 ///////////////////////////////////////////////////////////////
 // Variables privées
 ///////////////////////////////////////////////////////////////
@@ -38,7 +36,6 @@ class IRPG
   var $pause;     //Indique si le jeu est en pause ou non
   var $ignoresN;  //Liste des nicks ignorés en mémoire
   var $ignoresH;  //Liste des hosts ignorés en mémoire
-
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
@@ -46,6 +43,7 @@ class IRPG
 ///////////////////////////////////////////////////////////////
 // Méthodes privées, même si PHP s'en fou !
 ///////////////////////////////////////////////////////////////
+
   function validationConfig($section, $keys, $keys_opt)
   /**
   * Valide une section fdu fichier de configuration
@@ -55,13 +53,10 @@ class IRPG
   * @modified 1er juin 2005
   * @return boolean - True si la config est OK, false autrement
   */
-
   {
-
     //On traite les clés obligatoires
     $i = 0;
     while ($i != count($keys)) {
-
       if (empty($keys[$i])) {
         break;
       } //On sort de la boucle si pas de clés obligatoires
@@ -93,7 +88,6 @@ class IRPG
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-
 ///////////////////////////////////////////////////////////////
 // Méthodes publiques
 ///////////////////////////////////////////////////////////////
@@ -107,33 +101,31 @@ class IRPG
   * @modified 1er juin 2005
   * @return boolean - True si la config est OK, false autrement
   */
-
   {
-
-
     $this->alog("Lecture du fichier de configuration...", true);
 
     //Traitement de la section DB
     $keys = array("host", "login", "password", "base"); //clés obligatoires
     $keys_opt = array("prefix");                        //clés optionnelles
+
     $ok = $this->validationConfig("SQL", $keys, $keys_opt);
     if (!$ok) {
       return false;
     }
 
-
     //Traitement de la section IRC
     $keys = array("server", "port", "channel", "nick", "altnick", "username", "realname", "modes"); //clés obligatoires
     $keys_opt = array("password", "nspass", "bind", "key");       //clés optionnelles
+
     $ok = $this->validationConfig("IRC", $keys, $keys_opt);
     if (!$ok) {
       return false;
     }
 
-
     //Traitement de la section IRPG
     $keys = array("admin", "debug", "background", "purge", "version", "modules"); //clés obligatoires
     $keys_opt = array("");                        //clés optionnelles
+
     $ok = $this->validationConfig("IRPG", $keys, $keys_opt);
     if (!$ok) {
       return false;
@@ -160,7 +152,6 @@ class IRPG
   * @return none
   */
   {
-
     global $irc, $irpg;
 
     //Chargement des modules
@@ -180,7 +171,6 @@ class IRPG
       }
       $i++;
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -196,12 +186,9 @@ class IRPG
   * @return boolean  - True si module chargé, false autrement
   */
   {
-
       if (!file_exists("modules/mod_".$nom.".php")) { //On vérifie que le module existe
-
         return false;
       } elseif (in_array($nom, $this->modules)) { //On s'assure que le module ne soit pas déjà chargé
-
          return false;
       } else {
         include_once("modules/mod_".$nom.".php"); //TODO: rechercher le module sur REHASH (??)
@@ -210,8 +197,6 @@ class IRPG
         $this->mod[$nom]->loadModule();
         return true;
       }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -245,7 +230,6 @@ class IRPG
       $this->modules = array_values($this->modules); //reset des indices du tableau
       return true;
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -262,20 +246,14 @@ class IRPG
   * @param fromFile - Si vrai lis la configuration du fichier, sinon des données en mémoire
   * @return string  - La valeur contenu dans le fichier de configuration
   */
-
   {
-
     if ($fromFile) {
       $config = parse_ini_file("irpg.conf", true);
       return $config[$section][$key];
-
     } else {
-
       //Retourne ce qui a été préablement chargé en mémoire
       return $this->config[$section][$key];
-
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -314,6 +292,7 @@ class IRPG
         $vr_majeur = $versionModule[0];
         $vr_mineur = $versionModule[1];
         $vr_revision = $versionModule[2];
+
         //Version actuelle du module
         $versionActuelle = split("\.", $this->mod[$nomModule]->version);
         $va_majeur = $versionActuelle[0];
@@ -340,7 +319,6 @@ class IRPG
     }
 
     return true;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -355,7 +333,6 @@ class IRPG
     $flog = fopen("irpg.log", "a+");
     fwrite($flog, "[$date] ".$msg."\n");
     fclose($flog);
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -370,7 +347,6 @@ class IRPG
       $uid = $db->getRows("SELECT Id_Utilisateurs FROM $table WHERE Username = '$username'");
       $uid = $uid[0]["Id_Utilisateurs"];
       return array($username, $uid);
-
     } else {
       return $username;
     }
@@ -381,6 +357,7 @@ class IRPG
   function getNickByUID($uid)
   {
     global $db;
+
     $tbIRC = $db->prefix."IRC";
     $tbPerso = $db->prefix."Personnages";
 
@@ -393,6 +370,7 @@ class IRPG
   function getUsernameByUID ($uid)
   {
     global $db;
+
     $tbUtil = $db->prefix."Utilisateurs";
     $q = "SELECT Username FROM $tbUtil WHERE Id_Utilisateurs = '$uid' LIMIT 0,1";
     if ($db->nbLignes($q) == 1) {
@@ -407,6 +385,7 @@ class IRPG
   function getNomPersoByPID ($pid)
   {
     global $db;
+
     $tbPerso = $db->prefix."Personnages";
     $q = "SELECT Nom FROM $tbPerso WHERE Id_Personnages = '$pid'";
     if ($db->nbLignes($q) == 1) {
@@ -422,6 +401,7 @@ class IRPG
     function getPIDByPerso ($perso)
     {
       global $db;
+
       $tbPerso = $db->prefix."Personnages";
       $q = "SELECT Id_Personnages FROM $tbPerso WHERE Nom = '$perso'";
       if ($db->nbLignes($q) == 1) {
@@ -438,17 +418,15 @@ class IRPG
   {
   }
 
-
   ///////////////////////////////////////////////////////////////
-
 
   function getUIDByPID ($pid)
   {
   	global $db;
+
     $tb = $db->prefix . "Personnages";
     $res = $db->getRows("SELECT Util_Id FROM $tb WHERE Id_Personnages='$pid'");
     return $res[0]["Util_Id"];
-
   }
 
   ///////////////////////////////////////////////////////////////
@@ -456,8 +434,8 @@ class IRPG
   function getUIDByUsername($username)
   {
     global $db;
-    $tbUtil = $db->prefix."Utilisateurs";
 
+    $tbUtil = $db->prefix."Utilisateurs";
     $uid = $db->getRows("SELECT Id_Utilisateurs FROM $tbUtil WHERE Username='$username'");
     return $uid[0]["Id_Utilisateurs"];
   }
@@ -473,15 +451,15 @@ class IRPG
                        $sec/86400,intval($sec/86400)==1?"":"s",
                        ($sec%86400)/3600,($sec%3600)/60,$sec%60);
         }
-
     }
+
  ///////////////////////////////////////////////////////////////
 
   function getAdminLvl($uid)
   {
     //Retourne le niveau d'accès admin d'un utilisateur
-
     global $db;
+
     $tbUtil = $db->prefix."Utilisateurs";
     $req = "SELECT Admin FROM $tbUtil WHERE Id_Utilisateurs = '$uid'";
     if ($db->nbLignes($req) != 1) {
@@ -490,7 +468,6 @@ class IRPG
       $resultat = $db->getRows($req);
       return $resultat[0]["Admin"];
     }
-
   }
 
  ///////////////////////////////////////////////////////////////
@@ -498,8 +475,8 @@ class IRPG
   function Log($pid, $type, $modif = 0, $d1 = "", $d2 = "", $d3 = "")
   {
    //Ajout dans la table Logs
-
     global $db;
+
     $tbLogs = $db->prefix."Logs";
     if ($pid == NULL) {
       $db->req("INSERT INTO $tbLogs (`Pers_Id`, `Date`, `Type`, `Modificateur`, `Desc1`, `Desc2`, `Desc3`) VALUES (NULL, NOW(), '$type', '$modif', '$d1', '$d2', '$d3')");
@@ -513,6 +490,7 @@ class IRPG
 function userExist($user)
 {
 	global $db;
+
 	$table = $db->prefix."Utilisateurs";
 	$r = $db->req("SELECT Username FROM $table WHERE Username='$user'");
 	if (mysql_num_rows($r) != 0) {
@@ -520,11 +498,13 @@ function userExist($user)
     }
 	return false;
 }
+
 ///////////////////////////////////////////////////////////////
 
 function persoExist($perso)
 {
 	global $db;
+
 	$table = $db->prefix."Personnages";
 	$r = $db->req("SELECT Nom FROM $table WHERE Nom='$perso'");
 	if (mysql_num_rows($r) != 0) {
@@ -536,6 +516,7 @@ function persoExist($perso)
 function equipeExist($equipe)
 {
 	global $db;
+
 	$table = $db->prefix."Equipes";
 	$r = $db->req("SELECT Name FROM $table WHERE Name='$equipe'");
 	if (mysql_num_rows($r) != 0) {
@@ -543,6 +524,7 @@ function equipeExist($equipe)
     }
 	return false;
 }
+
 ///////////////////////////////////////////////////////////////
 
 function lireIgnores()
@@ -564,10 +546,8 @@ function lireIgnores()
       $this->ignoresH[] = $host;
       $this->alog("L'host $host est ignoré...");
     }
-
   }
   fclose($f);
-
 }
 
 function getIgnoresN()
@@ -580,4 +560,6 @@ function getIgnoresH()
   return $this->ignoresH;
 }
 
+    ///////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
 }

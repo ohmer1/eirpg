@@ -24,7 +24,6 @@
 * @author Homer
 * @created 18 mars 2006
 */
-
 class calamites
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -35,10 +34,10 @@ class calamites
 
   //Variables supplémentaires
 
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -65,19 +64,15 @@ class calamites
     }
 
     //Initialisation des paramètres du fich de configuration
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -85,7 +80,6 @@ class calamites
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -93,7 +87,6 @@ class calamites
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -103,12 +96,9 @@ class calamites
   {
     global $irc, $irpg, $db;
 
-
     $message = trim(str_replace("\n", "", $message));
     $message = explode(" ", $message);
     $nb = count($message) - 1;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -116,7 +106,6 @@ class calamites
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -124,7 +113,6 @@ class calamites
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -132,7 +120,6 @@ class calamites
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -140,8 +127,6 @@ class calamites
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -149,8 +134,6 @@ class calamites
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -158,7 +141,6 @@ class calamites
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -166,7 +148,6 @@ class calamites
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -174,7 +155,6 @@ class calamites
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -191,25 +171,17 @@ class calamites
 
 ///////////////////////////////////////////////////////////////
 
-
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function on15Secondes()
   {
     global $irc, $irpg, $db;
-
-
-
   }
-
-
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -217,6 +189,7 @@ class calamites
   function cmdCalamites()
   {
     global $irpg, $irc, $db;
+
     $tbPerso = $db->prefix . "Personnages";
     $tbIRC = $db->prefix . "IRC";
     $tbTxt = $db->prefix . "Textes";
@@ -246,11 +219,8 @@ class calamites
     $message = $db->getRows("SELECT Valeur FROM $tbTxt WHERE Type='C' ORDER BY RAND() LIMIT 0,1");
     $message = $message[0][0];
     $irc->privmsg($irc->home, "$perso $message.  Ce terrible incident le ralentis de $ctime du niveau $level2.  Prochain niveau dans $cnext.");
-
-
-
-
   }
 
+///////////////////////////////////////////////////////////////
 }
 ?>

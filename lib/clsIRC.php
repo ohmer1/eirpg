@@ -25,9 +25,7 @@ class IRC
 * @created 30 mai 2005
 * @modified 23 juillet 2005
 */
-
 {
-
 ///////////////////////////////////////////////////////////////
 // Variables privées
 ///////////////////////////////////////////////////////////////
@@ -41,7 +39,6 @@ class IRC
   var $exit;      //Coupe la connexion IRC et coupe le bot !
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-
 
 
 ///////////////////////////////////////////////////////////////
@@ -63,6 +60,7 @@ class IRC
   function onMOTD($data, $me)
   {
     global $irpg;
+
     $channel = strtoupper($irpg->readConfig("IRC","channel"));
     $key = $irpg->readConfig("IRC", "key");
     $modes = $irpg->readConfig("IRC", "modes");
@@ -86,7 +84,6 @@ class IRC
     //On joint ensuite le canal principal
     $this->join($channel, $key);
 
-
     //Appel aux modules
     global $irpg;
     $i = 0;
@@ -97,7 +94,6 @@ class IRC
       $i++;
     }
 
-
     //On est maintenant prêt !
     $this->ready = true;
   }
@@ -106,7 +102,6 @@ class IRC
 
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
-
     if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
@@ -118,16 +113,12 @@ class IRC
         $i++;
       }
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
-
     if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
@@ -139,15 +130,12 @@ class IRC
         $i++;
       }
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 
   function onNoticeCanal($nick, $user, $host, $message)
   {
-
     if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
@@ -159,15 +147,12 @@ class IRC
         $i++;
       }
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 
   function onNoticePrive($nick, $user, $host, $message)
   {
-
     if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
@@ -179,15 +164,12 @@ class IRC
         $i++;
       }
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 
   function onJoin($nick, $user, $host, $channel)
   {
-
     if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
@@ -199,15 +181,12 @@ class IRC
         $i++;
       }
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 
   function onPart($nick, $user, $host, $channel)
   {
-
     if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
@@ -219,15 +198,12 @@ class IRC
         $i++;
       }
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 
   function onNick($nick, $user, $host, $newnick)
   {
-
     if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
@@ -239,15 +215,12 @@ class IRC
         $i++;
       }
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
-
     if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
@@ -259,15 +232,12 @@ class IRC
         $i++;
       }
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 
   function onCTCP($nick, $user, $host, $ctcp)
   {
-
     global $irpg;
 
     //Réponse au CTCP VERSION
@@ -290,8 +260,6 @@ class IRC
       $this->sendRaw("NOTICE $nick :\001VERSION Modules chargés: $modules\001");
     }
 
-
-
     //Appel aux modules
     $i = 0;
     while ($i != count($irpg->mod)) {
@@ -300,15 +268,12 @@ class IRC
       }
       $i++;
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
 
   function onQuit($nick, $user, $host, $reason)
   {
-
     if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
@@ -320,8 +285,6 @@ class IRC
         $i++;
       }
     }
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -329,6 +292,7 @@ class IRC
   function onNames($channel, $names)
   {
      global $db;
+
      $table = $db->prefix."IRC";
 
      /*
@@ -352,7 +316,6 @@ class IRC
      //On envoit un /WHO pour récupérer les user@hosts de
      //tous les utilisateurs et permettre l'auto-login
      $this->sendRaw("WHO #$channel");
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -367,7 +330,6 @@ class IRC
     if ($nick != $this->me) {
       $db->req("INSERT INTO $tbIRC (`Nick`, `Channel`, `UserHost`) VALUES ('$nick', '$channel', '$user@$host')");
     }
-
 
     //Gestion auto-login
     if (($channel == $this->home) And ($nick != $this->me)) {
@@ -390,7 +352,6 @@ class IRC
         }
 
         $irpg->mod["core"]->users["$username"] = $nick;
-
       }
     }
   }
@@ -448,7 +409,6 @@ class IRC
   }
 
 ///////////////////////////////////////////////////////////////
-
 
 /* Autres méthodes */
   function Timer5Sec(&$dix, &$quinze)
@@ -549,8 +509,8 @@ class IRC
 ///////////////////////////////////////////////////////////////
 // Méthodes publiques
 ///////////////////////////////////////////////////////////////
-  function sendRaw($data)
 
+  function sendRaw($data)
   /**
   * Envoi des données au serveur IRC
   *
@@ -566,6 +526,7 @@ class IRC
     if ($this->debug) {
       $irpg->alog("<-- $data");
     }
+
    // $charset = $irpg->readConfig("IRC", "charset");
     //$ok = socket_write($this->sirc, iconv("ISO-8859-15", $charset, $data ."\n"));
     $ok = socket_write($this->sirc, $data ."\n");
@@ -589,7 +550,6 @@ class IRC
   * @param key      - Clé du canal à joindre (facultatif)
   * @return boolean - True si la déconnexion réussie, false sinon.
   */
-
   {
     $ok = $this->sendRaw("JOIN $channel $key");
     if ($ok) {
@@ -617,9 +577,7 @@ class IRC
   * @param debug 		- Flag debug
   * @return boolean - True si connexion réussie, false sinon.
   */
-
   {
-
     global $irpg;
 
     $this->debug = $debug;
@@ -636,9 +594,7 @@ class IRC
     socket_connect($this->sirc, $server, $port)
      or die ("Impossible de se connecter au serveur IRC\n");
 
-
     if ($this->sirc) {
-
       $irpg->alog("Connexion au serveur IRC...", true);
       if ($pass != "") {
         $this->sendRaw("PASS $pass");
@@ -647,13 +603,9 @@ class IRC
       $ok = $this->sendRaw("USER $user localhost $server :$realname");
 
       return true;
-
-
-
    } else {
       return false;
    }
-
 	}
 
 ///////////////////////////////////////////////////////////////
@@ -724,7 +676,6 @@ class IRC
         }
       }
 
-
       $data = split("\n", $data);
 
       for ($i = 0; $i < count($data); $i++) {
@@ -752,7 +703,6 @@ class IRC
           preg_match('`:(.*?) `', $dataregexp, $userhost);
           $userhost = $userhost[1];
         }
-
 
         //Traitement des évènements serveur<->bot
         if (isset($server)) {
@@ -795,7 +745,6 @@ class IRC
           #}
         }
 
-
         //Traitement des évènements utilisateur<->bot
         if (isset($userhost)) {
           //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -822,7 +771,6 @@ class IRC
             $this->onPrivmsgCanal(trim($nick), trim($user), trim($host), trim($message));
           } elseif (ereg("^:$userhost PRIVMSG ", $dataregexp)) {
             /* En privé */
-
             // On ne va pas plus loin si le pseudo ou l'host doit être ignoré !
             if ((in_array($nick, $ignoresN)) or (in_array($host, $ignoresH))) {
               continue;
@@ -917,8 +865,6 @@ class IRC
 
         //Réinitialisation de variables
         unset($server, $userhost, $message, $newnick, $reason, $nickkicked, $channel);
-
-
       }
 
         ####$read = array($this->sirc);
@@ -931,9 +877,7 @@ class IRC
         ####    break;
         ####  }
         ####}
-
     }
-
   }
 
 
@@ -949,7 +893,6 @@ class IRC
   * @param reason 	- Raison de la déconnexion
   * @return boolean - True si la déconnexion réussie, false sinon.
   */
-
   {
     $ok = $this->sendRaw("QUIT :$reason");
     if ($ok) {
@@ -960,7 +903,6 @@ class IRC
     } else {
       return false;
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -995,6 +937,7 @@ class IRC
   */
   {
     global $db, $irpg;
+
     $uid = $irpg->getUIDByUsername($irpg->getUsernameByNick($dest));
 
     $tbUtil = $db->prefix."Utilisateurs";
@@ -1020,20 +963,16 @@ class IRC
   */
   {
     global $db;
+
     $table = $db->prefix."IRC";
     if ($db->nbLignes("SELECT Nick FROM $table WHERE Nick='$nickname' And Channel='$channel'") > 0) {
       return true;
     } else {
       return false;
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
-
 }
-
-
-
 ?>

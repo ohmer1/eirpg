@@ -28,7 +28,6 @@
 * @author Homer
 * @created 10 septembre 2005
 */
-
 class idle
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -40,10 +39,10 @@ class idle
   //Variables supplémentaires
   var $idleBase;    //Niveau de base (lu du fichier de config)
   var $expLvlUp;    //Valeur exponentiel de calcul de niveau (lu du fich. de config)
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -72,10 +71,10 @@ class idle
     //Initialisation des paramètres du fich de configuration
     $this->idleBase = $irpg->readConfig($this->name, "idleBase");
     $this->expLvlUp = $irpg->readConfig($this->name, "expLvlUp");
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
@@ -84,8 +83,6 @@ class idle
 
     $irc->deconnexion("SHUTDOWN: mod_idle a été déchargé!");
     $db->deconnexion();
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -93,7 +90,6 @@ class idle
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -101,16 +97,13 @@ class idle
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -118,7 +111,6 @@ class idle
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -126,7 +118,6 @@ class idle
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -134,7 +125,6 @@ class idle
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -142,8 +132,6 @@ class idle
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -151,8 +139,6 @@ class idle
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -160,7 +146,6 @@ class idle
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -168,7 +153,6 @@ class idle
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -176,8 +160,6 @@ class idle
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -185,20 +167,16 @@ class idle
   function on5Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on15Secondes()
   {
@@ -244,15 +222,9 @@ class idle
       }
 
       $i++;
-
     }
-
   }
 
 ///////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////
-
-
 }
-
 ?>

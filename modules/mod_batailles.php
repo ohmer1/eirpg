@@ -17,7 +17,6 @@
  * along with this program. if not, see <http://www.gnu.org/licenses/>.
  */
 
-
 // TODO: batailles manuelles
 
 /**
@@ -27,7 +26,6 @@
 * @author Homer
 * @created 13 mai 2006
 */
-
 class batailles
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -38,10 +36,10 @@ class batailles
 
   //Variables supplémentaires
 
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -69,19 +67,15 @@ class batailles
     }
 
     //Initialisation des paramètres du fich de configuration
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -89,7 +83,6 @@ class batailles
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -97,16 +90,13 @@ class batailles
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
 
     $message = trim(str_replace("\n", "", $message));
     $message = explode(" ", $message);
@@ -130,7 +120,6 @@ class batailles
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -138,7 +127,6 @@ class batailles
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -146,7 +134,6 @@ class batailles
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -154,8 +141,6 @@ class batailles
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -163,8 +148,6 @@ class batailles
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -172,7 +155,6 @@ class batailles
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -180,7 +162,6 @@ class batailles
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -188,7 +169,6 @@ class batailles
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -196,27 +176,20 @@ class batailles
   function on5Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function on15Secondes()
   {
     global $irc, $irpg, $db;
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -226,7 +199,6 @@ class batailles
     // À chaque monté de niveau,
     // .. il y a 25% de chance d'avoir une bataille lorsque niveau < 10
     // .. il y a 100% de chance d'avoir une bataille lorsque niveau >= 10
-
     if ($level >= 10) {
     	$this->batailleDuel($pid, $level);
     } else {
@@ -243,6 +215,7 @@ class batailles
   function batailleDuel($pid, $level)
   {
   	global $db, $irc, $irpg;
+
     $tIRC = $db->prefix . "IRC";
     $tPerso = $db->prefix . "Personnages";
     $perso = $irpg->getNomPersoByPID($pid);
@@ -294,7 +267,6 @@ class batailles
 
       } elseif ($rand < $randOpp) {
       	//perdu..
-
         $mod = $levelOpp/7;
 
         if ($mod < 7) {
@@ -318,19 +290,16 @@ class batailles
         $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqué en duel $opposant [$randOpp/$sommeOpp].  Match  nul !");
 
       }
-
     }
-
   }
 
+/////////////////////////////////////////////////////////
 
-
-
-  /////////////////////////////////////////////////////////
   /*
   function BatailleManuelle($pid, $opposant = NULL )
   {
     global $db, $irc, $irpg;
+
     $tPerso = $db->prefix . "Personnages";
     $tIRC = $db->prefix."IRC";
 
@@ -341,7 +310,6 @@ class batailles
     $next =  $perso[0]["Next"];
     $nbChallenges = $perso[0]["ChallengeTimes"];
     $ChallengeNext = $perso[0]["ChallengeNext"];
-
 
     $nick = $db->getRows("SELECT Nick FROM $tIRC WHERE Pers_Id='$pid'");
     $nick = $nick[0]["Nick"];
@@ -387,7 +355,6 @@ class batailles
     //////// A partir de ce point, le combat a lieu
     $nbChallenges++ ;
 
-
     $somme = $this->calcSomme($pid);
     $sommeOpp = $this->calcSomme($pidOpp);
     $rand = rand(0,$somme);
@@ -419,7 +386,6 @@ class batailles
         $cnextOpp = $irpg->convSecondes($cnextOpp);
         $message = $message . " COUP CRITIQUE !!!! $opposant reçoit un violent coup sur le crâne qui l'estourbi et le ralenti de $coppMod vers le niveau $levelOpp. Il atteindra ce niveau dans $cnextOpp." ;
         }
-
       } elseif ( $rand < $randOpp ) {
       //Si défaite ($mod négatif)
       if ($somme >= $sommeOpp) {
@@ -451,23 +417,17 @@ class batailles
     $cChallengeNext = $irpg->convSecondes($ChallengeNext);
     //Message affichant le temps d'attente avant un nouveau challenge
     $irc->notice($nick, "Vous devrez attendre $cChallengeNext avant d'initier un nouveau combat");
-
-
-
     }
  */
 
   /////////////////////////////////////////////////////////
 
-
-
   function calcSomme($pid)
   {
   	// Calcul la somme des objets d'un joueur
-
     global $db;
-    $t = $db->prefix . "Objets";
 
+    $t = $db->prefix . "Objets";
     $q = "SELECT Level FROM $t WHERE Pers_Id='$pid'";
 
     if ($db->nbLignes($q) > 0) {
@@ -483,6 +443,6 @@ class batailles
     return $somme;
   }
 
-
+///////////////////////////////////////////////////////////////
 }
 ?>

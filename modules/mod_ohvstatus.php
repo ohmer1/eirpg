@@ -24,7 +24,6 @@
 * @author Homer
 * @created 20 novembre 2005
 */
-
 class ohvstatus
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -35,10 +34,10 @@ class ohvstatus
 
   //Variables supplémentaires
   var $op, $hop, $voice, $oplvl, $hoplvl, $voicelvl;
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -71,18 +70,15 @@ class ohvstatus
     $this->oplvl = $irpg->readConfig($this->name, "oplvl");
     $this->hoplvl = $irpg->readConfig($this->name, "hoplvl");
     $this->voicelvl = $irpg->readConfig($this->name, "voicelvl");
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -90,7 +86,6 @@ class ohvstatus
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -98,11 +93,9 @@ class ohvstatus
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
@@ -125,7 +118,6 @@ class ohvstatus
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -133,7 +125,6 @@ class ohvstatus
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -141,7 +132,6 @@ class ohvstatus
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -149,7 +139,6 @@ class ohvstatus
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -157,7 +146,6 @@ class ohvstatus
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -165,7 +153,6 @@ class ohvstatus
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -173,7 +160,6 @@ class ohvstatus
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -181,7 +167,6 @@ class ohvstatus
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -189,7 +174,6 @@ class ohvstatus
   function on5Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -198,18 +182,13 @@ class ohvstatus
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function on15Secondes()
   {
     global $irc, $irpg, $db;
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -234,8 +213,8 @@ class ohvstatus
   function cmdUp($nick)
   {
     global $db, $irc, $irpg;
-    //TODO: Valider qu'avec les persos logués plutôt que les persos enregistrés seulement
 
+    //TODO: Valider qu'avec les persos logués plutôt que les persos enregistrés seulement
     $tbPerso = $db->prefix."Personnages";
     $uid = $irpg->getUsernameByNick($nick, true);
     $uid = $uid[1];
@@ -259,8 +238,8 @@ class ohvstatus
   function Up($nick, $level)
   {
     global $irc;
-    //TODO: vérifier si l'utilisateur n'est pas flagué NOOP
 
+    //TODO: vérifier si l'utilisateur n'est pas flagué NOOP
     if (($this->op == "1") and ($this->oplvl <= $level)) {
       $irc->sendRaw("MODE $irc->home +o $nick");
     } elseif (($this->hop == "1") and ($this->hoplvl <= $level)) {
@@ -270,6 +249,6 @@ class ohvstatus
     }
   }
 
+///////////////////////////////////////////////////////////////
 }
-
 ?>

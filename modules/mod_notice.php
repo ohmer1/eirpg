@@ -17,7 +17,6 @@
  * along with this program. if not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /**
 * Module mod_notice
 * Envoi d'une notice on:join
@@ -25,7 +24,6 @@
 * @author Homer
 * @created 18 mars 2006
 */
-
 class notice
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -37,7 +35,6 @@ class notice
   //Variables supplémentaires
   var $message;
   var $actif;
-
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
@@ -69,18 +66,15 @@ class notice
     //Initialisation des paramètres du fich de configuration
     $this->message = $irpg->readConfig($this->name, "message");
     $this->actif = $irpg->readConfig($this->name, "actif");
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -88,7 +82,6 @@ class notice
   function onConnect()
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -96,17 +89,13 @@ class notice
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
 
-
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -114,7 +103,6 @@ class notice
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -122,7 +110,6 @@ class notice
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -131,8 +118,7 @@ class notice
   {
     global $irc, $irpg, $db;
 
-    if (($nick != $irc->me) and ($this->actif=="1"))
-    {
+    if (($nick != $irc->me) and ($this->actif=="1")) {
     	$irc->notice($nick, $this->message);
     }
   }
@@ -142,8 +128,6 @@ class notice
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -151,8 +135,6 @@ class notice
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg, $db;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -160,7 +142,6 @@ class notice
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -168,7 +149,6 @@ class notice
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -176,7 +156,6 @@ class notice
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg, $db;
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -184,36 +163,25 @@ class notice
   function on5Secondes()
   {
     global $irc, $irpg;
-
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on10Secondes()
   {
     global $irc, $irpg;
-
   }
 
 ///////////////////////////////////////////////////////////////
-
 
   function on15Secondes()
   {
     global $irc, $irpg, $db;
-
-
-
   }
 
-
-
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-
-
+///////////////////////////////////////////////////////////////
 }
 ?>

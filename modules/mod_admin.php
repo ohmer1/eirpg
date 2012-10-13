@@ -25,8 +25,8 @@
  * @created 22 Mars 2007
  * @modified 08 Janvier 2008
  */
-
-class admin {
+class admin
+{
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
     var $name;        //Nom du module
     var $version;     //Version du module
@@ -36,7 +36,6 @@ class admin {
   //Variables supplémentaires
 
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
-
 
 ///////////////////////////////////////////////////////////////
 
@@ -349,7 +348,6 @@ class admin {
     }
 
 ///////////////////////////////////////////////////////////////
-
 ///////////////////////////////////////////////////////////////
 
     function cmdDie($nick, $user, $raison)
@@ -374,6 +372,7 @@ class admin {
         $irpg->Log(NULL, "ADMIN", "0", "$user ($nick) a utilisé la commande RESTART".($raison != Null ? " ($raison)" : ""));
         $deconnexionIrc = $irc->deconnexion("Redémarrage du bot demandé par $nick ($user)".($raison != Null ? " : $raison" : ""));
         $db->deconnexion();
+
         if ($deconnexionIrc) {
             exec('./irpg.php > /dev/null 2>&1 &');
         }
@@ -685,7 +684,5 @@ class admin {
     }
 
 ///////////////////////////////////////////////////////////////
-
 }
-
 ?>

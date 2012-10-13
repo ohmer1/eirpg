@@ -25,7 +25,6 @@
 * @created 19 juin 2005
 * @modified 19 juin 2005
 */
-
 class test  /* Le nom de la classe DOIT être du même nom que le module (sans le mod_) */
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -40,6 +39,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
+
   function loadModule()
   {
     //Constructeur; initialisateur du module
@@ -67,30 +67,22 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
-
     /*
      * Ajoutez votre programmation à éxécuter lors du
      * chargement du module à partir d'ici
      *
      */
-
-
   }
 
 ///////////////////////////////////////////////////////////////
+
   function unloadModule()
   {
     //Destructeur; décharge le module
     //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
     global $irc, $irpg;
 
-
     /* Placer les instructions de déchargement de module entre ici et la fin*/
-
-
-
-
-
   }
 
 ///////////////////////////////////////////////////////////////
@@ -98,6 +90,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onConnect()
   {
     global $irc, $irpg;
+
     $testparam = $irpg->readConfig("mod_test", "testparam");
     $irc->privmsg("Homer", "Je viens de me connecter !");
     $irc->notice("Homer", "testparam = $testparam");
@@ -108,6 +101,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onPrivmsgCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg;
+
     $irc->privmsg("Homer", "$nick!$user@$host a dit: $message");
   }
 
@@ -117,6 +111,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onPrivmsgPrive($nick, $user, $host, $message)
   {
     global $irc, $irpg;
+
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host m'a dit: $message");
   }
 
@@ -125,6 +120,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onNoticeCanal($nick, $user, $host, $message)
   {
     global $irc, $irpg;
+
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a dit en notice: $message");
   }
 
@@ -133,6 +129,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onNoticePrive($nick, $user, $host, $message)
   {
     global $irc, $irpg;
+
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host m'a dit en notice: $message");
   }
 
@@ -141,6 +138,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onJoin($nick, $user, $host, $channel)
   {
     global $irc, $irpg;
+
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a joint $channel");
   }
 
@@ -149,6 +147,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onPart($nick, $user, $host, $channel)
   {
     global $irc, $irpg;
+
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quitté $channel");
   }
 
@@ -157,6 +156,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onNick($nick, $user, $host, $newnick)
   {
     global $irc, $irpg;
+
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a changé de pseudo pour $newnick");
   }
 
@@ -165,6 +165,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onKick($nick, $user, $host, $channel, $nickkicked)
   {
     global $irc, $irpg;
+
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a kické $nickkicked de $channel");
   }
 
@@ -173,6 +174,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onCTCP($nick, $user, $host, $ctcp)
   {
     global $irc, $irpg;
+
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host m'a fait un CTCP $ctcp");
   }
 
@@ -181,14 +183,10 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
   function onQuit($nick, $user, $host, $reason)
   {
     global $irc, $irpg;
+
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quitté IRC pour la raison suivante: $reason");
   }
 
 ///////////////////////////////////////////////////////////////
-
-
 }
-
-
-
 ?>
