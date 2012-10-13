@@ -324,11 +324,11 @@ class quests
 					$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
 					if(substr_count($listeParticipants,',') != 0) {
 						$irc->privmsg($irc->home, $listeParticipants." sont revenus de leur quête et ont remplis "
-                          . "l'objectif! Bravo, voilà votre récompense : ".$this->recompenseA
+                          . "l'objectif ! Bravo, voilà votre récompense : ".$this->recompenseA
                           . "% de votre TTL sont enlevés !");
 					} else {
 						$irc->privmsg($irc->home, $listeParticipants." est revenu de sa quête et a rempli "
-                          . "l'objectif! Bravo, voilà ta récompense : ".$this->recompenseA
+                          . "l'objectif ! Bravo, voilà ta récompense : ".$this->recompenseA
                           . "% de ton TTL est enlevés !");
                     }
 					$this->queteEnCours = -1;
@@ -452,10 +452,10 @@ class quests
 														// On peut donc passer du simple au double au hasard.
 		$this->tempsQuete = $this->tempsQueteR + rand(1,$this->tempsQueteR);
 		if(substr_count($listeParticipants,',') != 0) {
-			$irc->privmsg($irc->home, "Quête de Royaume!: ".$listeParticipants." ont été choisit pour "
+			$irc->privmsg($irc->home, "Quête de Royaume ! ".$listeParticipants." ont été choisit pour "
               . $message[0][0].". Ils ont ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
 		} else {
-			$irc->privmsg($irc->home, "Quête de Royaume!: ".$listeParticipants." a été choisit pour "
+			$irc->privmsg($irc->home, "Quête de Royaume ! ".$listeParticipants." a été choisit pour "
               . $message[0][0].". Il a ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
         }
 		return 2;
@@ -494,8 +494,8 @@ class quests
 		$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
 												// On prend un texte de quete au hasard.
 		$message = $db->getRows("SELECT Valeur FROM $tbTxt WHERE Type='Qs' ORDER BY RAND() LIMIT 0,1");
-		$irc->privmsg($irc->home, "Quête du Survivant!: ".$listeParticipants." ont été choisit pour "
-          . $message[0][0].". Le dernier à en revenir sera déclaré vainqueu...");
+		$irc->privmsg($irc->home, "Quête du Survivant ! ".$listeParticipants." ont été choisit pour "
+          . $message[0][0].". Le dernier à en revenir sera déclaré vainqueur...");
 		return true;
 	}
 
@@ -508,7 +508,7 @@ class quests
 			$uid = $irpg->getUsernameByNick($nick,true);
 			if($irpg->getAdminlvl($uid[1]) >= 5) {
 				if($this->queteEnCours != -1) {
-					$irc->notice($nick,"Il y a déjà une quête en cours!!!");
+					$irc->notice($nick,"Il y a déjà une quête en cours !");
 					$this->cmdQuest($nick);
 				} else {
 					$proba = rand(1,100);
@@ -528,7 +528,7 @@ class quests
 			          $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
 		} else {
-			$irc->notice($nick, "Le jeu est en pause aucune information n'est disponible");
+			$irc->notice($nick, "Le jeu est en pause aucune information n'est disponible.");
         }
 	}
 
@@ -544,7 +544,7 @@ class quests
 						$listeParticipants .= $irpg->getNomPersoByPID($this->participants[$i][0]).", ";
                     }
                 }
-					$message = "Il y a une quête du survivant qui est en cours! Les participants encore en lice "
+					$message = "Il y a une quête du survivant qui est en cours ! Les participants encore en lice "
                              . "sont: ".$listeParticipants;
 					$irc->notice($nick, $message);
 			} else {
@@ -567,7 +567,7 @@ class quests
                                  . $irpg->convSecondes($this->tempsQuete).". Participant(s): "
                                  . $listeParticipants;
 					} else {
-						$message = "C'est une quête du survivant qui est en cours! Les participants encore "
+						$message = "C'est une quête du survivant qui est en cours ! Les participants encore "
                                  . "en lice sont: ".$listeParticipants;
                     }
 
@@ -634,8 +634,8 @@ class quests
 							$i = $this->nbrParticipants;
 						}
                     }
-					$irc->privmsg($irc->home, "Nous avons un gagnant dans cette quete du Survivant! "
-                      . $gagnant." sera largement récompensé pour sa bravoure!");
+					$irc->privmsg($irc->home, "Nous avons un gagnant dans cette quete du Survivant ! "
+                      . $gagnant." sera largement récompensé pour sa bravoure !");
 					$cnext = $db->getRows("SELECT Next FROM $tbPerso WHERE Id_Personnages = ".$gagnantPID);
 					$recompense = round($cnext[0][0]*($this->recompenseS / 100));
 					$db->req("UPDATE $tbPerso SET Next=Next-$recompense WHERE Id_Personnages = ".$gagnantPID);

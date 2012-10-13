@@ -214,7 +214,7 @@ class admin
         case "ADDADMIN":
             //Donne des droits d'administrateur à un utilisateur
             if ($irpg->getAdminLvl($uid[1]) >= 9) {
-                if (($nb < 2) || (! is_numeric($message[2]))) {
+                if (($nb < 2) || (!is_numeric($message[2]))) {
                     $irc->notice($nick, "Syntaxe : ADDADMIN <utilisateur> <niveau_en_chiffre>");
                 } else {
                     $this->cmdAddAdmin($nick, $message[1], $message[2]);
@@ -227,7 +227,7 @@ class admin
         case "PULL":
             //Ajoute du temps au TTL d'un personnage
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
-                if (($nb < 2) || (! is_numeric($message[2]))) {
+                if (($nb < 2) || (!is_numeric($message[2]))) {
                     $irc->notice($nick, "Syntaxe : PULL <personnage> <temps_en_secondes>");
                 } elseif ($message[2] > 0) {
                     $this->cmdPull($nick, $message[1], $message[2]);
@@ -242,7 +242,7 @@ class admin
         case "PUSH":
             //Enlève du temps au TTL d'un personnage
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
-                if (($nb < 2) || (! is_numeric($message[2]))) {
+                if (($nb < 2) || (!is_numeric($message[2]))) {
                     $irc->notice($nick, "Syntaxe : PUSH <personnage> <temps_en_secondes>");
                 } elseif ($message[2] > 0) {
                     $this->cmdPush($nick, $message[1], $message[2]);
@@ -391,7 +391,7 @@ class admin
     {
         global $irpg, $db, $irc;
 
-        if (! $irpg->userExist($user)) {
+        if (!$irpg->userExist($user)) {
             $irc->notice($nick, "L'utilisateur que vous avez spécifié n'existe pas !");
             return;
         }
@@ -420,7 +420,7 @@ class admin
               . "La limite autorisée est de \00250\002 caractères.");
             return;
         }
-        if (! $irpg->persoExist($perso)) {
+        if (!$irpg->persoExist($perso)) {
             $irc->notice($nick,"Le personnage que vous avez spécifié n'existe pas !");
             return;
         }
@@ -444,7 +444,7 @@ class admin
               . "La limite autorisée est de \00230\002 caractères.");
             return;
         }
-        if (! $irpg->persoExist($perso)) {
+        if (!$irpg->persoExist($perso)) {
             $irc->notice($nick, "Le personnage que vous avez spécifié n'existe pas !");
             return;
         }
@@ -489,7 +489,7 @@ class admin
               . "La limite autorisée est de \00230\002 caractères.");
             return;
         }
-        if (! $irpg->userExist($user)) {
+        if (!$irpg->userExist($user)) {
             $irc->notice($nick, "L'utilisateur que vous avez spécifié n'existe pas !");
             return;
         }
@@ -529,7 +529,7 @@ class admin
     {
         global $irpg, $db, $irc;
 
-        if (! $irpg->persoExist($perso)) {
+        if (!$irpg->persoExist($perso)) {
             $irc->notice($nick, "Le personnage que vous avez spécifié n'existe pas !");
             return;
         }
@@ -562,7 +562,7 @@ class admin
     {
         global $irpg, $db, $irc;
 
-        if (! $irpg->userExist($user)) {
+        if (!$irpg->userExist($user)) {
             $irc->notice($nick,"L'utilisateur que vous avez spécifié n'existe pas !");
             return;
         }
@@ -594,7 +594,7 @@ class admin
     {
         global $irpg, $db, $irc;
 
-        if (! $irpg->userExist($user)) {
+        if (!$irpg->userExist($user)) {
             $irc->notice($nick,"L'utilisateur que vous avez spécifié n'existe pas !");
             return;
         }
@@ -632,7 +632,7 @@ class admin
               . "Utilisez la commande DELADMIN pour retirer les privilèges d'un aministrateur.");
             return;
         }
-        if (! $irpg->userExist($user)) {
+        if (!$irpg->userExist($user)) {
             $irc->notice($nick, "L'utilisateur que vous avez spécifié n'existe pas !");
             return;
         }
@@ -675,7 +675,7 @@ class admin
     {
         global $irpg, $db, $irc;
 
-        if (! $irpg->persoExist($perso)) {
+        if (!$irpg->persoExist($perso)) {
             $irc->notice($nick, 'Le personnage que vous avez spécifié n\'existe pas !');
             return;
         }
@@ -708,7 +708,7 @@ class admin
     {
         global $irpg, $db, $irc;
 
-        if (! $irpg->persoExist($perso)) {
+        if (!$irpg->persoExist($perso)) {
             $irc->notice($nick, 'Le personnage que vous avez spécifié n\'existe pas !');
             return;
         }

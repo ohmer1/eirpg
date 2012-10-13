@@ -50,7 +50,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
     $this->name = "mod_test";              /* Nom du module, préfixé de mod_ */
     $this->version = "0.1.1";              /* Important de mettre la version sous forme x.y.z */
     $this->desc = "Module expérimental";
-    $this->depend = array("test2/0.1.1");  /* Syntaxe: nomModule/version (x.y.z) */
+    $this->depend = array("test2/0.1.1");  /* Syntaxe : nomModule/version (x.y.z) */
 
     //Recherche de dépendances
     /* Ne pas modifier ce qui suit; procédure de vérification des dépendances */

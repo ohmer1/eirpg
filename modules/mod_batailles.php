@@ -425,7 +425,7 @@ class batailles
     //Affichage du message crée
     $irc->privmsg($irc->home, $message);
 
-    $ChallengeNext = ($nbChallenges+2)^4.3 ;
+    $ChallengeNext = pow(($nbChallenges+2), 4.3);
     $db->req("UPDATE $tPerso SET ChallengeNext=$ChallengeNext WHERE Id_Personnages='$pid'");
     $cChallengeNext = $irpg->convSecondes($ChallengeNext);
     //Message affichant le temps d'attente avant un nouveau challenge

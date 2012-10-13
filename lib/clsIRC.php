@@ -497,7 +497,7 @@ class IRC
   function checkTimeout()
   {
     if ($this->lastData+180 < mktime()) {
-      $this->deconnexion("Perte de connexion vers le serveur IRC... reconnexion.");
+      $this->deconnexion("Perte de connexion vers le serveur IRC... Reconnexion.");
       return true;
     } else {
       return false;
@@ -884,7 +884,7 @@ class IRC
         //  $this->nbReadError++;
         //  print "READ ERROR!!: ".socket_strerror(socket_last_error())."\n\n";
         // if ($this->nbReadError > 2) {
-        //    $this->deconnexion("ARRRG! Je viens de rencontrer une erreur fatale :(.  Debug: "
+        //    $this->deconnexion("ARRRG ! Je viens de rencontrer une erreur fatale :(.  Debug: "
         //      .socket_strerror(socket_last_error())
         //    );
         //    break;

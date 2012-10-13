@@ -127,7 +127,7 @@ class credits
           continue; //on a déjà l'objet
         } else {
           $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES ('$pid', '$oid', '$niveau')");
-          $irc->notice($nick, "Félicitations!  Ton personnage \002$nomPerso\002 vient de trouver un "
+          $irc->notice($nick, "Félicitations !  Ton personnage \002$nomPerso\002 vient de trouver un "
             . "objet unique : \002$name\002 de niveau \002$niveau\002 !");
 
           $req = "SELECT Id_Objets, Level FROM $tbObj WHERE Pers_Id='$pid' And LObj_Id
@@ -271,7 +271,7 @@ class credits
 
   function envoyerInfoObjets($nick, $perso)
   {
-    global $db, $irpg, $irc;;
+    global $db, $irpg, $irc;
 
     //On retourne les stats pour le personnage spécifié
     $pid = $irpg->getPIDByPerso($perso);

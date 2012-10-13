@@ -72,7 +72,7 @@ modules = "core,idle,penalites,objets,admin,ohvstatus,hog,calamites,godsends,bat
 maxPerso = "1"				;Nombre maximum de personnages par compte
 penLogout = "20"			;Pénalité logout [x*(1.14^level)]
 expPenalite = "1.14"	;Valeur exponentiel pour le calcul des pénalités
-motd = "Bienvenue sur EIRPG! - Pour plus d'infos, visitez www.eirpg.com"
+motd = "Bienvenue sur EIRPG ! - Pour plus d'infos, visitez www.eirpg.com"
 
 ; -------------------------------------------------
 

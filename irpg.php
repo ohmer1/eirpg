@@ -106,7 +106,7 @@ function start()
         die("SHUTDOWN du bot demandé.\n");
       }
 
-      $irpg->alog("Connexion IRC perdue... reconnexion dans 20 secondes.");
+      $irpg->alog("Connexion IRC perdue... Reconnexion dans 20 secondes.");
       sleep(20);
       if ($irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"),
         $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"),

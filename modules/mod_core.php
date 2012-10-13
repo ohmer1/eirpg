@@ -144,7 +144,7 @@ class core
         } elseif ($nb == 3) {
           $this->cmdLogin($nick, $user, $host, $message[1], $message[2], $message[3]);
         } else {
-          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: LOGIN <utilisateur> <mot de passe> [personnage].");
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe : LOGIN <utilisateur> <mot de passe> [personnage]");
           $irc->notice($nick, "Le paramètre personnage est optionnel.  Ce paramètre permet de s'authentifier "
             . "sur un personnage précis.  Si ce paramètre n'est pas indiqué, vous serez authentifié sur tous "
             . "vos personnages créés sous votre compte.");
@@ -157,7 +157,7 @@ class core
         } elseif ($nb == 2) {
           $this->cmdLogout($nick, $user, $host, $message[1], $message[2]);
         } else {
-          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: LOGOUT [utilisateur] [mot de passe]");
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe : LOGOUT [utilisateur] [mot de passe]");
         }
         break;
       case "REGISTER":
@@ -165,7 +165,7 @@ class core
         if ($nb == 3) {
           $this->cmdRegister($nick, $message[1], $message[2], $message[3]);
         } else {
-          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: REGISTER <utilisateur> <mot de passe> <courriel>.");
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe : REGISTER <utilisateur> <mot de passe> <courriel>");
         }
         break;
       case "CREATE":
@@ -178,7 +178,7 @@ class core
           }
           $this->cmdCreate($nick, $user, $host, $message[1], trim($classe));
         } else {
-          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: CREATE <nom personnage> <classe>.");
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe : CREATE <nom personnage> <classe>");
         }
         break;
       case "NOTICE":
@@ -186,7 +186,7 @@ class core
         if ($nb == 1) {
           $this->cmdNotice($nick, $message[1]);
         } else {
-          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: NOTICE <on/off>.");
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe : NOTICE <on/off>");
         }
         break;
       case "SENDPASS":
@@ -194,7 +194,7 @@ class core
         if ($nb == 2) {
           $this->cmdSendPass($nick, $message[1], $message[2]);
         } else {
-          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: SENDPASS <utilisateur> <courriel>");
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe : SENDPASS <utilisateur> <courriel>");
         }
         break;
       case "WHOAMI":
@@ -202,18 +202,18 @@ class core
         if ($nb == 0) {
           $this->cmdWhoAmI($nick);
         } else {
-          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: WHOAMI");
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe : WHOAMI");
         }
         break;
 	  case "INFOUSER":
           if ($nb < 1) {
-            $irc->notice($nick, "Syntaxe: INFOUSER <user>");
+            $irc->notice($nick, "Syntaxe : INFOUSER <user>");
           }
 	  break;
 
 	  case "INFOPERSO":
           if ($nb < 1) {
-            $irc->notice($nick, "Syntaxe: INFOPERSO <perso>");
+            $irc->notice($nick, "Syntaxe : INFOPERSO <perso>");
           }
 	  break;
     }
@@ -628,7 +628,7 @@ class core
     global $irc, $db, $irpg;
 
     if ((strtolower($flag) != "on") && (strtolower($flag) != "off")) {
-      $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: NOTICE <on/off>.");
+      $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe : NOTICE <on/off>.");
     } else {
       $user = $irpg->getUsernameByNick($nick);
       $tbUtil = $db->prefix."Utilisateurs";
