@@ -62,8 +62,7 @@ class core
     $this->depend = array();
 
     //Recherche de dépendances
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
 
@@ -71,8 +70,7 @@ class core
     $cfgKeys = array("maxPerso", "penLogout", "expPenalite");
     $cfgKeysOpt = array("motd");
 
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -103,7 +101,8 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg, $db;
     //Effacement de la table IRC lors de la connexion
     $table = $db->prefix."IRC";
@@ -113,7 +112,8 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
@@ -121,7 +121,8 @@ class core
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
     //Implantation des commandes de base
@@ -133,62 +134,88 @@ class core
       case "HELP":
       case "AIDE":
         //Aide sommaire sur les commandes
-        if ($nb != 0) { $this->cmdHelp($nick, $message[1]); }
-        else { $this->cmdHelp($nick); }
+        if ($nb != 0) {
+          $this->cmdHelp($nick, $message[1]);
+        } else {
+          $this->cmdHelp($nick);
+        }
         break;
       case "LOGIN":
         //Authentification au bot
-        if ($nb == 2) { $this->cmdLogin($nick, $user, $host, $message[1], $message[2]); }
-        elseif ($nb == 3) { $this->cmdLogin($nick, $user, $host, $message[1], $message[2], $message[3]); }
-        else {
+        if ($nb == 2) {
+          $this->cmdLogin($nick, $user, $host, $message[1], $message[2]);
+        } elseif ($nb == 3) {
+          $this->cmdLogin($nick, $user, $host, $message[1], $message[2], $message[3]);
+        } else {
           $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: LOGIN <utilisateur> <mot de passe> [personnage].");
-          $irc->notice($nick, "Le paramètre personnage est optionnel.  Ce paramètre permet de s'authentifier sur un personnage précis.  Si ce paramètre n'est pas indiqué, vous serez authentifié sur tous vos personnages créés sous votre compte.");        }
+          $irc->notice($nick, "Le paramètre personnage est optionnel.  Ce paramètre permet de s'authentifier sur un personnage précis.  Si ce paramètre n'est pas indiqué, vous serez authentifié sur tous vos personnages créés sous votre compte.");
+        }
         break;
       case "LOGOUT":
         //Désauthentification au bot
-        if ($nb == 0) { $this->cmdLogout($nick); }
-        elseif ($nb == 2) { $this->cmdLogout($nick, $user, $host, $message[1], $message[2]); }
-        else { $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: LOGOUT [utilisateur] [mot de passe]"); }
+        if ($nb == 0) {
+          $this->cmdLogout($nick);
+        } elseif ($nb == 2) {
+          $this->cmdLogout($nick, $user, $host, $message[1], $message[2]);
+        } else {
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: LOGOUT [utilisateur] [mot de passe]");
+        }
         break;
       case "REGISTER":
         //Création d'un compte sur le bot
-        if ($nb == 3) { $this->cmdRegister($nick, $message[1], $message[2], $message[3]); }
-        else { $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: REGISTER <utilisateur> <mot de passe> <courriel>."); }
+        if ($nb == 3) {
+          $this->cmdRegister($nick, $message[1], $message[2], $message[3]);
+        } else {
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: REGISTER <utilisateur> <mot de passe> <courriel>.");
+        }
         break;
       case "CREATE":
         //Création d'un personnage sur le bot
-        if ($nb >= 2)
-        {
+        if ($nb >= 2) {
           $i = 2;
           while ($i != count($message)) {
             $classe = "$classe $message[$i]";
             $i++;
           }
           $this->cmdCreate($nick, $user, $host, $message[1], trim($classe));
+        } else {
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: CREATE <nom personnage> <classe>.");
         }
-        else { $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: CREATE <nom personnage> <classe>."); }
         break;
       case "NOTICE":
         //Préférence d'envoi en PRIVMSG ou NOTICE
-        if ($nb == 1) { $this->cmdNotice($nick, $message[1]); }
-        else { $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: NOTICE <on/off>."); }
+        if ($nb == 1) {
+          $this->cmdNotice($nick, $message[1]);
+        } else {
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: NOTICE <on/off>.");
+        }
         break;
       case "SENDPASS":
         //Envoi d'un mot de pass perdu par courriel
-        if ($nb == 2) { $this->cmdSendPass($nick, $message[1], $message[2]); }
-        else { $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: SENDPASS <utilisateur> <courriel>"); }
+        if ($nb == 2) {
+          $this->cmdSendPass($nick, $message[1], $message[2]);
+        } else {
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: SENDPASS <utilisateur> <courriel>");
+        }
         break;
       case "WHOAMI":
         //Information sur le compte/personnages
-        if ($nb == 0) { $this->cmdWhoAmI($nick); }
-        else { $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: WHOAMI"); }
+        if ($nb == 0) {
+          $this->cmdWhoAmI($nick);
+        } else {
+          $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: WHOAMI");
+        }
         break;
 	  case "INFOUSER":
-          if ($nb < 1) {$irc->notice($nick, "Syntaxe: INFOUSER <user>"); }
+          if ($nb < 1) {
+            $irc->notice($nick, "Syntaxe: INFOUSER <user>");
+          }
 	  break;
 
 	  case "INFOPERSO":
-          if ($nb < 1) {$irc->notice($nick, "Syntaxe: INFOPERSO <perso>"); }
+          if ($nb < 1) {
+            $irc->notice($nick, "Syntaxe: INFOPERSO <perso>");
+          }
 	  break;
     }
 
@@ -196,27 +223,29 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
     //Ajout de l'utilisateur dans la table IRC
     $table = $db->prefix."IRC";
-    if ($nick != $irc->me)
-    {
+    if ($nick != $irc->me) {
       $channel = strtoupper($channel);
       $db->req("INSERT INTO $table (`Nick`, `Channel`, `UserHost`) VALUES ('$nick', '$channel', '$user@$host')");
     }
@@ -224,7 +253,8 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
+  function onPart($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
 
@@ -233,18 +263,19 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function onNick($nick, $user, $host, $newnick) {
+  function onNick($nick, $user, $host, $newnick)
+  {
     global $irc, $irpg, $db;
 
-    if ($nick == $irc->me)
-    {
+    if ($nick == $irc->me) {
       $irc->me = $newnick;
     }
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
     global $irc, $irpg, $db;
 
 
@@ -252,21 +283,24 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function on5Secondes() {
+  function on5Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -274,7 +308,8 @@ class core
 ///////////////////////////////////////////////////////////////
 
 
-  function on10Secondes() {
+  function on10Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -282,7 +317,8 @@ class core
 ///////////////////////////////////////////////////////////////
 
 
-  function on15Secondes() {
+  function on15Secondes()
+  {
     global $irc, $irpg, $db;
 
     //Envoi d'un ping toutes les 60sec pour éviter que le bot
@@ -309,30 +345,23 @@ class core
     /* cmdREGISTER : crée un compte dans la base de données */
 
     //On vérifie si l'utilisateur est sur le canal
-    if (!$irc->isOn($irc->home, $nick))
-    {
+    if (!$irc->isOn($irc->home, $nick)) {
       $irc->notice($nick, "Désolé, vous devez être sur \002$irc->home\002 pour vous enregistrer.");
       return false;
-    }
-    //Validation du nom d'utilisateur
-    elseif (strlen($username) > 30) {
+    } elseif (strlen($username) > 30) { //Validation du nom d'utilisateur
       $irc->notice($nick, "Désolé, votre nom d'utilisateur est trop long.  La limite autorisée est de \00230\002 caractères.");
       return false;
-    }
-    elseif (!eregi("^[a-z0-9_-]+$", $username)) {
+    } elseif (!eregi("^[a-z0-9_-]+$", $username)) {
       $irc->notice($nick, "Désolé, votre nom d'utilisateur contient des caractères interdits.  Seuls les caractères \002alphanumériques\002, le \002tiret\002 et la \002barre de soulignement\002 sont autorisés.");
       return false;
-    }
-    elseif (((strtoupper($username) == "IRPG")) or ((strtoupper($username) == "EIRPG"))) {
+    } elseif (((strtoupper($username) == "IRPG")) or ((strtoupper($username) == "EIRPG"))) {
       $irc->notice($nick, "Désolé, ce nom d'utilisateur est réservé.");
       return false;
-    }
-    else {
+    } else {
       //On vérifie que le nom n'existe pas déjà
       $table = $db->prefix."Utilisateurs";
       $r = $db->req("SELECT Username FROM $table WHERE Username='$username'");
-      if (mysql_num_rows($r) != 0)
-      {
+      if (mysql_num_rows($r) != 0) {
         $irc->notice($nick, "Désolé, ce nom d'utilisateur existe déjà.  Veuillez en choisir un autre.");
         return false;
       }
@@ -342,8 +371,7 @@ class core
     $password = md5($password);
 
     //Validation de l'adresse de courriel
-    if (!$this->validerMail($email))
-    {
+    if (!$this->validerMail($email)) {
       $irc->notice($nick, "Désolé, votre adresse de courriel n'est pas valide.");
       return false;
     }
@@ -371,35 +399,24 @@ class core
       //On vérifie si le login est autorisé
       $irc->notice($nick, "Désolé, la commande LOGIN est désactivée.  Veuillez recommencer dans quelques minutes.");
       return false;
-    }
-    elseif (!$irc->isOn($irc->home, $nick))
-    { //On vérifie si l'utilisateur est sur le canal
+    } elseif (!$irc->isOn($irc->home, $nick)) { //On vérifie si l'utilisateur est sur le canal
       $irc->notice($nick, "Désolé, vous devez être sur \002$irc->home\002 pour vous authentifier.");
       return false;
-    }
-    elseif ($db->nbLignes("SELECT Username FROM $tbUtil WHERE Username='$username' And Password=MD5('$password')") != 1)
-    {
+    } elseif ($db->nbLignes("SELECT Username FROM $tbUtil WHERE Username='$username' And Password=MD5('$password')") != 1) {
       //Si mot de passe invalide
       $irc->notice($nick, "Désolé, votre nom d'utilisateur et/ou votre mot de passe est incorrect.");
       return false;
-    }
-    elseif (array_key_exists($username, $this->users))
-    { //Le compte est déjà utilisé
+    } elseif (array_key_exists($username, $this->users)) { //Le compte est déjà utilisé
       $irc->notice($nick, "Désolé, quelqu'un (probablement vous) utilise déjà ce compte.  Utilisez la commande \002LOGOUT <utilisateur> <mot de passe>\002 pour le déconnecter (avec pénalité équivalente à celle d'un QUIT).");
       return false;
-    }
-    elseif (in_array($nick, $this->users))
-    {
+    } elseif (in_array($nick, $this->users)) {
       //L'utilisateur est déjà identifié sous un autre compte
       $irc->notice($nick, "Désolé, vous êtes déjà authentifié sous un autre compte.");
       return false;
-    }
-    elseif (is_null($perso))
-    { //Pas de perso spécifié, si un ou des persos existent, on les logs tous, sinon
+    } elseif (is_null($perso)) { //Pas de perso spécifié, si un ou des persos existent, on les logs tous, sinon
       //on demande de créer un perso
 
-      if ($db->nbLignes("SELECT Nom FROM $tbPerso WHERE Util_Id = (SELECT Id_Utilisateurs FROM $tbUtil WHERE Username = '$username')") == 0)
-      { //Si aucun perso
+      if ($db->nbLignes("SELECT Nom FROM $tbPerso WHERE Util_Id = (SELECT Id_Utilisateurs FROM $tbUtil WHERE Username = '$username')") == 0) { //Si aucun perso
         $irc->notice($nick, "\002AUTHENTIFICATION RÉUSSIE!\002  Vous êtes maintenant authentifié sous le compte \002$username\002, mais sous aucun personnage.");
         $irc->notice($nick, "Pour commencer à jouer, créez votre premier personnage à l'aide de la commande \002CREATE\002.");
         $irc->privmsg($irc->home, "$nick s'est connecté au compte $username.");
@@ -408,21 +425,16 @@ class core
 
         //Appel aux autres modules
         $y = 0;
-        while ($y != count($irpg->mod))
-        {
-          if (method_exists($irpg->mod[$irpg->modules[$y]], "modCore_onLogin"))
-          {
+        while ($y != count($irpg->mod)) {
+          if (method_exists($irpg->mod[$irpg->modules[$y]], "modCore_onLogin")) {
             $irpg->mod[$irpg->modules[$y]]->modCore_onLogin($nick, $uid, NULL, NULL, NULL);
           }
           $y++;
         }
-      }
-      else
-      { //Si au moins un perso
+      } else { //Si au moins un perso
         $persodb = $db->getRows("SELECT Nom, Util_Id, Class, Id_Personnages, Level, Next FROM $tbPerso WHERE Util_Id = (SELECT Id_Utilisateurs FROM $tbUtil WHERE Username = '$username')");
         $i = 0;
-        while ($i != count($persodb))
-        {
+        while ($i != count($persodb)) {
           $uid = $persodb[$i]["Util_Id"];
           $nomPerso = $persodb[$i]["Nom"];
           $classe = $persodb[$i]["Class"];
@@ -432,11 +444,9 @@ class core
 
           $db->req("INSERT INTO $tbIRC (`Pers_Id`, `Nick`, `UserHost`, `Channel`) VALUES ('$pid', '$nick', '$user@$host', '$irc->home')");
 
-          if (empty($lstPerso))
-          {
+          if (empty($lstPerso)) {
             $lstPerso = "\002$nomPerso\002";
-          }
-          else {
+          } else {
             $lstPerso = "$lstPerso, \002$nomPerso\002";
           }
 
@@ -448,10 +458,8 @@ class core
 
           //Appel aux autres modules
           $y = 0;
-          while ($y != count($irpg->mod))
-          {
-            if (method_exists($irpg->mod[$irpg->modules[$y]], "modCore_onLogin"))
-            {
+          while ($y != count($irpg->mod)) {
+            if (method_exists($irpg->mod[$irpg->modules[$y]], "modCore_onLogin")) {
               $irpg->mod[$irpg->modules[$y]]->modCore_onLogin($nick, $uid, $pid, $level, $next);
             }
             $y++;
@@ -462,11 +470,9 @@ class core
 
         $irc->notice($nick, "\002AUTHENTIFICATION RÉUSSIE!\002  Vous êtes maintenant authentifié sous le compte \002$username\002.");
 
-        if ($i == 1)
-        {
+        if ($i == 1) {
           $irc->notice($nick, "Vous jouez actuellement avec le personnage $lstPerso.");
-        }
-        else {
+        } else {
           $irc->notice($nick, "Vous jouez actuellement avec les personnages suivants : $lstPerso.");
         }
 
@@ -494,8 +500,7 @@ class core
       $db->req("UPDATE $tbUtil SET LastLogin = NOW() WHERE Id_Utilisateurs = '$uid'");
 
 
-    }
-    else {
+    } else {
       //Login à un personnage spécifique
         $irc->notice($nick, "Fonction non développée actuellement.");
     }
@@ -506,21 +511,18 @@ class core
   function cmdLogout($nick, $user = null, $host = null, $username = null, $password = null)
   {
     global $irpg, $db, $irc;
-    if (isset($username))
-    {
+    if (isset($username)) {
       //Logout "distant"..
       $irc->notice($nick, "Désolé, cette fonction n'est pas encore développée.");
 
 
-    }
-    else {
+    } else {
       //Logout du compte utilisé actuellement
       $tbIRC = $db->prefix."IRC";
       $tbPerso = $db->prefix."Personnages";
       $username = $irpg->getUsernameByNick($nick);
 
-      if ($username)
-      {
+      if ($username) {
         #$irc->notice($nick, "Vous n'êtes plus authentifié.  Une pénalité P20 a été appliquée à vos personnages en ligne.");
 
         //On enlève l'utilisateur du tableau des utilisateurs en ligne'
@@ -529,8 +531,7 @@ class core
         //On selectionne les noms de personnages et le next de chaque perso
         $res = $db->getRows("SELECT Nom, Next, Level, Id_Personnages FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE Nick='$nick' And NOT ISNULL(Pers_Id))");
         $i = 0;
-        while ($i != count($res))
-        {
+        while ($i != count($res)) {
           //On applique les penalites
           $nom = $res[$i]["Nom"];
           $level = $res[$i]["Level"];
@@ -560,8 +561,7 @@ class core
         $irc->sendRaw("MODE $irc->home -ohv $nick $nick $nick");
 
 
-      }
-      else {
+      } else {
         $irc->notice($nick, "Impossible de vous déloguer, car vous n'êtes actuellement pas authentifié.");
       }
     }
@@ -569,7 +569,8 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function cmdCreate($nick, $user, $host, $personnage, $classe) {
+  function cmdCreate($nick, $user, $host, $personnage, $classe)
+  {
     global $irpg, $irc, $db;
 
     $tbPerso = $db->prefix."Personnages";
@@ -577,30 +578,21 @@ class core
     $username = $irpg->getUsernameByNick($nick);
     $uid = $irpg->getUIDByUsername($username);
 
-    if (!$username)
-    {
+    if (!$username) {
       $irc->notice($nick, "Vous devez être authentifié pour utiliser cette commande.");
-    }
-    else {
+    } else {
       //On vérifie si le nombre maximal de personnage n'a pas été atteint
       if ($db->nbLignes("SELECT Nom FROM $tbPerso WHERE Util_Id='$uid'") >= $this->maxPerso) {
         $irc->notice($nick, "Désolé, vous ne pouvez pas créer plus de $this->maxPerso personnage(s).");
-      }
-      //On vérifie la validité du nom de personnage
-      elseif (strlen($personnage) > 30) {
+      } elseif (strlen($personnage) > 30) { //On vérifie la validité du nom de personnage
         $irc->notice($nick, "Le nom de votre personnage est limité à 30 caractères.");
-      }
-      elseif (((strtoupper($personnage) == "IRPG")) or ((strtoupper($personnage) == "EIRPG"))) {
+      } elseif (((strtoupper($personnage) == "IRPG")) or ((strtoupper($personnage) == "EIRPG"))) {
         $irc->notice($nick, "Désolé, ce nom de personnage est réservé.");
-      }
-      elseif ($db->nbLignes("SELECT Nom FROM $tbPerso WHERE Nom = '$personnage'") != 0) {
+      } elseif ($db->nbLignes("SELECT Nom FROM $tbPerso WHERE Nom = '$personnage'") != 0) {
         $irc->notice($nick, "Désolé, ce nom de personnage est déjà en utilisation.");
-      }
-      //Puis la validité de la classe
-      elseif (strlen($classe) > 50) {
+      } elseif (strlen($classe) > 50) { //Puis la validité de la classe
         $irc->notice($nick, "La taille de votre classe ne peut dépasser 50 caractères.");
-      }
-      else {
+      } else {
         //Création du personnage
         $base = $irpg->mod["idle"]->idleBase;
         $db->req("INSERT INTO $tbPerso (`Util_Id`, `Nom`, `Class`, `LastLogin`, `Created`, `Next`) VALUES ('$uid', '$personnage', '$classe', NOW(), NOW(), '$base')");
@@ -616,7 +608,8 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function cmdHelp($nick, $message = "") {
+  function cmdHelp($nick, $message = "")
+  {
     global $irc;
     $irc->notice($nick, "Aide non disponible.");
 
@@ -624,7 +617,8 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function cmdSendPass($nick, $user, $pass) {
+  function cmdSendPass($nick, $user, $pass)
+  {
     global $irc;
     $irc->notice($nick, "Commande non disponible.");
 
@@ -632,20 +626,19 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function cmdNotice($nick, $flag) {
+  function cmdNotice($nick, $flag)
+  {
     global $irc, $db, $irpg;
     if ((strtolower($flag) != "on") and (strtolower($flag) != "off")) {
       $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: NOTICE <on/off>.");
-    }
-    else {
+    } else {
       $user = $irpg->getUsernameByNick($nick);
       $tbUtil = $db->prefix."Utilisateurs";
       if (strtolower($flag) == "on") {
         //On rétablis le message par notice
         $db->req("UPDATE $tbUtil SET Notice='O' WHERE Username='$user'");
         $irc->notice($nick, "Vous recevrez maintenant vos messages par notices.");
-      }
-      else {
+      } else {
         //On active les messages par privmsg
         $db->req("UPDATE $tbUtil SET Notice='N' WHERE Username='$user'");
         $irc->notice($nick, "Vous recevrez maintenant vos messages par privmsg.");
@@ -656,7 +649,8 @@ class core
 
 ///////////////////////////////////////////////////////////////
 
-  function cmdWhoAmI($nick) {
+  function cmdWhoAmI($nick)
+  {
     global $irpg,$irc,$db;
 
     $user = $irpg->getUsernameByNick($nick, true);
@@ -679,16 +673,14 @@ class core
 
         if (is_null($equipe)) {
           $irc->notice($nick, "Personnage \002$nom\002, $class de niveau $level.  Prochain niveau dans $next.");
-        }
-        else {
+        } else {
           $irc->notice($nick, "Personnage \002$nom\002, $class de niveau $level (membre de l'équipe \002$equipe\002).  Prochain niveau dans $next.");
         }
 
         $i++;
       }
 
-    }
-    else {
+    } else {
       $irc->notice($nick, "Vous n'êtes pas authentifié actuellement.");
     }
   }
@@ -717,8 +709,7 @@ class core
   {
     $i = 0;
     $nb = count($this->autologged); //-1 à chaque loop, donc il faut la valeur inititialle
-    while ($i != $nb)
-    {
+    while ($i != $nb) {
       unset($this->autologged[$i]);
       $i++;
     }

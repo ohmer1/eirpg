@@ -40,7 +40,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function loadModule() {
+    function loadModule()
+    {
         //Constructeur; initialisateur du module
         //S'éxécute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
@@ -68,7 +69,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function unloadModule() {
+    function unloadModule()
+    {
         //Destructeur; décharge le module
         //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
@@ -76,19 +78,22 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function onConnect() {
+    function onConnect()
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function onPrivmsgCanal($nick, $user, $host, $message) {
+    function onPrivmsgCanal($nick, $user, $host, $message)
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function onPrivmsgPrive($nick, $user, $host, $message) {
+    function onPrivmsgPrive($nick, $user, $host, $message)
+    {
         global $irc, $irpg, $db;
 
         $message = trim(str_replace("\n", "", $message));
@@ -102,8 +107,7 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 9) {
                 $raison = implode(" ", array_slice($message, 1));
                 $this->cmdDie($nick, $uid[0], $raison);
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -113,8 +117,7 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 9) {
                 $raison = implode(" ", array_slice($message, 1));
                 $this->cmdRestart($nick, $uid[0], $raison);
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -124,12 +127,10 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 if ($nb < 2) {
                     $irc->notice($nick, "Syntaxe : CHGPASS <utilisateur> <nouveau_mot_de_passe>");
-                }
-                else {
+                } else {
                     $this->cmdChgPass($nick, $message[1], $message[2]);
                 }
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -139,8 +140,7 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 if ($nb < 2) {
                     $irc->notice($nick, "Syntaxe : CHGCLASS <personnage> <nouvelle classe>");
-                }
-                else {
+                } else {
                     $classe = implode(" ", array_slice($message, 2));
                     $this->cmdChgClass($nick, $message[1], $classe);
                 }
@@ -152,12 +152,10 @@ class admin {
 	        if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 if ($nb < 2) {
                     $irc->notice($nick, "Syntaxe : CHGPERSO <personnage> <nouveau_personnage>");
-                }
-                else {
+                } else {
                     $this->cmdChgPerso($nick, $message[1], $message[2]);
                 }
-	        }
-            else {
+	        } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -167,12 +165,10 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 if ($nb < 2) {
                     $irc->notice($nick, "Syntaxe : CHGUSER <utilisateur> <nouvel_utilisateur>");
-                }
-                else {
+                } else {
                     $this->cmdChgUser($nick, $message[1], $message[2]);
                 }
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -182,12 +178,10 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 7) {
                 if ($nb < 1) {
                     $irc->notice($nick, "Syntaxe : DELPERSO <personnage>");
-                }
-                else {
+                } else {
                     $this->cmdDelPerso($nick, $message[1]);
                 }
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -197,12 +191,10 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 7) {
                 if ($nb < 1) {
                     $irc->notice($nick, "Syntaxe : DELUSER <utilisateur>");
-                }
-                else {
+                } else {
                     $this->cmdDelUser($nick, $message[1]);
                 }
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -212,12 +204,10 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 9) {
                 if ($nb < 1) {
                     $irc->notice($nick, "Syntaxe : DELADMIN <administrateur>");
-                }
-                else {
+                } else {
                     $this->cmdDelAdmin($nick, $message[1]);
                 }
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -227,12 +217,10 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 9) {
                 if (($nb < 2) || (! is_numeric($message[2]))) {
                     $irc->notice($nick, "Syntaxe : ADDADMIN <utilisateur> <niveau_en_chiffre>");
-                }
-                else {
+                } else {
                     $this->cmdAddAdmin($nick, $message[1], $message[2]);
                 }
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -242,15 +230,12 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 if (($nb < 2) || (! is_numeric($message[2]))) {
                     $irc->notice($nick, "Syntaxe : PULL <personnage> <temps_en_secondes>");
-                }
-                elseif ($message[2] > 0) {
+                } elseif ($message[2] > 0) {
                     $this->cmdPull($nick, $message[1], $message[2]);
-                }
-                else {
+                } else {
                     $irc->notice($nick, "Le temps doit être strictement supérieur à 0.");
                 }
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -260,15 +245,12 @@ class admin {
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 if (($nb < 2) || (! is_numeric($message[2]))) {
                     $irc->notice($nick, "Syntaxe : PUSH <personnage> <temps_en_secondes>");
-                }
-                elseif ($message[2] > 0) {
+                } elseif ($message[2] > 0) {
                     $this->cmdPush($nick, $message[1], $message[2]);
-                }
-                else {
+                } else {
                     $irc->notice($nick, "Le temps doit être strictement supérieur à 0.");
                 }
-            }
-            else {
+            } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
             }
             break;
@@ -278,13 +260,11 @@ class admin {
 	        if ($irpg->getAdminLvl($uid[1]) >= 5) {
 	            if ($nb < 1) {
 	                $irc->notice($nick, "Syntaxe : SAY <le message>");
-	            }
-	            else {
+	            } else {
 	                $msg = implode(" ", array_slice($message, 1));
 	                $this->cmdSay($nick, $msg);
 	            }
-	        }
-	        else {
+	        } else {
 	            $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
 	        }
 	        break;
@@ -293,67 +273,78 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function onNoticeCanal($nick, $user, $host, $message) {
+    function onNoticeCanal($nick, $user, $host, $message)
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function onNoticePrive($nick, $user, $host, $message) {
+    function onNoticePrive($nick, $user, $host, $message)
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function onJoin($nick, $user, $host, $channel) {
+    function onJoin($nick, $user, $host, $channel)
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function onPart($nick, $user, $host, $channel) {
+    function onPart($nick, $user, $host, $channel)
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function onNick($nick, $user, $host, $newnick) {
+    function onNick($nick, $user, $host, $newnick)
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function onKick($nick, $user, $host, $channel, $nickkicked) {
+    function onKick($nick, $user, $host, $channel, $nickkicked)
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function onCTCP($nick, $user, $host, $ctcp) {
+    function onCTCP($nick, $user, $host, $ctcp)
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function onQuit($nick, $user, $host, $reason) {
+    function onQuit($nick, $user, $host, $reason)
+    {
         global $irc, $irpg, $db;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function on5Secondes() {
+    function on5Secondes()
+    {
         global $irc, $irpg;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function on10Secondes() {
+    function on10Secondes()
+    {
         global $irc, $irpg;
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function on15Secondes() {
+    function on15Secondes()
+    {
         global $irc, $irpg, $db;
     }
 
@@ -361,7 +352,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdDie($nick, $user, $raison) {
+    function cmdDie($nick, $user, $raison)
+    {
         //TODO: exécuter la méthode unload() de chaque module avant de shutdown le bot
         global $irc, $db, $irpg;
 
@@ -373,7 +365,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdRestart($nick, $user, $raison) {
+    function cmdRestart($nick, $user, $raison)
+    {
         //TODO: Améliorer - ou pas - la gestion du redémarrage et exécuter la méthode unload() de chaque module avant l'arrêt du bot
         global $irc, $db, $irpg;
 
@@ -388,7 +381,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdChgPass($nick, $user, $newPass) {
+    function cmdChgPass($nick, $user, $newPass)
+    {
         global $irpg, $db, $irc;
 
         if (! $irpg->userExist($user)) {
@@ -401,8 +395,7 @@ class admin {
         $db->req("UPDATE `$table` SET `Password` = '$newPassHash' WHERE `Username` = '$user'");
         if ($user == $irpg->getUsernameByNick($nick)) {
             $irc->notice($nick, "Votre mot de passe a bien été changé.");
-        }
-        else {
+        } else {
             $irc->notice($nick, "Le mot de passe de $user a bien été changé.");
         }
         $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGPASS ($user)");
@@ -410,7 +403,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdChgClass($nick, $perso, $newClass) {
+    function cmdChgClass($nick, $perso, $newClass)
+    {
         global $irpg, $db, $irc;
 
         if (strlen($newClass) > 50) {
@@ -430,7 +424,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdChgPerso($nick, $perso, $newPerso) {
+    function cmdChgPerso($nick, $perso, $newPerso)
+    {
         global $irpg, $db, $irc;
 
         if (strlen($newPerso) > 30) {
@@ -451,8 +446,7 @@ class admin {
                 return;
             }
             $persoIsMine = false;
-        }
-        else {
+        } else {
             $persoIsMine = true;
         }
 
@@ -465,7 +459,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdChgUser($nick, $user, $newUser) {
+    function cmdChgUser($nick, $user, $newUser)
+    {
         global $irpg, $db, $irc;
 
         if ((strtoupper($newUser) == 'IRPG') && (strtoupper($newUser) == 'EIRPG')) {
@@ -490,8 +485,7 @@ class admin {
                 return;
             }
             $userIsMe = false;
-        }
-        else {
+        } else {
             $userIsMe = true;
         }
 
@@ -499,8 +493,7 @@ class admin {
         $db->req("UPDATE `$table` SET `Username` = '$newUser' WHERE `Username` = '$user'");
         if ($userIsMe) {
             $irc->notice($nick, "Votre nom d'utilisteur a bien été changé.");
-        }
-        else {
+        } else {
             $irc->notice($nick, "Le nom d'utilisateur de $user a bien été changé.");
         }
         $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGUSER ($user -> $newUser)");
@@ -509,7 +502,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////
 
-    function cmdDelPerso($nick, $perso) {
+    function cmdDelPerso($nick, $perso)
+    {
         global $irpg, $db, $irc;
 
         if (! $irpg->persoExist($perso)) {
@@ -522,8 +516,7 @@ class admin {
                 return;
             }
             $persoIsMine = false;
-        }
-        else {
+        } else {
             $persoIsMine = true;
         }
 
@@ -536,7 +529,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdDelUser($nick, $user) {
+    function cmdDelUser($nick, $user)
+    {
         global $irpg, $db, $irc;
 
         if (! $irpg->userExist($user)) {
@@ -561,7 +555,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdDelAdmin($nick, $user) {
+    function cmdDelAdmin($nick, $user)
+    {
         global $irpg, $db, $irc;
 
         if (! $irpg->userExist($user)) {
@@ -590,7 +585,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdAddAdmin($nick, $user, $niveau) {
+    function cmdAddAdmin($nick, $user, $niveau)
+    {
         global $irpg, $db, $irc;
 
         if ($niveau <= 0) {
@@ -623,8 +619,7 @@ class admin {
         $irpg->Log(NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande ADDADMIN ($user -> $niveau)");
         if ($userNiveau > 0) {
             $irc->notice($nick, "Les privilèges d'administrateur de $user ont bien été modifiés.");
-        }
-        else {
+        } else {
             $irc->notice($nick, "Les privilèges d'administrateur ont bien été donnés à $user.");
         }
         //TODO: Avertir l'utilisateur de ses nouvelles fonctions.
@@ -632,7 +627,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdPush($nick, $perso, $temps) {
+    function cmdPush($nick, $perso, $temps)
+    {
         global $irpg, $db, $irc;
 
         if (! $irpg->persoExist($perso)) {
@@ -653,15 +649,15 @@ class admin {
             $irc->privmsg($irc->home, $nick.' a accéléré la progression de '.$perso.' de '.$irpg->convSecondes($temps).'.');
             $data[0]['Next'] = 0;
             $irpg->mod['idle']->cmdLvlUp($data[0]['Id_Personnages'], array($data[0]));
-        }
-        else {
+        } else {
             $irc->privmsg($irc->home, $nick.' a accéléré la progression de '.$perso.' de '.$irpg->convSecondes($temps).'. Prochain niveau dans '.$irpg->convSecondes($next - $temps).'.');
         }
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdPull($nick, $perso, $temps) {
+    function cmdPull($nick, $perso, $temps)
+    {
         global $irpg, $db, $irc;
 
         if (! $irpg->persoExist($perso)) {
@@ -681,7 +677,8 @@ class admin {
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdSay($nick, $message) {
+    function cmdSay($nick, $message)
+    {
         global $irpg, $db, $irc;
 
         $irc->privmsg($irc->home, $message);

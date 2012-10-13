@@ -54,8 +54,7 @@ class notice
     $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
 
@@ -63,8 +62,7 @@ class notice
     $cfgKeys = array("message", "actif");
     $cfgKeysOpt = array();
 
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -87,14 +85,16 @@ class notice
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
@@ -102,7 +102,8 @@ class notice
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
 
@@ -110,21 +111,24 @@ class notice
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
     if (($nick != $irc->me) and ($this->actif=="1"))
@@ -135,7 +139,8 @@ class notice
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
+  function onPart($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
 
@@ -143,7 +148,8 @@ class notice
 
 ///////////////////////////////////////////////////////////////
 
-  function onNick($nick, $user, $host, $newnick) {
+  function onNick($nick, $user, $host, $newnick)
+  {
     global $irc, $irpg, $db;
 
 
@@ -151,28 +157,32 @@ class notice
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function on5Secondes() {
+  function on5Secondes()
+  {
     global $irc, $irpg;
 
 
@@ -181,7 +191,8 @@ class notice
 ///////////////////////////////////////////////////////////////
 
 
-  function on10Secondes() {
+  function on10Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -189,7 +200,8 @@ class notice
 ///////////////////////////////////////////////////////////////
 
 
-  function on15Secondes() {
+  function on15Secondes()
+  {
     global $irc, $irpg, $db;
 
 

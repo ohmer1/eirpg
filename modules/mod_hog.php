@@ -52,8 +52,7 @@ class hog
     $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
 
@@ -61,8 +60,7 @@ class hog
     $cfgKeys = array();
     $cfgKeysOpt = array();
 
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -84,14 +82,16 @@ class hog
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
@@ -99,7 +99,8 @@ class hog
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
 
@@ -114,8 +115,7 @@ class hog
         $uid = $irpg->getUsernameByNick($nick, true);
         if ($irpg->getAdminLvl($uid[1]) >= 10) {
           $this->cmdHog($nick);
-        }
-        else {
+        } else {
           $irc->notice($nick, "Désolé, vous n'avez pas accès à la commande HOG.") ;
         }
         break;
@@ -125,36 +125,32 @@ class hog
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
-    global $irc, $irpg, $db;
-
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onNick($nick, $user, $host, $newnick) {
+  function onPart($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
 
@@ -162,40 +158,56 @@ class hog
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onNick($nick, $user, $host, $newnick)
+  {
+    global $irc, $irpg, $db;
+
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function on5Secondes() {
+  function on5Secondes()
+  {
     global $irc, $irpg;
 
     if ($irc->ready) {
       //il y a une chance sur 3000 d'invoquer la main de dieu..
-      if (rand(1, 3000) == 1) $this->cmdHog();
+      if (rand(1, 3000) == 1) {
+        $this->cmdHog();
+      }
     }
   }
 
 ///////////////////////////////////////////////////////////////
 
 
-  function on10Secondes() {
+  function on10Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -203,7 +215,8 @@ class hog
 ///////////////////////////////////////////////////////////////
 
 
-  function on15Secondes() {
+  function on15Secondes()
+  {
     global $irc, $irpg, $db;
 
 
@@ -215,14 +228,17 @@ class hog
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-  function cmdHog($nick = "") {
+  function cmdHog($nick = "")
+  {
     global $irpg, $irc, $db;
     $tbPerso = $db->prefix . "Personnages";
     $tbIRC = $db->prefix . "IRC";
 
     //on sélectionne d'abord un personnage en ligne
     $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
-    if ($db->nbLignes($query) != 1) return false;
+    if ($db->nbLignes($query) != 1) {
+      return false;
+    }
     $res = $db->getRows($query);
 
     $pid = $res[0]['Id_Personnages'];
@@ -234,7 +250,9 @@ class hog
     //La hog peut modifier le TTL entre 5 et 75%
     $time = rand(5, 75);
 
-    if (!empty($nick)) $irc->privmsg($irc->home, "$nick a invoqué la main de Dieu...");
+    if (!empty($nick)) {
+      $irc->privmsg($irc->home, "$nick a invoqué la main de Dieu...");
+    }
 
     //Il y a 80% de chance que la hog soit positive
     //et 20% qu'elle soit négative pour le personnage..
@@ -246,8 +264,7 @@ class hog
       $cnext = $irpg->convSecondes($next);
       $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
       $irc->privmsg($irc->home, "Dieu s'est levé du bon pied ce matin et décide d'aider $perso en lui enlevant $ctime avant d'arriver au niveau $level2.  Prochain niveau dans $cnext.");
-    }
-    else {
+    } else {
       //hog négative
       $time = round($next * ($time/100), 0);
       $ctime = $irpg->convSecondes($time);

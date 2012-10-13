@@ -60,15 +60,15 @@ class IRPG
 
     //On traite les clés obligatoires
     $i = 0;
-    while ($i != count($keys))
-    {
+    while ($i != count($keys)) {
 
-      if (empty($keys[$i])) { break; } //On sort de la boucle si pas de clés obligatoires
+      if (empty($keys[$i])) {
+        break;
+      } //On sort de la boucle si pas de clés obligatoires
 
       $keyResult = $this->readConfig($section, $keys[$i], true);
 
-      if ($keyResult != "")
-      {
+      if ($keyResult != "") {
         $this->config[$section][$keys[$i]] = $keyResult;
       } else {
         return false;
@@ -78,8 +78,7 @@ class IRPG
 
     //Ensuite, les clés optionnelles
     $i = 0;
-    while ($i != count($keys_opt))
-    {
+    while ($i != count($keys_opt)) {
       $this->config[$section][$keys_opt[$i]] = $this->readConfig($section, $keys_opt[$i], true);
       $i++;
     }
@@ -118,21 +117,27 @@ class IRPG
     $keys = array("host", "login", "password", "base"); //clés obligatoires
     $keys_opt = array("prefix");                        //clés optionnelles
     $ok = $this->validationConfig("SQL", $keys, $keys_opt);
-    if (!$ok) { return false; }
+    if (!$ok) {
+      return false;
+    }
 
 
     //Traitement de la section IRC
     $keys = array("server", "port", "channel", "nick", "altnick", "username", "realname", "modes"); //clés obligatoires
     $keys_opt = array("password", "nspass", "bind", "key");       //clés optionnelles
     $ok = $this->validationConfig("IRC", $keys, $keys_opt);
-    if (!$ok) { return false; }
+    if (!$ok) {
+      return false;
+    }
 
 
     //Traitement de la section IRPG
     $keys = array("admin", "debug", "background", "purge", "version", "modules"); //clés obligatoires
     $keys_opt = array("");                        //clés optionnelles
     $ok = $this->validationConfig("IRPG", $keys, $keys_opt);
-    if (!$ok) { return false; }
+    if (!$ok) {
+      return false;
+    }
 
     $this->ignoresH = array();
     $this->ignoresN = array();
@@ -164,13 +169,10 @@ class IRPG
 
     //On vérifie que les modules existent
     $i = 0;
-    while ($i != count($this->modules))
-    {
-      if (!file_exists("modules/mod_".$this->modules[$i].".php"))
-      {
+    while ($i != count($this->modules)) {
+      if (!file_exists("modules/mod_".$this->modules[$i].".php")) {
         die("Le module mod_".$this->modules[$i]." n'existe pas\n");
-      }
-      else {
+      } else {
         $this->alog("Chargement du module mod_".$this->modules[$i]."...", true);
         include("modules/mod_".$this->modules[$i].".php");
         $this->mod[$this->modules[$i]] = new $this->modules[$i];
@@ -195,19 +197,13 @@ class IRPG
   */
   {
 
-      if (!file_exists("modules/mod_".$nom.".php"))
-      { //On vérifie que le module existe
+      if (!file_exists("modules/mod_".$nom.".php")) { //On vérifie que le module existe
 
         return false;
-      }
-
-      elseif (in_array($nom, $this->modules))
-      { //On s'assure que le module ne soit pas déjà chargé
+      } elseif (in_array($nom, $this->modules)) { //On s'assure que le module ne soit pas déjà chargé
 
          return false;
-      }
-
-      else {
+      } else {
         include_once("modules/mod_".$nom.".php"); //TODO: rechercher le module sur REHASH (??)
         $this->modules[] = $nom;
         $this->mod[$nom] = new $nom;
@@ -223,19 +219,14 @@ class IRPG
   function unloadModule($nom)
   {
     //On vérifie si le module existe
-    if (!in_array($nom, $this->modules))
-    {
+    if (!in_array($nom, $this->modules)) {
       return false;  //module inexistant
-    }
-    else {
+    } else {
       $i = 0;
-      foreach($this->mod as $nomModule => $leModule)
-      {
+      foreach($this->mod as $nomModule => $leModule) {
         $y = 0;
-        while ($y != count($this->mod[$nom]->depend))
-        {
-          if ($this->mod[$nomModule]->depend[$y] == $nom."/".$this->mod[$nom]->version)
-          {
+        while ($y != count($this->mod[$nom]->depend)) {
+          if ($this->mod[$nomModule]->depend[$y] == $nom."/".$this->mod[$nom]->version) {
             return false;  /* On ne peut décharger ce module car il est requis */
             break;         /* par un autre module actuellement chargé          */
           }
@@ -274,8 +265,7 @@ class IRPG
 
   {
 
-    if ($fromFile)
-    {
+    if ($fromFile) {
       $config = parse_ini_file("irpg.conf", true);
       return $config[$section][$key];
 
@@ -303,21 +293,20 @@ class IRPG
   */
   {
     $i = 0;
-    while ($i != count($dep))
-    {
+    while ($i != count($dep)) {
       //Nom & version de la dépendance requise
       $module = split("/", $dep[$i]);
       $nomModule = $module[0];
       $versionModule = $module[1];
 
-      if (empty($nomModule)) { return true; }
+      if (empty($nomModule)) {
+        return true;
+      }
 
       //On vérifie si le module est chargé
-      if (!in_array($nomModule, $this->modules))
-      {
+      if (!in_array($nomModule, $this->modules)) {
         return false;
-      }
-      else {
+      } else {
         //On vérifie que la version du module est suffisante
 
         //Version requise par le module
@@ -331,32 +320,19 @@ class IRPG
         $va_mineur = $versionActuelle[1];
         $va_revision = $versionActuelle[2];
 
-        if ($va_majeur > $vr_majeur)
-        {
+        if ($va_majeur > $vr_majeur) {
           #return true;
-        }
-        elseif ($va_majeur < $vr_majeur)
-        {
+        } elseif ($va_majeur < $vr_majeur) {
           return false;
-        }
-        elseif ($va_mineur > $vr_mineur)
-        {
+        } elseif ($va_mineur > $vr_mineur) {
           #return true;
-        }
-        elseif ($va_mineur < $vr_mineur)
-        {
+        } elseif ($va_mineur < $vr_mineur) {
           return false;
-        }
-        elseif ($va_revision >= $vr_revision)
-        {
+        } elseif ($va_revision >= $vr_revision) {
           #return true;
-        }
-        elseif ($va_revision < $vr_revision)
-        {
+        } elseif ($va_revision < $vr_revision) {
           return false;
-        }
-        else
-        {
+        } else {
           return false;
         }
       }
@@ -372,8 +348,7 @@ class IRPG
   function alog($msg, $print = false)
   { //Gestion des logs et de l'affichage des info de débuguage
     $date = date("j-m-Y H:i:s");
-    if ((!$this->readConfig("IRPG", "background") or ($print)))
-    {
+    if ((!$this->readConfig("IRPG", "background") or ($print))) {
       $charset = $this->readConfig("IRPG", "charset");
       print  iconv("ISO-8859-15", $charset, "[$date] ".$msg."\n");
     }
@@ -389,8 +364,7 @@ class IRPG
   {
     $username = array_search($nick, $this->mod["core"]->users);
 
-    if (($uid) And ($username))
-    {
+    if (($uid) And ($username)) {
       global $db;
       $table = $db->prefix."Utilisateurs";
       $uid = $db->getRows("SELECT Id_Utilisateurs FROM $table WHERE Username = '$username'");
@@ -421,12 +395,9 @@ class IRPG
     global $db;
     $tbUtil = $db->prefix."Utilisateurs";
     $q = "SELECT Username FROM $tbUtil WHERE Id_Utilisateurs = '$uid' LIMIT 0,1";
-    if ($db->nbLignes($q) == 1)
-    {
+    if ($db->nbLignes($q) == 1) {
       $username = $db->getRows($q);
-    }
-    else
-    {
+    } else {
       return false;
     }
   }
@@ -438,13 +409,10 @@ class IRPG
     global $db;
     $tbPerso = $db->prefix."Personnages";
     $q = "SELECT Nom FROM $tbPerso WHERE Id_Personnages = '$pid'";
-    if ($db->nbLignes($q) == 1)
-    {
+    if ($db->nbLignes($q) == 1) {
       $result = $db->getRows($q);
       return $result[0]["Nom"];
-    }
-    else
-    {
+    } else {
       return false;
     }
   }
@@ -456,26 +424,26 @@ class IRPG
       global $db;
       $tbPerso = $db->prefix."Personnages";
       $q = "SELECT Id_Personnages FROM $tbPerso WHERE Nom = '$perso'";
-      if ($db->nbLignes($q) == 1)
-      {
+      if ($db->nbLignes($q) == 1) {
         $result = $db->getRows($q);
         return $result[0]["Id_Personnages"];
-      }
-      else
-      {
+      } else {
         return false;
       }
     }
 
   ///////////////////////////////////////////////////////////////
 
-  function getPersoByUsername($username) {}
+  function getPersoByUsername($username)
+  {
+  }
 
 
   ///////////////////////////////////////////////////////////////
 
 
-  function getUIDByPID ($pid) {
+  function getUIDByPID ($pid)
+  {
   	global $db;
     $tb = $db->prefix . "Personnages";
     $res = $db->getRows("SELECT Util_Id FROM $tb WHERE Id_Personnages='$pid'");
@@ -496,13 +464,11 @@ class IRPG
 
  ///////////////////////////////////////////////////////////////
 
-  function convSecondes($sec) {
-        if ($sec == 0)
-        {
+  function convSecondes($sec)
+  {
+        if ($sec == 0) {
           return "00:00:00";
-        }
-        else
-        {
+        } else {
           return sprintf("%d jour%s, %02d:%02d:%02d",
                        $sec/86400,intval($sec/86400)==1?"":"s",
                        ($sec%86400)/3600,($sec%3600)/60,$sec%60);
@@ -511,7 +477,8 @@ class IRPG
     }
  ///////////////////////////////////////////////////////////////
 
-  function getAdminLvl($uid) {
+  function getAdminLvl($uid)
+  {
     //Retourne le niveau d'accès admin d'un utilisateur
 
     global $db;
@@ -519,8 +486,7 @@ class IRPG
     $req = "SELECT Admin FROM $tbUtil WHERE Id_Utilisateurs = '$uid'";
     if ($db->nbLignes($req) != 1) {
       return 0;
-    }
-    else {
+    } else {
       $resultat = $db->getRows($req);
       return $resultat[0]["Admin"];
     }
@@ -529,15 +495,15 @@ class IRPG
 
  ///////////////////////////////////////////////////////////////
 
-  function Log($pid, $type, $modif = 0, $d1 = "", $d2 = "", $d3 = "") {
+  function Log($pid, $type, $modif = 0, $d1 = "", $d2 = "", $d3 = "")
+  {
    //Ajout dans la table Logs
 
     global $db;
     $tbLogs = $db->prefix."Logs";
     if ($pid == NULL) {
       $db->req("INSERT INTO $tbLogs (`Pers_Id`, `Date`, `Type`, `Modificateur`, `Desc1`, `Desc2`, `Desc3`) VALUES (NULL, NOW(), '$type', '$modif', '$d1', '$d2', '$d3')");
-    }
-    else {
+    } else {
       $db->req("INSERT INTO $tbLogs (`Pers_Id`, `Date`, `Type`, `Modificateur`, `Desc1`, `Desc2`, `Desc3`) VALUES ('$pid', NOW(), '$type', '$modif', '$d1', '$d2', '$d3')");
     }
   }
@@ -549,7 +515,9 @@ function userExist($user)
 	global $db;
 	$table = $db->prefix."Utilisateurs";
 	$r = $db->req("SELECT Username FROM $table WHERE Username='$user'");
-	if (mysql_num_rows($r) != 0) return true;
+	if (mysql_num_rows($r) != 0) {
+      return true;
+    }
 	return false;
 }
 ///////////////////////////////////////////////////////////////
@@ -559,7 +527,9 @@ function persoExist($perso)
 	global $db;
 	$table = $db->prefix."Personnages";
 	$r = $db->req("SELECT Nom FROM $table WHERE Nom='$perso'");
-	if (mysql_num_rows($r) != 0) return true;
+	if (mysql_num_rows($r) != 0) {
+      return true;
+    }
 	return false;
 }
 
@@ -568,7 +538,9 @@ function equipeExist($equipe)
 	global $db;
 	$table = $db->prefix."Equipes";
 	$r = $db->req("SELECT Name FROM $table WHERE Name='$equipe'");
-	if (mysql_num_rows($r) != 0) return true;
+	if (mysql_num_rows($r) != 0) {
+      return true;
+    }
 	return false;
 }
 ///////////////////////////////////////////////////////////////
@@ -578,19 +550,15 @@ function lireIgnores()
 	// lecture de la liste d'ignore en mémoire
   $this->alog("Lecture de la liste des ignores...");
   $f = fopen("ignores.list", "r");
-  while (!feof($f))
-  {
+  while (!feof($f)) {
   	$ligne = fgets($f);
 
-    if (substr($ligne, 0, 4) == "NICK")
-    {
+    if (substr($ligne, 0, 4) == "NICK") {
     	$nick = explode(":", $ligne);
       $nick = trim($nick[1]);
       $this->ignoresN[] = $nick;
       $this->alog("Le pseudo $nick est ignoré...");
-    }
-    elseif (substr($ligne, 0, 4) == "HOST")
-    {
+    } elseif (substr($ligne, 0, 4) == "HOST") {
     	$host = explode(":", $ligne);
       $host = trim($host[1]);
       $this->ignoresH[] = $host;

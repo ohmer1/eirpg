@@ -52,8 +52,7 @@ class objets
     $this->depend = array("core/0.5.0", "idle/1.0.0");
 
     //Recherche de dépendances
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
 
@@ -61,8 +60,7 @@ class objets
     $cfgKeys = array();
     $cfgKeysOpt = array();
 
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -84,14 +82,16 @@ class objets
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
@@ -99,7 +99,8 @@ class objets
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
 
@@ -110,44 +111,43 @@ class objets
     switch (strtoupper($message[0])) {
       case "ITEMS":
         //Retourne de l'info sur les ITEMS d'un personnage
-        if ($nb < 1) { $this->cmdItems($nick); }
-        else { $this->cmdItems($nick, $message[1]); }
+        if ($nb < 1) {
+          $this->cmdItems($nick);
+        } else {
+          $this->cmdItems($nick, $message[1]);
+        }
         break;
     }
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
-    global $irc, $irpg, $db;
-
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onNick($nick, $user, $host, $newnick) {
+  function onPart($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
 
@@ -155,28 +155,41 @@ class objets
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onNick($nick, $user, $host, $newnick)
+  {
+    global $irc, $irpg, $db;
+
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function on5Secondes() {
+  function on5Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -184,7 +197,8 @@ class objets
 ///////////////////////////////////////////////////////////////
 
 
-  function on10Secondes() {
+  function on10Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -192,7 +206,8 @@ class objets
 ///////////////////////////////////////////////////////////////
 
 
-  function on15Secondes() {
+  function on15Secondes()
+  {
     global $irc, $irpg, $db;
 
 
@@ -201,7 +216,8 @@ class objets
 
 ///////////////////////////////////////////////////////////////
 
-  function modIdle_onLvlUp($nick, $uid, $pid, $level2, $next) {
+  function modIdle_onLvlUp($nick, $uid, $pid, $level2, $next)
+  {
     //Les objets sont distribués lors de la monté de niveau..
 
     global $db, $irc, $irpg;
@@ -226,8 +242,7 @@ class objets
         if ($db->nbLignes("SELECT Id_Objets FROM $tbObj WHERE Pers_Id='$pid' And LObj_Id = '$oid'") != 0) {
           $i++;
           continue; //on a déjà l'objet
-        }
-        else {
+        } else {
           $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES ('$pid', '$oid', '$niveau')");
           $irc->notice($nick, "Félicitations!  Ton personnage \002$nomPerso\002 vient de trouver un objet unique : \002$name\002 de niveau \002$niveau\002 !");
 
@@ -239,8 +254,7 @@ class objets
             if ($niveau > $olevel) {
               $db->req("UPDATE $tbObj SET Level='$niveau' WHERE Id_Objets='$oid2'");
             }
-          }
-          else {
+          } else {
             $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES (`$pid`, `$oid`, `$niveau`)");
           }
 
@@ -280,14 +294,12 @@ class objets
         $db->req("UPDATE $tbObj SET Level='$lvlObj' WHERE Id_Objets='$oid'");
         $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver l'objet \002$nom\002 de niveau \002$lvlObj\002.  Tu possédais déjà cet objet, mais avec un niveau $niveau, la chance est de ton côté!");
         $irpg->Log($pid, "OBJ", 0, "$nom (niveau $lvlObj)");
-      }
-      else {
+      } else {
         //Objet plus petit que ce qu'on a déjà
         $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver l'objet \002$nom\002 de niveau \002$lvlObj\002.  Malheureusement, tu as déjà cet objet avec un niveau $niveau.");
       }
 
-    }
-    else {
+    } else {
       //Nouvel objet trouvé
       $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES ('$pid', '$oid', '$lvlObj')");
       $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver un nouvel objet !  Il s'agit de l'objet \002$nom\002 de niveau \002$lvlObj\002.");
@@ -300,7 +312,8 @@ class objets
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-  function cmdItems($nick, $perso = "") {
+  function cmdItems($nick, $perso = "")
+  {
     global $irpg, $irc, $db;
     $uid = $irpg->getUsernameByNick($nick, true);
     $uid = $uid[1];
@@ -320,32 +333,29 @@ class objets
         }
 
 
-      }
-      else {
+      } else {
         if ($irpg->getPIDByPerso($perso)) {
           $this->envoyerInfoObjets($nick, $perso);
-        }
-        else {
+        } else {
           $irc->notice($nick, "Désolé, je ne connais pas $perso.");
         }
       }
-    }
-    else {
+    } else {
       $irc->notice($nick, "Désolé, vous devez être authentifié pour utiliser cette commande.");
     }
 
   }
 
 
-  function infoObjets($pid, $detail = false) {
+  function infoObjets($pid, $detail = false)
+  {
     //Calcul la somme des objets pour un personnage
     global $irpg, $db;
 
     $tbObj = $db->prefix."Objets";
     if ($detail) {
       $res = $db->getRows("SELECT LObj_Id, Level FROM $tbObj WHERE Pers_Id='$pid'");
-    }
-    else {
+    } else {
       $res = $db->getRows("SELECT Level FROM $tbObj WHERE Pers_Id='$pid'");
     }
 
@@ -366,13 +376,13 @@ class objets
 
     if ($detail) {
       return array($sum, $objets);
-    }
-    else {
+    } else {
       return $sum;
     }
   }
 
-  function envoyerInfoObjets($nick, $perso) {
+  function envoyerInfoObjets($nick, $perso)
+  {
     global $db, $irpg, $irc;;
     //On retourne les stats pour le personnage spécifié
     $pid = $irpg->getPIDByPerso($perso);
@@ -385,13 +395,11 @@ class objets
 
     if (count($objets) == 0) {
       $irc->notice($nick, "$perso n'a aucun objets.");
-    }
-    else {
+    } else {
       while($i != count($objets)) {
         if (empty($lstObj)) {
           $lstObj = "\002".$objets[$i][0]."\002: ".$objets[$i][1];
-        }
-        else {
+        } else {
           $lstObj = $lstObj.", \002".$objets[$i][0]."\002: ".$objets[$i][1];
         }
         $i++;

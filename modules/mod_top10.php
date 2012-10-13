@@ -52,8 +52,7 @@ class top10
     $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
 
@@ -61,8 +60,7 @@ class top10
     $cfgKeys = array();
     $cfgKeysOpt = array();
 
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -84,14 +82,16 @@ class top10
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
@@ -99,7 +99,8 @@ class top10
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
 
@@ -111,10 +112,12 @@ class top10
       case "TOP":
         $uid = $irpg->getUsernameByNick($nick, true);
         if ($irpg->getAdminLvl($uid[1]) >= 1) {
-          if ($nb == 0) { $this->top(); }
-          else { $this->top($message[1]); }
-        }
-        else {
+          if ($nb == 0) {
+            $this->top();
+          } else {
+            $this->top($message[1]);
+          }
+        } else {
         	$irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
         }
         break;
@@ -123,36 +126,32 @@ class top10
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
-    global $irc, $irpg, $db;
-
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onNick($nick, $user, $host, $newnick) {
+  function onPart($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
 
@@ -160,28 +159,41 @@ class top10
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onNick($nick, $user, $host, $newnick)
+  {
+    global $irc, $irpg, $db;
+
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function on5Secondes() {
+  function on5Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -189,7 +201,8 @@ class top10
 ///////////////////////////////////////////////////////////////
 
 
-  function on10Secondes() {
+  function on10Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -197,16 +210,14 @@ class top10
 ///////////////////////////////////////////////////////////////
 
 
-  function on15Secondes() {
+  function on15Secondes()
+  {
     global $irc, $irpg, $db;
 
     // on affiche le top10 une fois toutes les 3 heures
-    if ($this->timer < 720)
-    {
+    if ($this->timer < 720) {
     	$this->timer++;
-    }
-    else
-    {
+    } else {
     	$this->timer=0;
       $this->top(10);
     }
@@ -220,14 +231,14 @@ class top10
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-  function top($nb = 10) {
+  function top($nb = 10)
+  {
     global $irpg, $irc, $db;
 
     $res = $db->getRows("SELECT Nom, Class, Level, Next FROM Personnages ORDER BY Level DESC, Next ASC LIMIT $nb");
     $i=0;
     $irc->privmsg($irc->home, "Top $nb des meilleurs idlers :");
-    while ($i != count($res))
-    {
+    while ($i != count($res)) {
       $msg = "#" . ($i+1) . " " . $res[$i]["Nom"] . ", " . $res[$i]["Class"] . " de niveau " . $res[$i]["Level"] . ".  Prochain niveau dans " . $irpg->convSecondes($res[$i]["Next"]) . ".";
       $irc->privmsg($irc->home, $msg);
       $i++;

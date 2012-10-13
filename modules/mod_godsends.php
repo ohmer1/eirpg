@@ -53,8 +53,7 @@ class godsends
     $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
 
@@ -62,8 +61,7 @@ class godsends
     $cfgKeys = array();
     $cfgKeysOpt = array();
 
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -85,14 +83,16 @@ class godsends
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
@@ -100,36 +100,8 @@ class godsends
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
-    global $irc, $irpg, $db;
-
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onNoticeCanal($nick, $user, $host, $message) {
-    global $irc, $irpg, $db;
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onNoticePrive($nick, $user, $host, $message) {
-    global $irc, $irpg, $db;
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onJoin($nick, $user, $host, $channel) {
-    global $irc, $irpg, $db;
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onPart($nick, $user, $host, $channel) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
 
@@ -137,7 +109,32 @@ class godsends
 
 ///////////////////////////////////////////////////////////////
 
-  function onNick($nick, $user, $host, $newnick) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
+    global $irc, $irpg, $db;
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onNoticePrive($nick, $user, $host, $message)
+  {
+    global $irc, $irpg, $db;
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onJoin($nick, $user, $host, $channel)
+  {
+    global $irc, $irpg, $db;
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onPart($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
 
@@ -145,38 +142,54 @@ class godsends
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onNick($nick, $user, $host, $newnick)
+  {
+    global $irc, $irpg, $db;
+
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function on5Secondes() {
+  function on5Secondes()
+  {
     global $irc, $irpg;
 
      //il y a une chance sur 4000 d'avoir une godsends
-     if (rand(1, 4000) == 1) $this->cmdGodsends();
+     if (rand(1, 4000) == 1) {
+       $this->cmdGodsends();
+     }
   }
 
 ///////////////////////////////////////////////////////////////
 
 
-  function on10Secondes() {
+  function on10Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -184,7 +197,8 @@ class godsends
 ///////////////////////////////////////////////////////////////
 
 
-  function on15Secondes() {
+  function on15Secondes()
+  {
     global $irc, $irpg, $db;
 
 
@@ -196,7 +210,8 @@ class godsends
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-  function cmdGodsends() {
+  function cmdGodsends()
+  {
     global $irpg, $irc, $db;
     $tbPerso = $db->prefix . "Personnages";
     $tbIRC = $db->prefix . "IRC";
@@ -204,7 +219,9 @@ class godsends
 
     //on sélectionne d'abord un personnage en ligne
     $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
-    if ($db->nbLignes($query) != 1) return false;
+    if ($db->nbLignes($query) != 1) {
+      return false;
+    }
     $res = $db->getRows($query);
 
     $pid = $res[0]['Id_Personnages'];

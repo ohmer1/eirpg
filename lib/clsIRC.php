@@ -52,14 +52,16 @@ class IRC
 
 /* Méthodes évènementielles */
 
-  function onPing($data) {
+  function onPing($data)
+  {
     $idping = split(":", $data);
     $this->sendRaw("PONG $idping[1]");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onMOTD($data, $me) {
+  function onMOTD($data, $me)
+  {
     global $irpg;
     $channel = strtoupper($irpg->readConfig("IRC","channel"));
     $key = $irpg->readConfig("IRC", "key");
@@ -76,8 +78,7 @@ class IRC
     $this->sendRaw("UMODE2 $modes");
 
     //Identification à NS et on patiente 1 secondes
-    if (!empty($nspass))
-    {
+    if (!empty($nspass)) {
       $this->sendRaw("NICKSERV IDENTIFY $nspass");
       sleep(1);
     }
@@ -89,10 +90,8 @@ class IRC
     //Appel aux modules
     global $irpg;
     $i = 0;
-    while ($i != count($irpg->mod))
-    {
-      if (method_exists($irpg->mod[$irpg->modules[$i]], "onConnect"))
-      {
+    while ($i != count($irpg->mod)) {
+      if (method_exists($irpg->mod[$irpg->modules[$i]], "onConnect")) {
         $irpg->mod[$irpg->modules[$i]]->onConnect();
       }
       $i++;
@@ -105,17 +104,15 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
 
-    if (!$irpg->pause)
-    {
+    if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
       $i = 0;
-      while ($i != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$i]], "onPrivmsgCanal"))
-        {
+      while ($i != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$i]], "onPrivmsgCanal")) {
           $irpg->mod[$irpg->modules[$i]]->onPrivmsgCanal(addslashes($nick), $user, $host, $message);
         }
         $i++;
@@ -128,17 +125,15 @@ class IRC
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
 
-    if (!$irpg->pause)
-    {
+    if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
       $i = 0;
-      while ($i != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$i]], "onPrivmsgPrive"))
-        {
+      while ($i != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$i]], "onPrivmsgPrive")) {
           $irpg->mod[$irpg->modules[$i]]->onPrivmsgPrive($nick, $user, $host, $message);
         }
         $i++;
@@ -150,17 +145,15 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
 
-    if (!$irpg->pause)
-    {
+    if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
       $i = 0;
-      while ($i != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$i]], "onNoticeCanal"))
-        {
+      while ($i != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$i]], "onNoticeCanal")) {
           $irpg->mod[$irpg->modules[$i]]->onNoticeCanal($nick, $user, $host, $message);
         }
         $i++;
@@ -172,17 +165,15 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
 
-    if (!$irpg->pause)
-    {
+    if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
       $i = 0;
-      while ($i != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$i]], "onNoticePrive"))
-        {
+      while ($i != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$i]], "onNoticePrive")) {
           $irpg->mod[$irpg->modules[$i]]->onNoticePrive($nick, $user, $host, $message);
         }
         $i++;
@@ -194,17 +185,15 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel)
+  {
 
-    if (!$irpg->pause)
-    {
+    if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
       $i = 0;
-      while ($i != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$i]], "onJoin"))
-        {
+      while ($i != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$i]], "onJoin")) {
           $irpg->mod[$irpg->modules[$i]]->onJoin($nick, $user, $host, $channel);
         }
         $i++;
@@ -216,17 +205,15 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
+  function onPart($nick, $user, $host, $channel)
+  {
 
-    if (!$irpg->pause)
-    {
+    if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
       $i = 0;
-      while ($i != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$i]], "onPart"))
-        {
+      while ($i != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$i]], "onPart")) {
           $irpg->mod[$irpg->modules[$i]]->onPart($nick, $user, $host, $channel);
         }
         $i++;
@@ -238,17 +225,15 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function onNick($nick, $user, $host, $newnick) {
+  function onNick($nick, $user, $host, $newnick)
+  {
 
-    if (!$irpg->pause)
-    {
+    if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
       $i = 0;
-      while ($i != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$i]], "onNick"))
-        {
+      while ($i != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$i]], "onNick")) {
           $irpg->mod[$irpg->modules[$i]]->onNick($nick, $user, $host, $newnick);
         }
         $i++;
@@ -260,17 +245,15 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
 
-    if (!$irpg->pause)
-    {
+    if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
       $i = 0;
-      while ($i != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$i]], "onKick"))
-        {
+      while ($i != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$i]], "onKick")) {
           $irpg->mod[$irpg->modules[$i]]->onKick($nick, $user, $host, $channel, $nickkicked);
         }
         $i++;
@@ -282,13 +265,13 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
 
     global $irpg;
 
     //Réponse au CTCP VERSION
-    if ($ctcp == "VERSION")
-    {
+    if ($ctcp == "VERSION") {
       /* Ne pas modifier ici, sinon BOOM! :) */
       $version = $irpg->readConfig("IRPG", "version");
       $this->sendRaw("NOTICE $nick :\001VERSION EIRPG v$version; http://www.eirpg.com\001");
@@ -298,8 +281,7 @@ class IRC
       while ($i != count($irpg->mod)) {
         if (empty($modules)) {
           $modules = $irpg->modules[$i] . "/" . $irpg->mod[$irpg->modules[$i]]->version;
-        }
-        else {
+        } else {
           $modules = $modules . ", " . $irpg->modules[$i] . "/" . $irpg->mod[$irpg->modules[$i]]->version;
         }
 
@@ -312,10 +294,8 @@ class IRC
 
     //Appel aux modules
     $i = 0;
-    while ($i != count($irpg->mod))
-    {
-      if (method_exists($irpg->mod[$irpg->modules[$i]], "onCTCP"))
-      {
+    while ($i != count($irpg->mod)) {
+      if (method_exists($irpg->mod[$irpg->modules[$i]], "onCTCP")) {
         $irpg->mod[$irpg->modules[$i]]->onCTCP($nick, $user, $host, $ctcp);
       }
       $i++;
@@ -326,17 +306,15 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
 
-    if (!$irpg->pause)
-    {
+    if (!$irpg->pause) {
       //Appel aux modules
       global $irpg;
       $i = 0;
-      while ($i != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$i]], "onQuit"))
-        {
+      while ($i != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$i]], "onQuit")) {
           $irpg->mod[$irpg->modules[$i]]->onQuit($nick, $user, $host, $reason);
         }
         $i++;
@@ -357,15 +335,13 @@ class IRC
       * DEPLACE -- voir onWHO()
      $names = split(" ", $names);
      $i = 0;
-     while ($i != count($names))
-     {
+     while ($i != count($names)) {
         $names[$i] = ltrim($names[$i], "@");
         $names[$i] = ltrim($names[$i], "%");
         $names[$i] = ltrim($names[$i], "+");
         $names[$i] = trim($names[$i]);
 
-        if ((!empty($names[$i])) and ($names[$i] != $this->me))
-        {
+        if ((!empty($names[$i])) and ($names[$i] != $this->me)) {
           $db->req("INSERT INTO $table (`Nick`, `Channel`) VALUES ('$names[$i]', '#$channel')");
         }
 
@@ -388,31 +364,27 @@ class IRC
     $tbIRC = $db->prefix."IRC";
     $channel = strtoupper($channel);
 
-    if ($nick != $this->me)
-    {
+    if ($nick != $this->me) {
       $db->req("INSERT INTO $tbIRC (`Nick`, `Channel`, `UserHost`) VALUES ('$nick', '$channel', '$user@$host')");
     }
 
 
     //Gestion auto-login
-    if (($channel == $this->home) And ($nick != $this->me))
-    {
+    if (($channel == $this->home) And ($nick != $this->me)) {
       $tbPerso = $db->prefix."Personnages";
       $tbUtil = $db->prefix."Utilisateurs";
 
       $query = "SELECT Pers_Id FROM $tbIRC WHERE Nick='$nick' And UserHost='$user@$host' And NOT ISNULL(Pers_Id) And Channel='$channel'";
       $nb = $db->nbLignes($query);
 
-      if ($nb >= 1)
-      {
+      if ($nb >= 1) {
         //L'utilisateur peut donc être relogué automatiquement
         $username = $db->getRows("SELECT Username FROM $tbUtil WHERE Id_Utilisateurs = (SELECT Util_Id FROM $tbPerso WHERE Id_Personnages = ($query LIMIT 0,1))");
         $username = $username[0]["Username"];
 
         $persodb = $db->getRows($query);
         $i = 0;
-        while ($i != count($persodb))
-        {
+        while ($i != count($persodb)) {
           $irpg->mod["core"]->autologged[] = array($username, $persodb[$i]["Pers_Id"], $nick, "$user@$host");
           $i++;
         }
@@ -429,14 +401,14 @@ class IRC
   {
     $channel = strtoupper($channel);
 
-    if ($channel == $this->home)
-    {
+    if ($channel == $this->home) {
       global $irc, $db, $irpg, $nbExecute;
 
-      if (empty($nbExecute)) { $nbExecute = 0; }
+      if (empty($nbExecute)) {
+        $nbExecute = 0;
+      }
 
-      if ($nbExecute == 0)
-      {
+      if ($nbExecute == 0) {
         //On vire tous les persos identifiés de la table IRC
         $table = $db->prefix."IRC";
         $db->req("DELETE FROM $table WHERE Not ISNULL(Pers_Id)");
@@ -453,25 +425,19 @@ class IRC
 
           $perso = $irpg->getNomPersoByPID($auto[1]);
 
-          if ($i == (count($irpg->mod["core"]->autologged) - 1))
-          {
+          if ($i == (count($irpg->mod["core"]->autologged) - 1)) {
             //C'est le dernier joueur
             $lstAuto = $lstAuto.$perso;
-          }
-          else
-          {
+          } else {
             $lstAuto = $lstAuto."$perso, ";
           }
         }
         $i++;
       }
 
-      if (($i == 1) and (!empty($lstAuto)))
-      {
+      if (($i == 1) and (!empty($lstAuto))) {
         $this->privmsg($this->home, "Le personnage suivant a été automatiquement relogué : $lstAuto.");
-      }
-      elseif (($i > 1)  and (!empty($lstAuto)))
-      {
+      } elseif (($i > 1)  and (!empty($lstAuto))) {
       $this->privmsg($this->home, "Les personnages suivants ont été automatiquement relogués : $lstAuto.");
       }
 
@@ -490,14 +456,11 @@ class IRC
     global $irpg, $db, $last5sec;
 
     if ((($last5sec + 5) <= time()) And ($this->ready)) {
-      if (!$irpg->pause)
-      {
+      if (!$irpg->pause) {
         //Appel aux modules
         $i = 0;
-        while ($i != count($irpg->mod))
-        {
-          if (method_exists($irpg->mod[$irpg->modules[$i]], "on5Secondes"))
-          {
+        while ($i != count($irpg->mod)) {
+          if (method_exists($irpg->mod[$irpg->modules[$i]], "on5Secondes")) {
             $irpg->mod[$irpg->modules[$i]]->on5Secondes();
           }
           $i++;
@@ -509,14 +472,11 @@ class IRC
       $quinze++;
 
         if ($dix == 2) {
-          if (!$irpg->pause)
-          {
+          if (!$irpg->pause) {
             //Appel aux modules
             $i = 0;
-            while ($i != count($irpg->mod))
-            {
-              if (method_exists($irpg->mod[$irpg->modules[$i]], "on10Secondes"))
-              {
+            while ($i != count($irpg->mod)) {
+              if (method_exists($irpg->mod[$irpg->modules[$i]], "on10Secondes")) {
                 $irpg->mod[$irpg->modules[$i]]->on10Secondes();
               }
               $i++;
@@ -526,14 +486,11 @@ class IRC
         }
 
         if ($quinze == 3) {
-          if (!$irpg->pause)
-          {
+          if (!$irpg->pause) {
             //Appel aux modules
             $i = 0;
-            while ($i != count($irpg->mod))
-            {
-              if (method_exists($irpg->mod[$irpg->modules[$i]], "on15Secondes"))
-              {
+            while ($i != count($irpg->mod)) {
+              if (method_exists($irpg->mod[$irpg->modules[$i]], "on15Secondes")) {
                 $irpg->mod[$irpg->modules[$i]]->on15Secondes();
               }
               $i++;
@@ -543,10 +500,8 @@ class IRC
 
           //Si la connexion DB est perdu; on retente une
           //nouvelle connexion toutes les 15 secondes..
-          if ((!$db->connected) and (!$this->exit))
-          {
-            if ($db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"), $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix")))
-            {
+          if ((!$db->connected) and (!$this->exit)) {
+            if ($db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"), $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix"))) {
 
               //On réinitialise notre table IRC et objets, comme si le bot venait
               //d'être redémarré
@@ -571,19 +526,20 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-  function checkTimeout() {
+  function checkTimeout()
+  {
     if ($this->lastData+180 < mktime()) {
       $this->deconnexion("Perte de connexion vers le serveur IRC... reconnexion.");
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function updateTimeout() {
+  function updateTimeout()
+  {
     $this->lastData = mktime();
   }
 
@@ -607,12 +563,13 @@ class IRC
   {
     global $irpg;
 
-    if ($this->debug) { $irpg->alog("<-- $data"); }
+    if ($this->debug) {
+      $irpg->alog("<-- $data");
+    }
    // $charset = $irpg->readConfig("IRC", "charset");
     //$ok = socket_write($this->sirc, iconv("ISO-8859-15", $charset, $data ."\n"));
     $ok = socket_write($this->sirc, $data ."\n");
-    if ($ok)
-    {
+    if ($ok) {
       return true;
     } else {
       return false;
@@ -635,8 +592,7 @@ class IRC
 
   {
     $ok = $this->sendRaw("JOIN $channel $key");
-    if ($ok)
-    {
+    if ($ok) {
       return true;
     } else {
       return false;
@@ -673,17 +629,20 @@ class IRC
     $this->sirc = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)
      or die ("Impossible de créer le socket IRC\n");
 
-    if ($bind != "") { socket_bind($this->sirc, $bind); }
+    if ($bind != "") {
+      socket_bind($this->sirc, $bind);
+    }
 
     socket_connect($this->sirc, $server, $port)
      or die ("Impossible de se connecter au serveur IRC\n");
 
 
-    if ($this->sirc)
-    {
+    if ($this->sirc) {
 
       $irpg->alog("Connexion au serveur IRC...", true);
-      if ($pass != "") { $this->sendRaw("PASS $pass"); } //Mot de passe d'accès au serveur
+      if ($pass != "") {
+        $this->sendRaw("PASS $pass");
+      } //Mot de passe d'accès au serveur
       $this->sendRaw("NICK $nick");
       $ok = $this->sendRaw("USER $user localhost $server :$realname");
 
@@ -724,41 +683,37 @@ class IRC
     $ignoresN = $irpg->getIgnoresN();
     $ignoresH = $irpg->getIgnoresH();
 
-    while(true)
-    {
-      if ($this->exit) { break; }
+    while(true) {
+      if ($this->exit) {
+        break;
+      }
 
       $buf = @socket_read($this->sirc, 4096);
       // l'encadage interne du bot est en ISO-8859-15, il faut donc convertir ce qui vient d'IRC en ISO
       //$buf = iconv($charset, "ISO-8859-15", $buf);
 
-      if (empty($buf))
-      {
+      if (empty($buf)) {
         $this->Timer5Sec($dix, $quinze);
-        if ($this->checkTimeout()) { break; }
+        if ($this->checkTimeout()) {
+          break;
+        }
         sleep(1); //Sans sleep, on bouffe 100% du CPU..
         continue;
       }
 
       $this->updateTimeout();
 
-      if (!strpos($buf, "\n"))
-      { //Si ne contient aucun retour, on bufferise
+      if (!strpos($buf, "\n")) { //Si ne contient aucun retour, on bufferise
         $buffer = $buffer.$buf;
         $data = ""; //rien à envoyer
-      }
-      else
-      {
+      } else {
         //Si contient au moins un retour,
         //on vérifie que le dernier caractère en est un
-        if (substr($buf, -1, 1)  == "\n")
-        {
+        if (substr($buf, -1, 1)  == "\n") {
           //alors on additionne ces données au buffer
           $data = $buffer.$buf;
           $buffer = ""; //on vide le buffer
-        }
-        else
-        {
+        } else {
           //si le dernier caractère n'est pas un retour à la
           //ligne, alors on envoit tout jusqu'au dernier retour
           //puis on bufferise le reste
@@ -772,56 +727,65 @@ class IRC
 
       $data = split("\n", $data);
 
-      for ($i = 0; $i < count($data); $i++)
-      {
-        if ($this->debug) { $irpg->alog("--> $data[$i]"); }
+      for ($i = 0; $i < count($data); $i++) {
+        if ($this->debug) {
+          $irpg->alog("--> $data[$i]");
+        }
 
         //On écharpe notre $data[$i] pour le traitement par regexp
         $dataregexp = addslashes($data[$i]);
         //$dataregexp = preg_quote($data[$i]);
 
         //Ping! Pong!
-        if (ereg("^PING ", $dataregexp))
-        {
+        if (ereg("^PING ", $dataregexp)) {
           global $nbExecute;
           unset($nbExecute); //Reset de la variable qui ne sert que pour onEndWho()
-          $this->onPing($dataregexp); break;
+          $this->onPing($dataregexp);
+          break;
         }
 
         //Message en provenance d'un serveur ou d'un utilisateur?
-        if (!ereg("^.*!.*@.* .*$", $dataregexp))
-        {
+        if (!ereg("^.*!.*@.* .*$", $dataregexp)) {
           preg_match('`:(.*?) `', $dataregexp, $server);
           $server = $server[1];
-        }
-        else
-        {
+        } else {
           preg_match('`:(.*?) `', $dataregexp, $userhost);
           $userhost = $userhost[1];
         }
 
 
         //Traitement des évènements serveur<->bot
-        if (isset($server))
-        {
+        if (isset($server)) {
           //Numeric 376 - Fin du /MOTD
           #:proxy.epiknet.org 376 IRPG2 :End of /MOTD command.
-          //if (ereg("^:$server 376", $dataregexp)) { $this->onMOTD($dataregexp); }
-          if (preg_match("/^:$server 376 (.*?) :.*$/", $dataregexp, $me)) { $this->onMOTD($dataregexp, $me[1]); }
+          //if (ereg("^:$server 376", $dataregexp)) {
+          //  $this->onMOTD($dataregexp);
+          //}
+          if (preg_match("/^:$server 376 (.*?) :.*$/", $dataregexp, $me)) {
+            $this->onMOTD($dataregexp, $me[1]);
+          }
 
           //Numeric 353 - /names
           #:proxy.epiknet.org 353 IRPG2 @ #IRPG2 :IRPG2 @Homer
           #:proxy.epiknet.org 353 IRPG2 = #irpg :IRPG2 %coolman_ +Shelby Suisse[Po`la] %Brendan
-          if (preg_match_all("/^:$server 353 (.*?) (@|=) #(.*?) :(.*?)$/", $dataregexp, $names)) { $this->onNames($names[3][0], $names[4][0]); }
+          if (preg_match_all("/^:$server 353 (.*?) (@|=) #(.*?) :(.*?)$/", $dataregexp, $names)) {
+            $this->onNames($names[3][0], $names[4][0]);
+          }
 
           //Numeric 352 - /who
           #:proxy.epiknet.org 352 IRPG2 #IRPG2 Homer server-admin.epiknet.org proxy.epiknet.org Homer Hr* :0 Homer - www.iQuotes-FR.com
-          if (preg_match_all("/^:$server 352 $this->me (.*?) (.*?) (.*?) (.*?) (.*?) .*$/", $dataregexp, $who)) { $this->onWho($who[5][0], $who[2][0], $who[3][0], $who[4][0], $who[1][0]); }
+          if (preg_match_all("/^:$server 352 $this->me (.*?) (.*?) (.*?) (.*?) (.*?) .*$/", $dataregexp, $who)) {
+            $this->onWho($who[5][0], $who[2][0], $who[3][0], $who[4][0], $who[1][0]);
+          }
 
           //Numeric 315 - End of /who
           #:irc-homer.epiknet.org 315 IRPG2 #IRPG2 :End of /WHO list.
-          if (preg_match("/^:$server 315 (.*?) (.*?) .*$/", $dataregexp, $channel)) { $this->onEndWho($channel[2]); }
-          #if (ereg("^:$server 315.*$", $dataregexp)) { $this->onEndWho(); }
+          if (preg_match("/^:$server 315 (.*?) (.*?) .*$/", $dataregexp, $channel)) {
+            $this->onEndWho($channel[2]);
+          }
+          #if (ereg("^:$server 315.*$", $dataregexp)) {
+          //  $this->onEndWho();
+          //}
 
           //Message "ERROR"
           #if (ereg("^ERROR :.*", $dataregexp)) {
@@ -833,8 +797,7 @@ class IRC
 
 
         //Traitement des évènements utilisateur<->bot
-        if (isset($userhost))
-        {
+        if (isset($userhost)) {
           //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
           //On extrait le $userhost, pour récupérer $Nick, $User et $Host
@@ -851,30 +814,24 @@ class IRC
           //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
           //Traitement des PRIVMSG & CTCP
-          if (ereg("^:$userhost PRIVMSG #", $dataregexp))
-          {
+          if (ereg("^:$userhost PRIVMSG #", $dataregexp)) {
             /* Sur le canal */
             //On extrait le message
             #:Homer!Homer@server-admin.epiknet.org PRIVMSG #IRPG2 :dsgs : dgsdg : gdgdfg : dgsdgsd
             $message = substr($dataregexp, strpos($dataregexp, ':', 1)+1);
             $this->onPrivmsgCanal(trim($nick), trim($user), trim($host), trim($message));
-          }
-          elseif (ereg("^:$userhost PRIVMSG ", $dataregexp))
-          {
+          } elseif (ereg("^:$userhost PRIVMSG ", $dataregexp)) {
             /* En privé */
 
             // On ne va pas plus loin si le pseudo ou l'host doit être ignoré !
-            if ((in_array($nick, $ignoresN)) or (in_array($host, $ignoresH)))
-            {
+            if ((in_array($nick, $ignoresN)) or (in_array($host, $ignoresH))) {
               continue;
             }
 
             //PRIVMSG ou CTCP?
-            if (preg_match("/^:$userhost PRIVMSG .* :\001(.*?)\001/", $dataregexp, $ctcp))
-            {
+            if (preg_match("/^:$userhost PRIVMSG .* :\001(.*?)\001/", $dataregexp, $ctcp)) {
               $this->onCTCP(trim($nick), trim($user), trim($host), trim($ctcp[1]));
-            }
-            else {
+            } else {
               //On extrait le message
               $message = substr($dataregexp, strpos($dataregexp, ':', 1)+1);
               $this->onPrivmsgPrive(trim($nick), trim($user), trim($host), trim($message));
@@ -884,19 +841,15 @@ class IRC
           //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
            //Traitement des NOTICE
-          if (ereg("^:$userhost NOTICE #", $dataregexp))
-          {
+          if (ereg("^:$userhost NOTICE #", $dataregexp)) {
             /* Sur le canal */
             //On extrait le message
             $message = substr($dataregexp, strpos($dataregexp, ':', 1)+1);
             $this->onNoticeCanal(trim($nick), trim($user), trim($host), trim($message));
-          }
-          elseif (ereg("^:$userhost NOTICE ", $dataregexp))
-          {
+          } elseif (ereg("^:$userhost NOTICE ", $dataregexp)) {
             /* En privé */
             // On ne va pas plus loin si le pseudo ou l'host doit être ignoré !
-            if ((in_array($nick, $ignoresN)) or (in_array($host, $ignoresH)))
-            {
+            if ((in_array($nick, $ignoresN)) or (in_array($host, $ignoresH))) {
               continue;
             }
 
@@ -908,8 +861,7 @@ class IRC
          //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
          //Traitement du JOIN
-         if (ereg("^:$userhost JOIN :#", $dataregexp))
-         {
+         if (ereg("^:$userhost JOIN :#", $dataregexp)) {
             #On extrait le canal
             $channel = split(":", $dataregexp);
             $channel = $channel[2];
@@ -919,8 +871,7 @@ class IRC
          //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
          //Traitement du PART
-         if (ereg("^:$userhost PART #", $dataregexp))
-         {
+         if (ereg("^:$userhost PART #", $dataregexp)) {
             #On extrait le canal
             $channel = split(" ", $dataregexp);
             $channel = $channel[2];
@@ -930,8 +881,7 @@ class IRC
          //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
          //Traitement du NICK
-         if (ereg("^:$userhost NICK :", $dataregexp))
-         {
+         if (ereg("^:$userhost NICK :", $dataregexp)) {
             #On extrait le nouveau nick
             $newnick = split(":", $dataregexp);
             $newnick = $newnick[2];
@@ -941,8 +891,7 @@ class IRC
          //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
          //Traitement du KICK
-         if (ereg("^:$userhost KICK #", $dataregexp))
-         {
+         if (ereg("^:$userhost KICK #", $dataregexp)) {
             #On extrait le canal et le kické
             $kick = split(" ", $dataregexp);
             $channel = $kick[2];
@@ -953,8 +902,7 @@ class IRC
          //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
          //Traitement du QUIT
-         if (ereg("^:$userhost QUIT :", $dataregexp))
-         {
+         if (ereg("^:$userhost QUIT :", $dataregexp)) {
             #On extrait la raison du QUIT
             preg_match("/^:$userhost QUIT :(.*?$)/", $dataregexp, $reason);
             $reason = $reason[1];
@@ -1004,8 +952,7 @@ class IRC
 
   {
     $ok = $this->sendRaw("QUIT :$reason");
-    if ($ok)
-    {
+    if ($ok) {
       socket_close($this->sirc);
       $this->sirc = null;
       $this->exit = true;
@@ -1051,11 +998,9 @@ class IRC
     $uid = $irpg->getUIDByUsername($irpg->getUsernameByNick($dest));
 
     $tbUtil = $db->prefix."Utilisateurs";
-    if ($db->nbLignes("SELECT Notice FROM $tbUtil WHERE Id_Utilisateurs='$uid' And Notice='N'") == 1)
-    {
+    if ($db->nbLignes("SELECT Notice FROM $tbUtil WHERE Id_Utilisateurs='$uid' And Notice='N'") == 1) {
       $this->sendRaw("PRIVMSG $dest :$message");
-    }
-    else {
+    } else {
       $this->sendRaw("NOTICE $dest :$message");
     }
   }
@@ -1076,11 +1021,9 @@ class IRC
   {
     global $db;
     $table = $db->prefix."IRC";
-    if ($db->nbLignes("SELECT Nick FROM $table WHERE Nick='$nickname' And Channel='$channel'") > 0)
-    {
+    if ($db->nbLignes("SELECT Nick FROM $table WHERE Nick='$nickname' And Channel='$channel'") > 0) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
 

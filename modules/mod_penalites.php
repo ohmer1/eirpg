@@ -57,8 +57,7 @@ class penalites
     $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
 
@@ -66,8 +65,7 @@ class penalites
     $cfgKeys = array("expPenalite", "penPrivmsg", "penNotice", "penNick", "penQuit", "penPart", "penKick");
     $cfgKeysOpt = array("");
 
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -95,14 +93,16 @@ class penalites
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
     $this->penalite($nick, "PRIVMSG", $this->penPrivmsg, strlen($message));
   }
@@ -110,43 +110,47 @@ class penalites
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
-    global $irc, $irpg, $db;
-    $this->penalite($nick, "NOTICE", $this->penNotice, strlen($message));
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
     $this->penalite($nick, "NOTICE", $this->penNotice, strlen($message));
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
+    global $irc, $irpg, $db;
+    $this->penalite($nick, "NOTICE", $this->penNotice, strlen($message));
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onJoin($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
+  function onPart($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
     $this->penalite($nick, "PART", $this->penPart);
 
     //Suppression de l'utilisateur de la table IRC
     $table = $db->prefix."IRC";
-    if ($nick != $irc->me)
-    {
+    if ($nick != $irc->me) {
       $channel = strtoupper($channel);
       $db->req("DELETE FROM $table WHERE Nick = '$nick' And Channel = '$channel'");
 
@@ -159,7 +163,8 @@ class penalites
 
 ///////////////////////////////////////////////////////////////
 
-  function onNick($nick, $user, $host, $newnick) {
+  function onNick($nick, $user, $host, $newnick)
+  {
     global $irc, $irpg, $db;
 
     //Modification du pseudo de l'utilisateur dans la table IRC et dans le tableau
@@ -177,15 +182,15 @@ class penalites
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
     global $irc, $irpg, $db;
 
     $this->penalite($nickkicked, "KICK", $this->penKick);
 
     //Suppression de l'utilisateur de la table IRC
     $table = $db->prefix."IRC";
-    if ($nick != $irc->me)
-    {
+    if ($nick != $irc->me) {
       $channel = strtoupper($channel);
       $db->req("DELETE FROM $table WHERE Nick = '$nickkicked' And Channel = '$channel'");
 
@@ -197,21 +202,22 @@ class penalites
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
     global $irc, $irpg, $db;
     $this->penalite($nick, "QUIT", $this->penQuit);
 
     //Suppression de l'utilisateur de la table IRC
     $table = $db->prefix."IRC";
-    if ($nick != $irc->me)
-    {
+    if ($nick != $irc->me) {
       $db->req("DELETE FROM $table WHERE Nick = '$nick'");
       //On enlève l'utilisateur du tableau des utilisateurs en ligne
       $username = $irpg->getUsernameByNick($nick);
@@ -221,7 +227,8 @@ class penalites
 
 ///////////////////////////////////////////////////////////////
 
-  function on5Secondes() {
+  function on5Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -229,7 +236,8 @@ class penalites
 ///////////////////////////////////////////////////////////////
 
 
-  function on10Secondes() {
+  function on10Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -237,7 +245,8 @@ class penalites
 ///////////////////////////////////////////////////////////////
 
 
-  function on15Secondes() {
+  function on15Secondes()
+  {
     global $irc, $irpg, $db;
 
 
@@ -248,7 +257,8 @@ class penalites
 ///////////////////////////////////////////////////////////////
 
 
-  function penalite($nick, $quoi, $valeur, $multiplicateur = 1) {
+  function penalite($nick, $quoi, $valeur, $multiplicateur = 1)
+  {
     global $irc, $irpg, $db;
     $tbPerso = $db->prefix."Personnages";
     $tbIRC = $db->prefix."IRC";

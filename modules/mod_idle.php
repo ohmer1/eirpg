@@ -57,8 +57,7 @@ class idle
     $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
 
@@ -66,8 +65,7 @@ class idle
     $cfgKeys = array("idleBase", "expLvlUp");
     $cfgKeysOpt = array("");
 
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -92,14 +90,16 @@ class idle
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
@@ -107,65 +107,40 @@ class idle
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
-    global $irc, $irpg, $db;
-
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onNick($nick, $user, $host, $newnick) {
-    global $irc, $irpg, $db;
-
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
-    global $irc, $irpg, $db;
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onCTCP($nick, $user, $host, $ctcp) {
-    global $irc, $irpg, $db;
-
-  }
-
-///////////////////////////////////////////////////////////////
-
-  function onQuit($nick, $user, $host, $reason) {
+  function onPart($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
 
@@ -173,7 +148,42 @@ class idle
 
 ///////////////////////////////////////////////////////////////
 
-  function on5Secondes() {
+  function onNick($nick, $user, $host, $newnick)
+  {
+    global $irc, $irpg, $db;
+
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
+    global $irc, $irpg, $db;
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
+    global $irc, $irpg, $db;
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function onQuit($nick, $user, $host, $reason)
+  {
+    global $irc, $irpg, $db;
+
+
+  }
+
+///////////////////////////////////////////////////////////////
+
+  function on5Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -181,7 +191,8 @@ class idle
 ///////////////////////////////////////////////////////////////
 
 
-  function on10Secondes() {
+  function on10Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -189,7 +200,8 @@ class idle
 ///////////////////////////////////////////////////////////////
 
 
-  function on15Secondes() {
+  function on15Secondes()
+  {
     global $irc, $irpg, $db;
 
     //On retire 15 secondes à tous les
@@ -201,8 +213,7 @@ class idle
     //Level up
     $i = 0;
     $up = $db->getRows("SELECT Id_Personnages, Util_Id, Nom, Level, Class FROM $tbPerso WHERE Next <= '0'");
-    while ($i != count($up))
-    {
+    while ($i != count($up)) {
       $pid = $up[$i]["Id_Personnages"];
       $uid = $up[$i]["Util_Id"];
       $nomPerso = $up[$i]["Nom"];
@@ -225,10 +236,8 @@ class idle
       $irc->privmsg($irc->home, "UP!  $nomPerso, $class vient d'obtenir le niveau $level2 !  Prochain niveau dans $cnext.");
 
       $y = 0;
-      while ($y != count($irpg->mod))
-      {
-        if (method_exists($irpg->mod[$irpg->modules[$y]], "modIdle_onLvlUp"))
-        {
+      while ($y != count($irpg->mod)) {
+        if (method_exists($irpg->mod[$irpg->modules[$y]], "modIdle_onLvlUp")) {
           $irpg->mod[$irpg->modules[$y]]->modIdle_onLvlUp($nick, $uid, $pid, $level2, $next);
         }
         $y++;

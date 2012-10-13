@@ -54,8 +54,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
 
     //Recherche de dépendances
     /* Ne pas modifier ce qui suit; procédure de vérification des dépendances */
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
 
@@ -64,8 +63,7 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
     $cfgKeysOpt = array("");        //Clés optionelles
 
     /* Ne pas modifier ce qui suit; lecture et validation du fichier de configuration */
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -97,7 +95,8 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg;
     $testparam = $irpg->readConfig("mod_test", "testparam");
     $irc->privmsg("Homer", "Je viens de me connecter !");
@@ -106,7 +105,8 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg;
     $irc->privmsg("Homer", "$nick!$user@$host a dit: $message");
   }
@@ -114,63 +114,72 @@ class test  /* Le nom de la classe DOIT être du même nom que le module (sans le 
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host m'a dit: $message");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a dit en notice: $message");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host m'a dit en notice: $message");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel)
+  {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a joint $channel");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
+  function onPart($nick, $user, $host, $channel)
+  {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quitté $channel");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNick($nick, $user, $host, $newnick) {
+  function onNick($nick, $user, $host, $newnick)
+  {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a changé de pseudo pour $newnick");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a kické $nickkicked de $channel");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host m'a fait un CTCP $ctcp");
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
     global $irc, $irpg;
     $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quitté IRC pour la raison suivante: $reason");
   }

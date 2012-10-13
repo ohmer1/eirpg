@@ -71,19 +71,14 @@ class DB
     $this->prefix = $prefix;
 
     $irpg->alog("Connexion au serveur de bases de données...", true);
-    if (mysql_connect($this->host, $this->login, $this->pass))
-    {
-      if (mysql_select_db($this->base))
-      {
+    if (mysql_connect($this->host, $this->login, $this->pass)) {
+      if (mysql_select_db($this->base)) {
         $this->connected = true;
         return true;
-      }
-      else
-      {
+      } else {
         return false;
       }
-    }
-    else {
+    } else {
       return false;
     }
 
@@ -107,21 +102,19 @@ class DB
   {
     global $irpg, $irc;
 
-   if ($this->connected)
-   {
-     if (($irpg->readConfig("IRPG", "debug")) And (!$ignoredebug)) { $irpg->alog("SQL: ".$query); }
-
-     if (mysql_ping())
-     {
-       return mysql_query($query);
+   if ($this->connected) {
+     if (($irpg->readConfig("IRPG", "debug")) And (!$ignoredebug)) {
+       $irpg->alog("SQL: ".$query);
      }
-     else {
+
+     if (mysql_ping()) {
+       return mysql_query($query);
+     } else {
        $this->connected = false;
        $irpg->pause = true;
        $irc->privmsg($irc->home, "Attention, jeu automatiquement désactivé!!  Raison: perte de la connexion au serveur de bases de données.  Une nouvelle tentative se fera toutes les 15 secondes...");
      }
-   }
-   else {
+   } else {
 
    }
   }
@@ -132,7 +125,9 @@ class DB
   {
     global $irpg;
 
-    if ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); }
+    if ($irpg->readConfig("IRPG", "debug")) {
+      $irpg->alog("SQL: ".$query);
+    }
 
     return mysql_num_rows($this->req($query, true));
 
@@ -144,7 +139,9 @@ class DB
   {
     global $irpg;
 
-    if ($irpg->readConfig("IRPG", "debug")) { $irpg->alog("SQL: ".$query); }
+    if ($irpg->readConfig("IRPG", "debug")) {
+      $irpg->alog("SQL: ".$query);
+    }
 
     $r = $this->req($query, true);
     while ($li = mysql_fetch_array($r)) {

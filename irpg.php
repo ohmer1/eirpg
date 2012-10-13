@@ -45,47 +45,38 @@ $irpg = new IRPG;
 $irc = new IRC;
 
 //Chargement et validation du fichier de configuration
-if (!$irpg->init())
-{
+if (!$irpg->init()) {
   die ("Erreur lors du chargement du fichier de configuration.\n") ;
 }
 
 //Lecture de la liste des ignores...
 $irpg->lireIgnores();
 
-while (true)
-{
+while (true) {
   //Connexion à IRC
-  if (!$irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"), $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug")))
-  {
+  if (!$irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"), $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug"))) {
     $irpg->alog("Impossible de se connecter au serveur IRC.  Reconnexion dans 60 secondes...", true);
     sleep(60);
-  }
-  else {
+  } else {
     break;
   }
 }
 
 
-if ($irpg->readConfig("IRPG", "background") == "1")
-{ //On lance le bot en background
+if ($irpg->readConfig("IRPG", "background") == "1") { //On lance le bot en background
   set_time_limit(0);
-  if (pcntl_fork())
-  {
+  if (pcntl_fork()) {
 
-  }
-  else {
+  } else {
     $pid = posix_getpid();
     $irpg->alog("Chargement en background (PID #$pid)...", true);
     posix_setsid();
 
-    while (true)
-    {
+    while (true) {
       start();
     }
   }
-}
-else {
+} else {
   start();
 }
 
@@ -98,8 +89,7 @@ function start()
   // car la connexion est perdue avec PHP5 (fonctionne avec PHP4.3)
 
   //Connexion à la base de données
-  if (!$db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"), $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix")))
-  {
+  if (!$db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"), $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix"))) {
 	die ("Impossible de se connecter au serveur de bases de données.\n");
   }
 
@@ -110,19 +100,18 @@ function start()
   //Chargement des modules
   $irpg->loadModules();
 
-  while (true)
-  {
-    if (!$irc->boucle())
-    {
-      if ($irc->exit) { sleep(1); die("SHUTDOWN du bot demandé.\n"); }
+  while (true) {
+    if (!$irc->boucle()) {
+      if ($irc->exit) {
+        sleep(1);
+        die("SHUTDOWN du bot demandé.\n");
+      }
       $irpg->alog("Connexion IRC perdue... reconnexion dans 20 secondes.");
       sleep(20);
-      if ($irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"), $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug")))
-      {
+      if ($irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"), $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"), $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug"))) {
          continue;
       }
-    }
-    else {
+    } else {
       die("Déconnexion du bot, impossible d'entrer dans la boucle !\n");
     }
   }

@@ -55,16 +55,14 @@ class quests
     $this->depend = array("core/0.5.0");
 
     //Recherche de dépendances
-    if (!$irpg->checkDepd($this->depend))
-    {
+    if (!$irpg->checkDepd($this->depend)) {
       die("$this->name: dépendance non résolue\n");
     }
         //Validation du fichier de configuration spécifique au module
     $cfgKeys = array("tempsQueteA", "tempsQueteR", "recompenseA", "recompenseR", "recompenseS", "MinPenalite", "MaxPenalite", "MinPenaliteAll", "MaxPenaliteAll", "nbrParticipants", "tempsMinIdleA", "tempsMinIdleR","tempsMinIdleS", "lvlMinimumA", "lvlMinimumR","lvlMinimumS","probaAllQuete","probaQueteA");
     $cfgKeysOpt = array("");
 
-    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt))
-    {
+    if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
       die ($this->name.": Vérifiez votre fichier de configuration.\n");
     }
 
@@ -99,29 +97,35 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  function onConnect() {
+  function onConnect()
+  {
     global $irc, $irpg, $db;
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPrivmsgCanal($nick, $user, $host, $message) {
+  function onPrivmsgCanal($nick, $user, $host, $message)
+  {
 
     global $irc, $irpg, $db;
     													// SI il n'y a aucune quete en cours on ne fait rien du tout (Optimisation).
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
+   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
     													// On lit le fichier de config pour verifier que l'action est considérée comme pénalité.
-		if($irpg->readConfig("mod_penalites","penPrivmsg") != 0)
+		if($irpg->readConfig("mod_penalites","penPrivmsg") != 0) {
 														// On verifie que le nick participe a la quete. Si c'est le cas on verifie que la quete est abandonnée ou non.
 														// Si elle est abandonnée on met a jour le variable de QueteEnCours.
-			if($this->VerifFinQuete($nick) == -1)
+			if($this->VerifFinQuete($nick) == -1) {
 				$this->queteEnCours = -1;
+            }
+        }
+    }
   }
 
 ///////////////////////////////////////////////////////////////
 
 
-  function onPrivmsgPrive($nick, $user, $host, $message) {
+  function onPrivmsgPrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
     $message = trim(str_replace("\n", "", $message));
     $message = explode(" ", $message);
@@ -138,39 +142,52 @@ class quests
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticeCanal($nick, $user, $host, $message) {
+  function onNoticeCanal($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
-		if(readConfig("mod_penalites","penNotice") != 0)
-			if($this->VerifFinQuete($nick) == -1)
+   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+		if(readConfig("mod_penalites","penNotice") != 0) {
+			if($this->VerifFinQuete($nick) == -1) {
 				$this->queteEnCours = -1;
+            }
+        }
+    }
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onNoticePrive($nick, $user, $host, $message) {
+  function onNoticePrive($nick, $user, $host, $message)
+  {
     global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
-			if($irpg->readConfig("mod_penalites","penNotice") != 0)
-				if($this->VerifFinQuete($nick) == -1)
+   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+			if($irpg->readConfig("mod_penalites","penNotice") != 0) {
+				if($this->VerifFinQuete($nick) == -1) {
 					$this->queteEnCours = -1;
+                }
+            }
+    }
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onJoin($nick, $user, $host, $channel) {
+  function onJoin($nick, $user, $host, $channel)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onPart($nick, $user, $host, $channel) {
+  function onPart($nick, $user, $host, $channel)
+  {
    global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
-		if($irpg->readConfig("mod_penalites","penPart") != 0)
-			if($this->VerifFinQuete($nick) == -1)
+   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+		if($irpg->readConfig("mod_penalites","penPart") != 0) {
+			if($this->VerifFinQuete($nick) == -1) {
 				$this->queteEnCours = -1;
+            }
+        }
+    }
 	}
 
 ///////////////////////////////////////////////////////////////
@@ -178,59 +195,72 @@ class quests
 	function onNick($nick, $user, $host, $newnick)
   	{
    		global $irc, $irpg, $db;
-   		if($this->queteEnCours != -1 || $this->queteSurvivant)
-   		{
+		if($this->queteEnCours != -1 || $this->queteSurvivant) {
    													// On verifie que le nick changeant participe a la quete et si c'est le cas
    													// on met a jour les informations concernant ce participant de le tableau des participants à la quete.
-	   		for($i=0;$i<$this->nbrParticipants;$i++)
-				if($this->participants[$i][1] == $nick)
+			for($i=0;$i<$this->nbrParticipants;$i++) {
+				if($this->participants[$i][1] == $nick) {
 					$this->participants[$i][1] = $newnick;
-			if(!$irpg->pause)
-			{
-				if($irpg->readConfig("mod_penalites","penNick") != 0)
-					if($this->VerifFinQuete($nick) == -1)
+                }
+            }
+			if(!$irpg->pause) {
+				if($irpg->readConfig("mod_penalites","penNick") != 0) {
+					if($this->VerifFinQuete($nick) == -1) {
 						$this->queteEnCours = -1;
+                    }
+                }
 			}
   		}
 	}
 
 ///////////////////////////////////////////////////////////////
 
-  function onKick($nick, $user, $host, $channel, $nickkicked) {
+  function onKick($nick, $user, $host, $channel, $nickkicked)
+  {
    global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
-		if($irpg->readConfig("mod_penalites","penKick") != 0)
-			if($this->VerifFinQuete($nickkicked) == -1)
+   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+		if($irpg->readConfig("mod_penalites","penKick") != 0) {
+			if($this->VerifFinQuete($nickkicked) == -1) {
 				$this->queteEnCours = -1;
+            }
+        }
+    }
 	}
 
 ///////////////////////////////////////////////////////////////
 
-  function onCTCP($nick, $user, $host, $ctcp) {
+  function onCTCP($nick, $user, $host, $ctcp)
+  {
     global $irc, $irpg, $db;
 
   }
 
 ///////////////////////////////////////////////////////////////
 
-  function onQuit($nick, $user, $host, $reason) {
+  function onQuit($nick, $user, $host, $reason)
+  {
    global $irc, $irpg, $db;
-   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause )
-     	if($irpg->readConfig("mod_penalites","penQuit") != 0)
-			if($this->VerifFinQuete($nick) == -1)
+   if(($this->queteEnCours != -1 || $this->queteSurvivant) && !$irpg->pause ) {
+	if($irpg->readConfig("mod_penalites","penQuit") != 0) {
+			if($this->VerifFinQuete($nick) == -1) {
 				$this->queteEnCours = -1;
+            }
+        }
+    }
 	}
 
 ///////////////////////////////////////////////////////////////
 
-  function on5Secondes() {
+  function on5Secondes()
+  {
     global $irc, $irpg;
   }
 
 ///////////////////////////////////////////////////////////////
 
 
-  function on10Secondes() {
+  function on10Secondes()
+  {
     global $irc, $irpg;
 
   }
@@ -246,37 +276,30 @@ class quests
 		$tbIRC = $db->prefix."IRC";
 														//Si il n'y a aucune quete en Cours, on a une chance sur 500 d'un mettre une en route.
 														//Si une quete est mise en route il y a 80% de chance que ce soit une quete d'aventure et 20% une quete de Royaume.
-		if(!$irpg->pause)
-		{
-			if(($this->queteEnCours == -1) && ($this->queteSurvivant == 0))
-			{
-				if(rand(1,$this->probaAllQuete) == 1)
-				{
+		if(!$irpg->pause) {
+			if(($this->queteEnCours == -1) && ($this->queteSurvivant == 0)) {
+				if(rand(1,$this->probaAllQuete) == 1) {
 					$proba = rand(1,100);
-					if ($proba <= $this->probaQueteA)
+					if ($proba <= $this->probaQueteA) {
 						$this->queteEnCours = $this->QueteAventure();
-					elseif($proba <= ($this->probaQueteA + round((100 - $this->probaQueteA)/2)))
+					} elseif($proba <= ($this->probaQueteA + round((100 - $this->probaQueteA)/2))) {
 						$this->queteEnCours = $this->QueteRoyaume();
-					else
-						if($this->nbrParticipants > 1 || !$this->queteSurvivant)
+					} else {
+						if($this->nbrParticipants > 1 || !$this->queteSurvivant) {
 							$this->queteSurvivant = $this->QueteSurvivant();
-						else
+						} else {
 							$this->queteEnCours = $this->QueteRoyaume();
-
+                        }
+                    }
 				}
-			}
+			} elseif($this->queteEnCours == 1) {
 															// Si il y a une quete en cours, on verifie le temps de quete restant. Si il est superieur à 0 on enlève 15 secondes
 															// Sinon on donne une recompense à tout les personnages qui ont participé jusqu'au bout (uid different de -1)
-			elseif($this->queteEnCours == 1)
-			{
-				if($this->tempsQuete > 0)
+				if($this->tempsQuete > 0) {
 					$this->tempsQuete = $this->tempsQuete - 15;
-				else
-				{
-					for($i=0;$i<$this->nbrParticipants;$i++)
-					{
-						if($this->participants[$i][0] != -1)
-						{
+				} else {
+					for($i=0;$i<$this->nbrParticipants;$i++) {
+						if($this->participants[$i][0] != -1) {
 							$pid = $this->participants[$i][0];
 							$cnext = $db->getRows("SELECT Next FROM $tbPerso WHERE Id_Personnages = '$pid'");
 							//$cnext = $cnext[0][0]; //Optimisation
@@ -286,24 +309,20 @@ class quests
 						}
 					}
 					$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
-					if(substr_count($listeParticipants,',') != 0)
+					if(substr_count($listeParticipants,',') != 0) {
 						$irc->privmsg($irc->home, $listeParticipants." sont revenus de leur quête et ont remplis l'objectif! Bravo, voilà votre récompense : ".$this->recompenseA."% de votre TTL sont enlevés !");
-					else
+					} else {
 						$irc->privmsg($irc->home, $listeParticipants." est revenu de sa quête et a rempli l'objectif! Bravo, voilà ta récompense : ".$this->recompenseA."% de ton TTL est enlevés !");
+                    }
 
 					$this->queteEnCours = -1;
 				}
-			}
-			elseif($this->queteEnCours == 2)
-			{
-				if($this->tempsQuete > 0)
+			} elseif($this->queteEnCours == 2) {
+				if($this->tempsQuete > 0) {
 					$this->tempsQuete = $this->tempsQuete - 15;
-				else
-				{
-					for($i=0;$i<$this->nbrParticipants;$i++)
-					{
-						if($this->participants[$i][0] != -1)
-						{
+				} else {
+					for($i=0;$i<$this->nbrParticipants;$i++) {
+						if($this->participants[$i][0] != -1) {
 							$pid = $this->participants[$i][0];
 							$cnext = $db->getRows("SELECT Next FROM $tbPerso WHERE Id_Personnages = '$pid'");
 							$recompense = round($cnext[0][0]*($this->recompenseR / 100));
@@ -312,10 +331,11 @@ class quests
 						}
 					}
 					$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
-					if(substr_count($listeParticipants,',') != 0)
+					if(substr_count($listeParticipants,',') != 0) {
 						$irc->privmsg($irc->home, $listeParticipants." sont revenus de quête à temps. Le royaume est sauvé...  Ils seront largement récompensés. ".$this->recompenseR."% de leur TTL sont enlevés !");
-					else
+					} else {
 						$irc->privmsg($irc->home, $listeParticipants." est revenu de quête à temps. Le royaume est sauvé...  Il sera largement récompensé. ".$this->recompenseR."% de son TTL est enlevé !");
+                    }
 
 					$this->queteEnCours = -1;
 				}
@@ -338,14 +358,15 @@ class quests
 		$query = "SELECT Id_Personnages, Nom, Util_id, Level FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(LastLogin))>".$this->tempsMinIdleA." AND Level >=".$this->lvlMinimumA." GROUP BY Util_id ORDER BY RAND() LIMIT 0,".$this->nbrParticipants;
 
 														// Si le nombre de personnage retourné est inferieur au nombre voulut on ne peut pas commencé la quête
-		if ($db->nbLignes($query) != $this->nbrParticipants) return -1;
+		if ($db->nbLignes($query) != $this->nbrParticipants) {
+          return -1;
+        }
 
 														// On recupere les infos retournées par la query.
 		$this->participants = $db->getRows($query);
 
 														// Pour chaque personnage on va recuperer son nick et etablir la liste des participants dans une chaine.
-		for($i=0;$i<$this->nbrParticipants;$i++)
-		{
+		for($i=0;$i<$this->nbrParticipants;$i++) {
 			$this->participants[$i][1] = $irpg->getNickByUID($this->participants[$i][2]);
 			$listeParticipants .= $irpg->getNomPersoByPID($this->participants[$i][0]).", ";
 		}
@@ -355,10 +376,11 @@ class quests
 														// le temps de quete est etablit selon le temps de quete desiré plus un temps au hasard entre 1 et ce temps de quete desiré.
 														// On peut donc passer du simple au double au hasard.
 		$this->tempsQuete = $this->tempsQueteA + rand(1,$this->tempsQueteA);
-		if(substr_count($listeParticipants,',') != 0)
+		if(substr_count($listeParticipants,',') != 0) {
 			$irc->privmsg($irc->home, $listeParticipants." ont été choisit pour ".$message[0][0].". Ils ont ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
-		else
+		} else {
 			$irc->privmsg($irc->home, $listeParticipants." a été choisit pour ".$message[0][0].". Il a ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
+        }
 		return 1;
   }
 
@@ -375,14 +397,15 @@ class quests
 		$query = "SELECT Id_Personnages, Nom, Util_id, Level FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(LastLogin))>".$this->tempsMinIdleR." AND Level >=".$this->lvlMinimumR." GROUP BY Util_id ORDER BY RAND() LIMIT 0,".$this->nbrParticipants;
 
 														// Si le nombre de personnage retourné est inferieur au nombre voulut on ne peut pas commencé la quête
-		if ($db->nbLignes($query) != $this->nbrParticipants) return -1;
+		if ($db->nbLignes($query) != $this->nbrParticipants) {
+          return -1;
+        }
 
 														// On recupere les infos retournées par la query.
 		$this->participants = $db->getRows($query);
 
 														// Pour chaque personnage on va recuperer son nick et etablir la liste des participants dans une chaine.
-		for($i=0;$i<$this->nbrParticipants;$i++)
-		{
+		for($i=0;$i<$this->nbrParticipants;$i++) {
 			$this->participants[$i][1] = $irpg->getNickByUID($this->participants[$i][2]);
 			$listeParticipants .= $irpg->getNomPersoByPID($this->participants[$i][0]).", ";
 		}
@@ -391,10 +414,11 @@ class quests
 														// le temps de quete est etablit selon le temps de quete desiré plus un temps au hasard entre 1 et ce temps de quete desiré.
 														// On peut donc passer du simple au double au hasard.
 		$this->tempsQuete = $this->tempsQueteR + rand(1,$this->tempsQueteR);
-		if(substr_count($listeParticipants,',') != 0)
+		if(substr_count($listeParticipants,',') != 0) {
 			$irc->privmsg($irc->home, "Quête de Royaume!: ".$listeParticipants." ont été choisit pour ". $message[0][0].". Ils ont ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
-		else
+		} else {
 			$irc->privmsg($irc->home, "Quête de Royaume!: ".$listeParticipants." a été choisit pour ". $message[0][0].". Il a ".$irpg->convSecondes($this->tempsQuete)." pour en revenir...");
+        }
 		return 2;
 	}
 
@@ -411,14 +435,15 @@ class quests
 		$query = "SELECT Id_Personnages, Nom, Util_id, Level FROM $tbPerso WHERE Id_Personnages IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) AND (UNIX_TIMESTAMP() - UNIX_TIMESTAMP(LastLogin))>".$this->tempsMinIdleR." AND Level >=".$this->lvlMinimumR." GROUP BY Util_id ORDER BY RAND() LIMIT 0,".$this->nbrParticipants;
 
 														// Si le nombre de personnage retourné est inferieur au nombre voulut on ne peut pas commencé la quête
-		if ($db->nbLignes($query) != $this->nbrParticipants) return false;
+		if ($db->nbLignes($query) != $this->nbrParticipants) {
+          return false;
+        }
 
 														// On recupere les infos retournées par la query.
 		$this->participants = $db->getRows($query);
 
 														// Pour chaque personnage on va recuperer son nick et etablir la liste des participants dans une chaine.
-		for($i=0;$i<$this->nbrParticipants;$i++)
-		{
+		for($i=0;$i<$this->nbrParticipants;$i++) {
 			$this->participants[$i][1] = $irpg->getNickByUID($this->participants[$i][2]);
 			$listeParticipants .= $irpg->getNomPersoByPID($this->participants[$i][0]).", ";
 		}
@@ -432,75 +457,72 @@ class quests
 	function cmdQuestStart($nick)
 	{
 		global $irpg, $irc, $db;
-		if(!$irpg->pause)
-	  	{
+		if(!$irpg->pause) {
 			$uid = $irpg->getUsernameByNick($nick,true);
-			if($irpg->getAdminlvl($uid[1]) >= 5)
-			{
-				if($this->queteEnCours != -1)
-				{
+			if($irpg->getAdminlvl($uid[1]) >= 5) {
+				if($this->queteEnCours != -1) {
 					$irc->notice($nick,"Il y a déjà une quête en cours!!!");
 					$this->cmdQuest($nick);
-				}
-				else
-				{
+				} else {
 					$proba = rand(1,100);
-					if ($proba <= $this->probaQueteA)
+					if ($proba <= $this->probaQueteA) {
 						$this->queteEnCours = $this->QueteAventure();
 
-					elseif($proba <= ($this->probaQueteA + round((100 -$this->probaQueteA)/2) ) )
+					} elseif($proba <= ($this->probaQueteA + round((100 -$this->probaQueteA)/2) ) ) {
 						$this->queteEnCours = $this->QueteRoyaume();
-					else
-						if($this->nbrParticipants > 1 || !$this->queteSurvivant)
+					} else {
+						if($this->nbrParticipants > 1 || !$this->queteSurvivant) {
 							$this->queteSurvivant = $this->QueteSurvivant();
-						else
+						} else {
 							$this->queteEnCours = $this->QueteRoyaume();
+                        }
+                    }
 				}
-			}
-			else
+			} else {
 			          $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
-	  	}
-	  	else
+            }
+		} else {
 			$irc->notice($nick, "Le jeu est en pause aucune information n'est disponible");
+        }
 	}
 ////////////////////////////////////////////////////
 	function cmdQuest($nick)
 	{
 		global $irpg, $irc;
-		if(!$irpg->pause)
-		{
-			if($this->queteSurvivant)
-			{
-				for($i=0;$i<$this->nbrParticipants;$i++)
-					if($this->participants[$i][0] != -1)
+		if(!$irpg->pause) {
+			if($this->queteSurvivant) {
+				for($i=0;$i<$this->nbrParticipants;$i++) {
+					if($this->participants[$i][0] != -1) {
 						$listeParticipants .= $irpg->getNomPersoByPID($this->participants[$i][0]).", ";
+                    }
+                }
 					$message = "Il y a une quête du survivant qui est en cours! Les participants encore en lice sont: ".$listeParticipants;
 					$irc->notice($nick, $message);
-			}
-			else
-			{
-	      		if($this->tempsQuete <= 0 || $this->queteEnCours == -1)
+			} else {
+			if($this->tempsQuete <= 0 || $this->queteEnCours == -1) {
 					$irc->notice($nick, "Aucune quête en cours actuellement.");
-				else
-				{
-					for($i=0;$i<$this->nbrParticipants;$i++)
-						if($this->participants[$i][0] != -1)
+				} else {
+					for($i=0;$i<$this->nbrParticipants;$i++) {
+						if($this->participants[$i][0] != -1) {
 							$listeParticipants .= $irpg->getNomPersoByPID($this->participants[$i][0]).", ";
+                        }
+                    }
 
 					$listeParticipants = substr($listeParticipants,0,strlen($listeParticipants)-2);
-					if($this->queteEnCours == 1)
+					if($this->queteEnCours == 1) {
 						$message = "La quête d'Aventure en cours prendra fin dans ".$irpg->convSecondes($this->tempsQuete).". Participant(s): ".$listeParticipants;
-					elseif($this->queteEnCours == 2)
+					} elseif($this->queteEnCours == 2) {
 						$message = "La quête de Royaume en cours prendra fin dans ".$irpg->convSecondes($this->tempsQuete).". Participant(s): ".$listeParticipants;
-					else
+					} else {
 						$message = "C'est une quête du survivant qui est en cours! Les participants encore en lice sont: ".$listeParticipants;
+                    }
 
 					$irc->notice($nick, $message);
 				}
 			}
-		}
-		else
+		} else {
 			$irc->notice($nick, "Le jeu est en pause aucune information n'est disponible");
+        }
 	}
 ///////////////////////////////////////////////////////////////
 
@@ -512,11 +534,10 @@ class quests
 	  	$nickIsParticipant = false;			// Permet de stopper la boucle for des que l'on sait que le nick est participant a la quete. (Optimisation)
 	  													// Permet aussi de ne pas verifier si la quete a ete abandonnée par tout les participant si le nick n'est pas un participant.
 														// On boucle sur chaque participant de la quete et on arrete si on a trouvé que le nick participe a la quete.
-			for($i=0;$i<$this->nbrParticipants && !$nickIsParticipant;$i++)
+			for($i=0;$i<$this->nbrParticipants && !$nickIsParticipant;$i++) {
 														// Si le nick est participant a la quete et qu'il n'a pas encore abandonné la quete on lui inflige une penalité et
 														// on l'annonce sur le canal, on l'inscrit dans les logs et on met la variable nickIsParticipant à vrai.
-				if($this->participants[$i][1] == $nick && $this->participants[$i][0] != -1)
-				{
+				if($this->participants[$i][1] == $nick && $this->participants[$i][0] != -1) {
 					$pid = $this->participants[$i][0];
 					$cnext = $db->getRows("SELECT Next FROM $tbPerso WHERE Id_Personnages = '$pid'");
 					$penalite = round($cnext[0][0]*(rand($this->MinPenalite,$this->MaxPenalite) / 100));
@@ -526,29 +547,29 @@ class quests
           		$irpg->Log($pid, "QUETE_ABANDONNÉE", $penalite, "");
           		$nickIsParticipant = true;
 				}
+            }
 
-			if($nickIsParticipant)			// Si le nick ayant pris une penalité participe à la quete on test si avec son abandon la quete est abandonnée
+			// Si le nick ayant pris une penalité participe à la quete on test si avec son abandon la quete est abandonnée
 													// Si il ne fait pas partie de la quete on saute toute cette partie. (Optimisation)
-			{
+			if($nickIsParticipant) {
 				$queteAbandonnee = true;		// On considere que la quete est abandonnée.
 													// Si on trouve un des participants qui n'a pas abandonnée on mettra la variable à zero
 				$participantsActif = 0;
-				for($i=0;$i<$this->nbrParticipants;$i++)
-					if($this->participants[$i][0] != -1)
-					{
+				for($i=0;$i<$this->nbrParticipants;$i++) {
+					if($this->participants[$i][0] != -1) {
 						$queteAbandonnee = false;
 						$participantsActif++;//ParticipantsActif servira dans le cas d'une quete du Survivant
 					}
+                }
 
-				if($this->queteSurvivant && $participantsActif == 1)
-				{
-					for($i=0;$i<$this->nbrParticipants;$i++)
-						if($this->participants[$i][0] != -1)
-						{
+				if($this->queteSurvivant && $participantsActif == 1) {
+					for($i=0;$i<$this->nbrParticipants;$i++) {
+						if($this->participants[$i][0] != -1) {
 							$gagnant = $irpg->getNomPersoByPID($this->participants[$i][0]);
 							$gagnantPID = $this->participants[$i][0];
 							$i = $this->nbrParticipants;
 						}
+                    }
 					$irc->privmsg($irc->home, "Nous avons un gagnant dans cette quete du Survivant! ".$gagnant." sera largement récompensé pour sa bravoure!");
 					$cnext = $db->getRows("SELECT Next FROM $tbPerso WHERE Id_Personnages = ".$gagnantPID);
 					$recompense = round($cnext[0][0]*($this->recompenseS / 100));
@@ -557,15 +578,12 @@ class quests
 					return $this->queteEnCours;
 				}
 
-				if($queteAbandonnee)	// Si la quete est abandonnée on ecrit sur le canal si c'est une quete d'Aventure.
+	// Si la quete est abandonnée on ecrit sur le canal si c'est une quete d'Aventure.
 													// Si c'est une quete de royaume on applique une penalité a tout les connectés.
-				{
-					if($this->queteEnCours == 1)
-					{
+				if($queteAbandonnee) {
+					if($this->queteEnCours == 1) {
 						$irc->privmsg($irc->home, "La quête a echouée... Les aventuriers sont tous revenus bredouilles...");
-					}
-					elseif($this->queteEnCours == 2)
-					{
+					} elseif($this->queteEnCours == 2) {
 						$penaliteAll = rand($this->MinPenaliteAll,$this->MaxPenaliteAll) / 100;
 
           //TODO : Ajouter le log à tous les joueurs en ligne..
