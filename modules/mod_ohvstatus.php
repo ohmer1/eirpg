@@ -240,11 +240,11 @@ class ohvstatus
     global $irc;
 
     //TODO: vérifier si l'utilisateur n'est pas flagué NOOP
-    if (($this->op == "1") and ($this->oplvl <= $level)) {
+    if (($this->op == "1") && ($this->oplvl <= $level)) {
       $irc->sendRaw("MODE $irc->home +o $nick");
-    } elseif (($this->hop == "1") and ($this->hoplvl <= $level)) {
+    } elseif (($this->hop == "1") && ($this->hoplvl <= $level)) {
       $irc->sendRaw("MODE $irc->home +h $nick");
-    } elseif (($this->voice == "1") and ($this->voicelvl <= $level)) {
+    } elseif (($this->voice == "1") && ($this->voicelvl <= $level)) {
       $irc->sendRaw("MODE $irc->home +v $nick");
     }
   }

@@ -335,7 +335,7 @@ class core
     } elseif (!eregi("^[a-z0-9_-]+$", $username)) {
       $irc->notice($nick, "Désolé, votre nom d'utilisateur contient des caractères interdits.  Seuls les caractères \002alphanumériques\002, le \002tiret\002 et la \002barre de soulignement\002 sont autorisés.");
       return false;
-    } elseif (((strtoupper($username) == "IRPG")) or ((strtoupper($username) == "EIRPG"))) {
+    } elseif (((strtoupper($username) == "IRPG")) || ((strtoupper($username) == "EIRPG"))) {
       $irc->notice($nick, "Désolé, ce nom d'utilisateur est réservé.");
       return false;
     } else {
@@ -555,7 +555,7 @@ class core
         $irc->notice($nick, "Désolé, vous ne pouvez pas créer plus de $this->maxPerso personnage(s).");
       } elseif (strlen($personnage) > 30) { //On vérifie la validité du nom de personnage
         $irc->notice($nick, "Le nom de votre personnage est limité à 30 caractères.");
-      } elseif (((strtoupper($personnage) == "IRPG")) or ((strtoupper($personnage) == "EIRPG"))) {
+      } elseif (((strtoupper($personnage) == "IRPG")) || ((strtoupper($personnage) == "EIRPG"))) {
         $irc->notice($nick, "Désolé, ce nom de personnage est réservé.");
       } elseif ($db->nbLignes("SELECT Nom FROM $tbPerso WHERE Nom = '$personnage'") != 0) {
         $irc->notice($nick, "Désolé, ce nom de personnage est déjà en utilisation.");
@@ -598,7 +598,7 @@ class core
   {
     global $irc, $db, $irpg;
 
-    if ((strtolower($flag) != "on") and (strtolower($flag) != "off")) {
+    if ((strtolower($flag) != "on") && (strtolower($flag) != "off")) {
       $irc->notice($nick, "Syntaxe incorrecte.  Syntaxe: NOTICE <on/off>.");
     } else {
       $user = $irpg->getUsernameByNick($nick);

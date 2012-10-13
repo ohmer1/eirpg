@@ -89,7 +89,7 @@ class DB
     global $irpg, $irc;
 
    if ($this->connected) {
-     if (($irpg->readConfig("IRPG", "debug")) And (!$ignoredebug)) {
+     if (($irpg->readConfig("IRPG", "debug")) && (!$ignoredebug)) {
        $irpg->alog("SQL: ".$query);
      }
 

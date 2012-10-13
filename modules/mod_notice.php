@@ -118,7 +118,7 @@ class notice
   {
     global $irc, $irpg, $db;
 
-    if (($nick != $irc->me) and ($this->actif=="1")) {
+    if (($nick != $irc->me) && ($this->actif=="1")) {
     	$irc->notice($nick, $this->message);
     }
   }

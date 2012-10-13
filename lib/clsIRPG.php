@@ -326,7 +326,7 @@ class IRPG
   function alog($msg, $print = false)
   { //Gestion des logs et de l'affichage des info de débuguage
     $date = date("j-m-Y H:i:s");
-    if ((!$this->readConfig("IRPG", "background") or ($print))) {
+    if ((!$this->readConfig("IRPG", "background") || ($print))) {
       $charset = $this->readConfig("IRPG", "charset");
       print  iconv("ISO-8859-15", $charset, "[$date] ".$msg."\n");
     }
@@ -341,7 +341,7 @@ class IRPG
   {
     $username = array_search($nick, $this->mod["core"]->users);
 
-    if (($uid) And ($username)) {
+    if (($uid) && ($username)) {
       global $db;
       $table = $db->prefix."Utilisateurs";
       $uid = $db->getRows("SELECT Id_Utilisateurs FROM $table WHERE Username = '$username'");

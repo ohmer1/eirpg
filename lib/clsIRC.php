@@ -305,7 +305,7 @@ class IRC
         $names[$i] = ltrim($names[$i], "+");
         $names[$i] = trim($names[$i]);
 
-        if ((!empty($names[$i])) and ($names[$i] != $this->me)) {
+        if ((!empty($names[$i])) && ($names[$i] != $this->me)) {
           $db->req("INSERT INTO $table (`Nick`, `Channel`) VALUES ('$names[$i]', '#$channel')");
         }
 
@@ -332,7 +332,7 @@ class IRC
     }
 
     //Gestion auto-login
-    if (($channel == $this->home) And ($nick != $this->me)) {
+    if (($channel == $this->home) && ($nick != $this->me)) {
       $tbPerso = $db->prefix."Personnages";
       $tbUtil = $db->prefix."Utilisateurs";
 
@@ -396,9 +396,9 @@ class IRC
         $i++;
       }
 
-      if (($i == 1) and (!empty($lstAuto))) {
+      if (($i == 1) && (!empty($lstAuto))) {
         $this->privmsg($this->home, "Le personnage suivant a été automatiquement relogué : $lstAuto.");
-      } elseif (($i > 1)  and (!empty($lstAuto))) {
+      } elseif (($i > 1)  && (!empty($lstAuto))) {
       $this->privmsg($this->home, "Les personnages suivants ont été automatiquement relogués : $lstAuto.");
       }
 
@@ -415,7 +415,7 @@ class IRC
   {
     global $irpg, $db, $last5sec;
 
-    if ((($last5sec + 5) <= time()) And ($this->ready)) {
+    if ((($last5sec + 5) <= time()) && ($this->ready)) {
       if (!$irpg->pause) {
         //Appel aux modules
         $i = 0;
@@ -460,7 +460,7 @@ class IRC
 
           //Si la connexion DB est perdu; on retente une
           //nouvelle connexion toutes les 15 secondes..
-          if ((!$db->connected) and (!$this->exit)) {
+          if ((!$db->connected) && (!$this->exit)) {
             if ($db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"), $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix"))) {
 
               //On réinitialise notre table IRC et objets, comme si le bot venait
@@ -585,14 +585,14 @@ class IRC
     $this->exit = false;
 
     $this->sirc = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)
-     or die ("Impossible de créer le socket IRC\n");
+     || die ("Impossible de créer le socket IRC\n");
 
     if ($bind != "") {
       socket_bind($this->sirc, $bind);
     }
 
     socket_connect($this->sirc, $server, $port)
-     or die ("Impossible de se connecter au serveur IRC\n");
+     || die ("Impossible de se connecter au serveur IRC\n");
 
     if ($this->sirc) {
       $irpg->alog("Connexion au serveur IRC...", true);
@@ -772,7 +772,7 @@ class IRC
           } elseif (ereg("^:$userhost PRIVMSG ", $dataregexp)) {
             /* En privé */
             // On ne va pas plus loin si le pseudo ou l'host doit être ignoré !
-            if ((in_array($nick, $ignoresN)) or (in_array($host, $ignoresH))) {
+            if ((in_array($nick, $ignoresN)) || (in_array($host, $ignoresH))) {
               continue;
             }
 
@@ -797,7 +797,7 @@ class IRC
           } elseif (ereg("^:$userhost NOTICE ", $dataregexp)) {
             /* En privé */
             // On ne va pas plus loin si le pseudo ou l'host doit être ignoré !
-            if ((in_array($nick, $ignoresN)) or (in_array($host, $ignoresH))) {
+            if ((in_array($nick, $ignoresN)) || (in_array($host, $ignoresH))) {
               continue;
             }
 
