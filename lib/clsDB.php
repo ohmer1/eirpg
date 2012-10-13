@@ -100,7 +100,6 @@ class DB
        $irpg->pause = true;
        $irc->privmsg($irc->home, "Attention, jeu automatiquement désactivé!!  Raison: perte de la connexion au serveur de bases de données.  Une nouvelle tentative se fera toutes les 15 secondes...");
      }
-   } else {
    }
   }
 

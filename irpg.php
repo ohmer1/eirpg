@@ -61,8 +61,7 @@ while (true) {
 
 if ($irpg->readConfig("IRPG", "background") == "1") { //On lance le bot en background
   set_time_limit(0);
-  if (pcntl_fork()) {
-  } else {
+  if (!pcntl_fork()) {
     $pid = posix_getpid();
     $irpg->alog("Chargement en background (PID #$pid)...", true);
     posix_setsid();
