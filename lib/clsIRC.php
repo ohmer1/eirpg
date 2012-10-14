@@ -632,8 +632,9 @@ class IRC
      * Boucle tant que le socket est ouvert
      *
      * @author Homer
+     * @author cedricpc
      * @created 20 juin 2005
-     * @modified 20 juin 2005
+     * @modified 19 Avril 2010
      * @param none
      * @return none
      */
@@ -652,6 +653,7 @@ class IRC
         $ignoresN = $irpg->getIgnoresN();
         $ignoresH = $irpg->getIgnoresH();
 
+        $buffer = '';
         while (true) {
             if ($this->exit) {
                 break;
@@ -714,10 +716,10 @@ class IRC
 
                 //Message en provenance d'un serveur ou d'un utilisateur?
                 if (!ereg("^.*!.*@.* .*$", $dataregexp)) {
-                    preg_match('`:(.*?) `', $dataregexp, $server);
-                    $server = $server[1];
-                } else {
-                    preg_match('`:(.*?) `', $dataregexp, $userhost);
+                    if (preg_match('`:(.*?) `', $dataregexp, $server)) {
+                        $server = $server[1];
+                    }
+                } elseif (preg_match('`:(.*?) `', $dataregexp, $userhost)) {
                     $userhost = $userhost[1];
                 }
 

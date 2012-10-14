@@ -2,7 +2,7 @@
 
 /*
  * EpiKnet Idle RPG (EIRPG)
- * Copyright (C) 2005-2012 Francis D (Homer) & EpiKnet
+ * Copyright (C) 2005-2012 Francis D (Homer), cedricpc & EpiKnet
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 as
@@ -22,8 +22,9 @@
  * fonctions utilisées par le bot
  *
  * @author Homer
+ * @author cedricpc
  * @created 30 mai 2005
- * @modified 07 Janvier 2008
+ * @modified 19 Avril 2010
  */
 class IRPG
 {
@@ -45,15 +46,20 @@ class IRPG
     ///////////////////////////////////////////////////////////////
 
     /**
-     * Valide une section fdu fichier de configuration
+     * Valide une section du fichier de configuration
      *
      * @author Homer
+     * @author cedricpc
      * @created 1er juin 2005
-     * @modified 1er juin 2005
+     * @modified 19 Avril 2010
      * @return boolean - true si la config est OK, false autrement
      */
     function validationConfig($section, $keys, $keys_opt)
     {
+        $this->config[$section] = array();
+        $keys     = (array) $keys;
+        $keys_opt = (array) $keys_opt;
+
         //On traite les clés obligatoires
         $i = 0;
         while ($i != count($keys)) {
@@ -240,8 +246,9 @@ class IRPG
      * Config; interprète le fichier de configuration
      *
      * @author Homer
+     * @author cedricpc
      * @created 30 mai 2005
-     * @modified 30 mai 2005
+     * @modified 19 Avril 2010
      * @param section    - Section du fichier de config (SQL, IRC, IRPG...)
      * @param key        - Élément du fichier que l'on recherche (server, port, login..)'
      * @param fromFile   - Si vrai lis la configuration du fichier, sinon des données en mémoire
@@ -251,10 +258,10 @@ class IRPG
     {
         if ($fromFile) {
             $config = parse_ini_file("irpg.conf", true);
-            return $config[$section][$key];
+            return (isset($config[$section][$key]) ? $config[$section][$key] : null);
         } else {
             //Retourne ce qui a été préablement chargé en mémoire
-            return $this->config[$section][$key];
+            return (isset($this->config[$section][$key]) ? $this->config[$section][$key] : null);
         }
     }
 
