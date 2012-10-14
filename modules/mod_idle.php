@@ -27,6 +27,7 @@
  *
  * @author Homer
  * @created 10 septembre 2005
+ * @modified 08 Janvier 2008 (cedricpc)
  */
 class idle
 {
@@ -51,7 +52,7 @@ class idle
 
         /* Renseignement des variables importantes */
         $this->name    = "mod_idle";
-        $this->version = "1.0.0";
+        $this->version = "1.0.1";
         $this->desc    = "Module calculant l'idle";
         $this->depend  = array("core/0.5.0");
 
@@ -182,49 +183,64 @@ class idle
     {
         global $irc, $irpg, $db;
 
-        //On retire 15 secondes à tous les
-        //personnages en ligne !
-        $tbPerso = $db->prefix . "Personnages";
-        $tbIRC   = $db->prefix . "IRC";
-        $db->req("UPDATE $tbPerso SET Next=Next-15, Idled=Idled+15 WHERE Id_Personnages
-                  IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id))");
+        //On retire 15 secondes à tous les personnages en ligne !
+        $tbPerso = $db->prefix . 'Personnages';
+        $tbIRC   = $db->prefix . 'IRC';
+        $db->req('UPDATE `' . $tbPerso . '` SET `Next` = `Next` - 15, `Idled` = `Idled` + 15 WHERE `Id_Personnages`
+                  IN (SELECT `Pers_Id` FROM `' . $tbIRC . '` WHERE NOT ISNULL(`Pers_Id`))');
 
-        //Level up
-        $i = 0;
-        $up = $db->getRows("SELECT Id_Personnages, Util_Id, Nom, Level, Class FROM $tbPerso WHERE Next <= '0'");
-        while ($i != count($up)) {
-            $pid      = $up[$i]["Id_Personnages"];
-            $uid      = $up[$i]["Util_Id"];
-            $nomPerso = $up[$i]["Nom"];
-            $level    = $up[$i]["Level"];
-            $level2   = $level + 1;
-            $class    = $up[$i]["Class"];
+        //On fait passer au niveau suivant les personnages qui doivent l'être.
+        $persos = $db->getRows('SELECT `Id_Personnages`, `Util_Id`, `Nom`, `Level`, `Class`, `Next`
+                                FROM `' . $tbPerso . '` WHERE `Next` <= 0');
+        for ($i = 0; $i != count($persos); $i++) {
+            $this->cmdLvlUp($persos[$i]['Id_Personnages'], array($persos[$i]));
+        }
+    }
 
-            $nick = $irpg->getNickByUID($uid);
+///////////////////////////////////////////////////////////////
 
-            //Calcul du nombre de seconde à idler pour atteindre
-            //le prochain niveau
-            $next = round($this->idleBase * pow($this->expLvlUp,$level2), 0);
+    function cmdLvlUp($pid, $data = false)
+    {
+        global $irc, $irpg, $db;
+        $tbPerso = $db->prefix . 'Personnages';
 
-            $db->req("UPDATE $tbPerso SET Level=Level+1, Next='$next' WHERE Id_Personnages='$pid'");
-            $irpg->Log($pid, "LEVEL_UP", "0", $level, $level2);
-
-            $cnext = $irpg->convSecondes($next);
-
-            $irc->notice($nick, "Votre personnage $nomPerso vient d'obtenir le niveau $level2 ! "
-                . "Prochain niveau dans $cnext.");
-            $irc->privmsg($irc->home, "UP! $nomPerso, $class vient d'obtenir le niveau $level2 ! "
-                . "Prochain niveau dans $cnext.");
-
-            $y = 0;
-            while ($y != count($irpg->mod)) {
-                if (method_exists($irpg->mod[$irpg->modules[$y]], "modIdle_onLvlUp")) {
-                    $irpg->mod[$irpg->modules[$y]]->modIdle_onLvlUp($nick, $uid, $pid, $level2, $next);
-                }
-                $y++;
+        if (!is_array($data)) {
+            if (!is_numeric($pid)) {
+                return false;
             }
 
-            $i++;
+            $data = $db->getRows('SELECT `Id_Personnages`, `Util_Id`, `Nom`, `Level`, `Class`, `Next`
+                                  FROM `' . $tbPerso . '` WHERE `Id_Personnages` = ' . $pid);
+        }
+
+        if (!$data || !count($data)) {
+            return false;
+        }
+
+        $pid      = $data[0]['Id_Personnages'];
+        $uid      = $data[0]['Util_Id'];
+        $nomPerso = $data[0]['Nom'];
+        $class    = $data[0]['Class'];
+        $nick     = $irpg->getNickByUID($uid);
+        $level    = $data[0]['Level'] + 1;
+
+        //Calcul du nombre de seconde à idler pour atteindre le prochain niveau
+        $next  = round($this->idleBase * pow($this->expLvlUp, $level), 0);
+        $cnext = $irpg->convSecondes($next);
+
+        $db->req('UPDATE `' . $tbPerso . '` SET `Level` = Level + 1, `Next` = ' . $next . '
+                  WHERE `Id_Personnages` = ' . $pid);
+        $irpg->Log($pid, 'LEVEL_UP', '0', $level - 1, $level);
+
+        $irc->notice($nick, 'Votre personnage ' . $nomPerso . ' vient d\'obtenir le niveau ' . $level . ' ! '
+            . 'Prochain niveau dans ' . $cnext . '.');
+        $irc->privmsg($irc->home, 'UP! ' . $nomPerso . ', ' . $class . ' vient d\'obtenir le niveau ' . $level
+            . ' ! Prochain niveau dans ' . $cnext . '.');
+
+        for ($i = 0; $i != count($irpg->mod); $i++) {
+            if (method_exists($irpg->mod[$irpg->modules[$i]], 'modIdle_onLvlUp')) {
+                $irpg->mod[$irpg->modules[$i]]->modIdle_onLvlUp($nick, $uid, $pid, $level, $next);
+            }
         }
     }
 
