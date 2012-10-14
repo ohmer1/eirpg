@@ -2,7 +2,7 @@
 
 /*
  * EpiKnet Idle RPG (EIRPG)
- * Copyright (C) 2005-2012 Francis D (Homer) & EpiKnet
+ * Copyright (C) 2005-2012 Francis D (Homer), cedricpc & EpiKnet
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 as
@@ -21,8 +21,9 @@
  * Classe IRC; gère tout le côté IRC du bot
  *
  * @author Homer
+ * @author cedricpc
  * @created 30 mai 2005
- * @modified 23 juillet 2005
+ * @modified 19 Avril 2010
  */
 class IRC
 {
@@ -85,7 +86,6 @@ class IRC
         $this->join($channel, $key);
 
         //Appel aux modules
-        global $irpg;
         $i = 0;
         while ($i != count($irpg->mod)) {
             if (method_exists($irpg->mod[$irpg->modules[$i]], "onConnect")) {
@@ -102,9 +102,10 @@ class IRC
 
     function onPrivmsgCanal($nick, $user, $host, $message)
     {
+        global $irpg;
+
         if (!$irpg->pause) {
             //Appel aux modules
-            global $irpg;
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (method_exists($irpg->mod[$irpg->modules[$i]], "onPrivmsgCanal")) {
@@ -119,9 +120,10 @@ class IRC
 
     function onPrivmsgPrive($nick, $user, $host, $message)
     {
+        global $irpg;
+
         if (!$irpg->pause) {
             //Appel aux modules
-            global $irpg;
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (method_exists($irpg->mod[$irpg->modules[$i]], "onPrivmsgPrive")) {
@@ -136,9 +138,10 @@ class IRC
 
     function onNoticeCanal($nick, $user, $host, $message)
     {
+        global $irpg;
+
         if (!$irpg->pause) {
             //Appel aux modules
-            global $irpg;
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (method_exists($irpg->mod[$irpg->modules[$i]], "onNoticeCanal")) {
@@ -153,9 +156,10 @@ class IRC
 
     function onNoticePrive($nick, $user, $host, $message)
     {
+        global $irpg;
+
         if (!$irpg->pause) {
             //Appel aux modules
-            global $irpg;
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (method_exists($irpg->mod[$irpg->modules[$i]], "onNoticePrive")) {
@@ -170,9 +174,10 @@ class IRC
 
     function onJoin($nick, $user, $host, $channel)
     {
+        global $irpg;
+
         if (!$irpg->pause) {
             //Appel aux modules
-            global $irpg;
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (method_exists($irpg->mod[$irpg->modules[$i]], "onJoin")) {
@@ -187,9 +192,10 @@ class IRC
 
     function onPart($nick, $user, $host, $channel)
     {
+        global $irpg;
+
         if (!$irpg->pause) {
             //Appel aux modules
-            global $irpg;
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (method_exists($irpg->mod[$irpg->modules[$i]], "onPart")) {
@@ -204,9 +210,10 @@ class IRC
 
     function onNick($nick, $user, $host, $newnick)
     {
+        global $irpg;
+
         if (!$irpg->pause) {
             //Appel aux modules
-            global $irpg;
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (method_exists($irpg->mod[$irpg->modules[$i]], "onNick")) {
@@ -221,9 +228,10 @@ class IRC
 
     function onKick($nick, $user, $host, $channel, $nickkicked)
     {
+        global $irpg;
+
         if (!$irpg->pause) {
             //Appel aux modules
-            global $irpg;
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (method_exists($irpg->mod[$irpg->modules[$i]], "onKick")) {
@@ -274,9 +282,10 @@ class IRC
 
     function onQuit($nick, $user, $host, $reason)
     {
+        global $irpg;
+
         if (!$irpg->pause) {
             //Appel aux modules
-            global $irpg;
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (method_exists($irpg->mod[$irpg->modules[$i]], "onQuit")) {
@@ -363,10 +372,10 @@ class IRC
 
     function onEndWho($channel)
     {
-        $channel = strtoupper($channel);
+        global $irc, $db, $irpg, $nbExecute;
 
+        $channel = strtoupper($channel);
         if ($channel == $this->home) {
-            global $irc, $db, $irpg, $nbExecute;
 
             if (empty($nbExecute)) {
                 $nbExecute = 0;
