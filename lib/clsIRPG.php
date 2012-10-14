@@ -123,8 +123,8 @@ class IRPG
         //Traitement de la section IRC
         $keys     = array(
             "server", "port", "channel", "nick", "altnick", "username", "realname", "modes"
-        );                                                      //clés obligatoires
-        $keys_opt = array("password", "nspass", "bind", "key"); //clés optionnelles
+        );                                                                 //clés obligatoires
+        $keys_opt = array("password", "nspass", "bind", "key", "charset"); //clés optionnelles
 
         $ok = $this->validationConfig("IRC", $keys, $keys_opt);
         if (!$ok) {
@@ -133,7 +133,7 @@ class IRPG
 
         //Traitement de la section IRPG
         $keys     = array("admin", "debug", "background", "purge", "version", "modules"); //clés obligatoires
-        $keys_opt = array("");                                                            //clés optionnelles
+        $keys_opt = array("charset");                                                     //clés optionnelles
 
         $ok = $this->validationConfig("IRPG", $keys, $keys_opt);
         if (!$ok) {
@@ -338,7 +338,7 @@ class IRPG
         $date = date("j-m-Y H:i:s");
         if ((!$this->readConfig("IRPG", "background") || ($print))) {
             $charset = $this->readConfig("IRPG", "charset");
-            print iconv("ISO-8859-15", $charset, "[$date] ".$msg."\n");
+            print iconv('ISO-8859-15', ($charset ? $charset : 'ISO-8859-15') . '//TRANSLIT', "[$date] $msg\n");
         }
         $flog = fopen("irpg.log", "a+");
         fwrite($flog, "[$date] " . $msg . "\n");
