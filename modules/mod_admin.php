@@ -23,7 +23,7 @@
  *
  * @author cedricpc
  * @created 22 Mars 2007
- * @modified 08 Janvier 2008
+ * @modified 29 Mars 2010
  */
 class admin
 {
@@ -47,7 +47,7 @@ class admin
 
         /* Renseignement des variables importantes */
         $this->name    = "mod_admin";
-        $this->version = "0.3.1";
+        $this->version = "0.3.2";
         $this->desc    = "Commandes d'administration'";
         $this->depend  = array("core/0.5.0");
 
@@ -731,7 +731,7 @@ class admin
     {
         global $irpg, $db, $irc;
 
-        $irc->privmsg($irc->home, $message);
+        $irc->privmsg($irc->home, stripslashes($message));
     }
 
 ///////////////////////////////////////////////////////////////
