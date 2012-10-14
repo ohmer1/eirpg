@@ -223,9 +223,14 @@ class idle
         $class    = $data[0]['Class'];
         $nick     = $irpg->getNickByUID($uid);
         $level    = $data[0]['Level'] + 1;
+        $next     = ($data[0]['Next'] > -15 ? $data[0]['Next'] : 0);
+
+        if ($next > 0) {
+            return false;
+        }
 
         //Calcul du nombre de seconde à idler pour atteindre le prochain niveau
-        $next  = round($this->idleBase * pow($this->expLvlUp, $level), 0);
+        $next += round($this->idleBase * pow($this->expLvlUp, $level), 0);
         $cnext = $irpg->convSecondes($next);
 
         $db->req('UPDATE `' . $tbPerso . '` SET `Level` = Level + 1, `Next` = ' . $next . '
