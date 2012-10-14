@@ -54,34 +54,35 @@ class IRPG
      * @modified 19 Avril 2010
      * @return boolean - true si la config est OK, false autrement
      */
-    function validationConfig($section, $keys, $keys_opt)
+    function validationConfig($section, $keys, $keys_opt = null)
     {
+        $config = parse_ini_file('irpg.conf', true);
+
         $this->config[$section] = array();
         $keys     = (array) $keys;
         $keys_opt = (array) $keys_opt;
 
         //On traite les clés obligatoires
-        $i = 0;
-        while ($i != count($keys)) {
-            if (empty($keys[$i])) {
-                break; //On sort de la boucle si pas de clés obligatoires
+        foreach ( $keys as $key) {
+            if (empty($key)) {
+                continue;
             }
 
-            $keyResult = $this->readConfig($section, $keys[$i], true);
-
-            if ($keyResult != "") {
-                $this->config[$section][$keys[$i]] = $keyResult;
+            $value = (isset($config[$section][$key]) ? $config[$section][$key] : '');
+            if ($value != '') {
+                $this->config[$section][$key] = $value;
             } else {
                 return false;
             }
-            $i++;
         }
 
         //Ensuite, les clés optionnelles
-        $i = 0;
-        while ($i != count($keys_opt)) {
-            $this->config[$section][$keys_opt[$i]] = $this->readConfig($section, $keys_opt[$i], true);
-            $i++;
+        foreach ($keys_opt as $key) {
+            if (empty($key)) {
+                continue;
+            }
+
+            $this->config[$section][$key] = (isset($config[$section][$key]) ? $config[$section][$key] : '');
         }
 
         //On est évidemment pas en pause !
