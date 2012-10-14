@@ -390,6 +390,7 @@ class IRC
             //Maintenant, on réinsert les persos autorelogués
             //via les résultats du /who
             $i = 0;
+            $lstAuto = array();
             while ($i != count($irpg->mod["core"]->autologged)) {
                 $auto = $irpg->mod["core"]->autologged[$i];
 
@@ -400,15 +401,11 @@ class IRC
 
                     $perso = $irpg->getNomPersoByPID($auto[1]);
 
-                    if ($i == (count($irpg->mod["core"]->autologged) - 1)) {
-                        //C'est le dernier joueur
-                        $lstAuto = $lstAuto . $perso;
-                    } else {
-                        $lstAuto = $lstAuto . "$perso, ";
-                    }
+                    $lstAuto[] = $perso;
                 }
                 $i++;
             }
+            $lstAuto = implode($lstAuto, ', ');
 
             if (($i == 1) && (!empty($lstAuto))) {
                 $this->privmsg($this->home, "Le personnage suivant a été automatiquement relogué : $lstAuto.");
