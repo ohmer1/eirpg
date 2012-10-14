@@ -23,7 +23,7 @@
  *
  * @author Homer
  * @created 30 mai 2005
- * @modified 1er juin 2005
+ * @modified 07 Janvier 2008
  */
 class DB
 {
@@ -64,6 +64,7 @@ class DB
         $irpg->alog("Connexion au serveur de bases de données...", true);
         if (mysql_connect($this->host, $this->login, $this->pass)) {
             if (mysql_select_db($this->base)) {
+                $irpg->alog("Connecté ! (" . $this->host . " ; " . $this->login . " ; " . $this->base . ")", true);
                 $this->connected = true;
                 return true;
             } else {
@@ -98,6 +99,7 @@ class DB
             } else {
                 $this->connected = false;
                 $irpg->pause = true;
+                $irpg->alog("Perte de la connexion au serveur de base de données !", true);
                 $irc->privmsg($irc->home, "Attention, jeu automatiquement désactivé !! "
                     . "Raison: perte de la connexion au serveur de bases de données. "
                     . "Une nouvelle tentative se fera toutes les 15 secondes...");
@@ -115,7 +117,7 @@ class DB
             $irpg->alog("SQL: " . $query);
         }
 
-        return mysql_num_rows($this->req($query, true));
+        return ($result = $this->req($query, true) ? mysql_num_rows($result) : 0);
     }
 
 ///////////////////////////////////////////////////////////////
@@ -129,6 +131,11 @@ class DB
         }
 
         $r = $this->req($query, true);
+        if (!$r) {
+            return false;
+        }
+
+        $enregistrements = array();
         while ($li = mysql_fetch_array($r)) {
             $enregistrements[] = $li;
         }
