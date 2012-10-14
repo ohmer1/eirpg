@@ -404,8 +404,13 @@ class core
             //L'utilisateur est déjà identifié sous un autre compte
             $irc->notice($nick, "Désolé, vous êtes déjà authentifié sous un autre compte.");
             return false;
-        } elseif (is_null($perso)) { //Pas de perso spécifié, si un ou des persos existent, on les logs tous, sinon
-                                     //on demande de créer un perso
+        } elseif (is_null($perso)) {
+            //Pas de perso spécifié, si un ou des persos existent,
+            //on les logs tous, sinon on demande de créer un perso
+
+            //Dans les 2 cas..
+            $this->users["$username"] = $nick;
+
             if ($db->nbLignes("SELECT Nom FROM $tbPerso WHERE Util_Id = (SELECT Id_Utilisateurs FROM $tbUtil
                                WHERE Username = '$username')") == 0
             ) { //Si aucun perso
@@ -488,9 +493,6 @@ class core
                 $irc->notice($nick, "\002Publicité\002 -- " . $pub);
             }
 
-            //Dans les 2 cas..
-            $this->users["$username"] = $nick;
-
             //On update aussi le lastlogin du compte
             $db->req("UPDATE $tbUtil SET LastLogin = NOW() WHERE Id_Utilisateurs = '$uid'");
         } else {
@@ -517,9 +519,6 @@ class core
             if ($username) {
                 //$irc->notice($nick, "Vous n'êtes plus authentifié. "
                 //    . "Une pénalité P20 a été appliquée à vos personnages en ligne.");
-
-                //On enlève l'utilisateur du tableau des utilisateurs en ligne'
-                unset($this->users["$username"]);
 
                 //On selectionne les noms de personnages et le next de chaque perso
                 $res = $db->getRows("SELECT Nom, Next, Level, Id_Personnages FROM $tbPerso WHERE Id_Personnages
@@ -548,6 +547,9 @@ class core
 
                     $i++;
                 }
+
+                //On enlève l'utilisateur du tableau des utilisateurs en ligne'
+                unset($this->users["$username"]);
 
                 //On enlève les personnages en ligne du joueur
                 $db->req("DELETE FROM $tbIRC WHERE Nick='$nick' And NOT ISNULL(Pers_Id)");
