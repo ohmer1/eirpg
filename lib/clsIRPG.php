@@ -24,7 +24,7 @@
  * @author Homer
  * @author cedricpc
  * @created 30 mai 2005
- * @modified 19 Avril 2010
+ * @modified  Monday 01 November 2010 @ 21:50 (CET)
  */
 class IRPG
 {
@@ -113,7 +113,7 @@ class IRPG
 
         //Traitement de la section DB
         $keys     = array("host", "login", "password", "base"); //clés obligatoires
-        $keys_opt = array("prefix");                            //clés optionnelles
+        $keys_opt = array("prefix", "charset");                 //clés optionnelles
 
         $ok = $this->validationConfig("SQL", $keys, $keys_opt);
         if (!$ok) {

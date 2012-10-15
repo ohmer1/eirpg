@@ -3,7 +3,7 @@
 
 /*
  * EpiKnet Idle RPG (EIRPG)
- * Copyright (C) 2005-2012 Francis D (Homer) & EpiKnet
+ * Copyright (C) 2005-2012 Francis D (Homer), cedricpc & EpiKnet
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 as
@@ -23,7 +23,9 @@
  * Fichier à exécuter pour démarrer le bot
  *
  * @author Homer
+ * @author    cedricpc
  * @created 1er juin 2005
+ * @modified  Monday 01 November 2010 @ 21:40 (CET)
  */
 
 //Librairies utilisées
@@ -87,7 +89,8 @@ function start()
 
     //Connexion à la base de données
     if (!$db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"),
-        $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"), $irpg->readConfig("SQL", "prefix")
+        $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"),
+        $irpg->readConfig("SQL", "prefix"), $irpg->readConfig("SQL", "charset")
     )) {
         die("Impossible de se connecter au serveur de bases de données.\n");
     }

@@ -2,7 +2,7 @@
 
 /*
  * EpiKnet Idle RPG (EIRPG)
- * Copyright (C) 2005-2012 Francis D (Homer) & EpiKnet
+ * Copyright (C) 2005-2012 Francis D (Homer), cedricpc & EpiKnet
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 as
@@ -22,8 +22,9 @@
  * vers la base de données mySQL
  *
  * @author Homer
+ * @author    cedricpc
  * @created 30 mai 2005
- * @modified 07 Janvier 2008
+ * @modified  Monday 01 November 2010 @ 21:50 (CET)
  */
 class DB
 {
@@ -35,6 +36,7 @@ class DB
     var $pass;
     var $base;
     var $prefix;
+    var $charset;
     var $connected; //Indique si nous sommes connectés à la bd SQL
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
@@ -51,18 +53,25 @@ class DB
     // Méthodes publiques
     ///////////////////////////////////////////////////////////////
 
-    function connexion($host, $login, $pass, $base, $prefix)
+    function connexion($host, $login, $pass, $base, $prefix, $charset = null)
     {
         global $irpg;
 
-        $this->host   = $host;
-        $this->login  = $login;
-        $this->pass   = $pass;
-        $this->base   = $base;
-        $this->prefix = $prefix;
+        $this->host    = $host;
+        $this->login   = $login;
+        $this->pass    = $pass;
+        $this->base    = $base;
+        $this->prefix  = $prefix;
+        $this->charset = $charset;
 
         $irpg->alog("Connexion au serveur de bases de données...", true);
         if (mysql_connect($this->host, $this->login, $this->pass)) {
+            if (!empty($this->charset) && function_exists('mysql_set_charset')) {
+                mysql_set_charset($this->charset);
+                $irpg->alog('Définition du jeu de caractère ' . $this->charset . '... '
+                    . mysql_client_encoding(), true);
+            }
+
             if (mysql_select_db($this->base)) {
                 $irpg->alog("Connecté ! (" . $this->host . " ; " . $this->login . " ; " . $this->base . ")", true);
                 $this->connected = true;
