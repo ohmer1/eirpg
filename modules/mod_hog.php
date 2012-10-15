@@ -103,7 +103,7 @@ class hog
         case "HOG":
             //Invoque la main de Dieu (ADMIN)
             $uid = $irpg->getUsernameByNick($nick, true);
-            if ($irpg->getAdminLvl($uid[1]) >= 10) {
+            if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 $this->cmdHog($nick);
             } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à la commande HOG.");
