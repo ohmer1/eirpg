@@ -598,15 +598,17 @@ class IRC
         $this->lastData = mktime();
         $this->exit     = false;
 
-        $this->sirc = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)
-            || die ("Impossible de créer le socket IRC\n");
+        if (!$this->sirc = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) {
+            die("Impossible de créer le socket IRC\n");
+        }
 
         if ($bind != "") {
             socket_bind($this->sirc, $bind);
         }
 
-        socket_connect($this->sirc, $server, $port)
-            || die ("Impossible de se connecter au serveur IRC\n");
+        if (!socket_connect($this->sirc, $server, $port)) {
+            die("Impossible de se connecter au serveur IRC\n");
+        }
 
         if ($this->sirc) {
             $irpg->alog("Connexion au serveur IRC...", true);
