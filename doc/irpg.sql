@@ -133,7 +133,7 @@ CREATE TABLE `Personnages` (
   `Class` varchar(50) NOT NULL default '',
   `Level` tinyint(3) unsigned NOT NULL default '0',
   `Idled` int(11) unsigned NOT NULL default '0',
-  `Next` int(11) unsigned NOT NULL default '0',
+  `Next` int(11) NOT NULL default '0',
   `LastLogin` datetime NOT NULL default '0000-00-00 00:00:00',
   `LastLogout` datetime NOT NULL default '0000-00-00 00:00:00',
   `Created` datetime NOT NULL default '0000-00-00 00:00:00',
