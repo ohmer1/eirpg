@@ -20,9 +20,9 @@
 --
 
 INSERT INTO `Textes` (`Id`, `Type`, `Valeur`) VALUES
-(NULL, 'Qs', 'rentrer dans un etat de trans duquel le dernier en trans resortira vainqueur!'),
-(NULL, 'Qs', 'Courir le plus loing possible afin de prevenir les contrées les plus eloignés du terrible danger qui les menaces'),
-(NULL, 'Qs', 'Porter Homer et CedricPc le plus longtemps possible. Celui qui arretera le premier sera ecraser sous le poid des deux!'),
+(NULL, 'Qs', 'rentrer dans un état de transe.'),
+(NULL, 'Qs', 'courir le plus loin possible afin de prévenir les contrées les plus eloignées du terrible danger qui les menaces !'),
+(NULL, 'Qs', 'porter Homer et cedricpc le plus longtemps possible. Celui qui arrêtera le premier sera écrasé sous leur poids !'),
 (NULL, 'Qa', 'trouver le sanctuaire de Bloubigoulba afin de tuer le monstre Casimir.'),
 (NULL, 'Qa', 'attraper une hydre à 14 têtes vivante.'),
 (NULL, 'Qa', 'effectuer un pélerinage pour que leur empereur bien aimé soit immortel.'),
@@ -41,6 +41,6 @@ INSERT INTO `Textes` (`Id`, `Type`, `Valeur`) VALUES
 (NULL, 'Qr', 'repousser cet envahisseur du Royaume de Pèrleuh dont personne ne comprend le dialecte.'),
 (NULL, 'Qr', 'mettre fin à une épidemie de peste qui ravage le royaume de toute part.'),
 (NULL, 'Qr', 'trouver une fiole de sang de Septim qui permettrait de rallumer les feux de Dragon qui protège le Royaume.'),
-(NULL, 'Qr', 'capturer le prince de Perleuh avant que celui-ci ne se marie à la princesse de Géhèsyèrpégé ce qui annéantirait notre petit Royaume!'),
+(NULL, 'Qr', 'capturer le prince de Pèrleuh avant que celui-ci ne se marie à la princesse de Géhèsyèrpégé ce qui annéantirait notre petit Royaume !'),
 (NULL, 'Qr', 'trouver la porte du Walhalla et en faire revenir les plus grands héros de tout les temps.'),
-(NULL, 'Qr', 'fermer la porte des enfers pour faire cesser le flot constant de créature démoniaque prétent à engloutir le Royaume!');
+(NULL, 'Qr', 'fermer la porte des enfers pour faire cesser le flot constant de créatures démoniaques prêtes à engloutir le Royaume !');
