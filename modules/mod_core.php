@@ -490,9 +490,10 @@ class core
                 $tbMod = $db->prefix . "Modules";
                 $pub = $db->getRows("SELECT Valeur FROM $tbMod WHERE Module='pub' and Parametre='texte'
                                      ORDER BY RAND() LIMIT 0,1");
-                $pub = $pub[0]["Valeur"];
-
-                $irc->notice($nick, "\002Publicité\002 -- " . $pub);
+                if (!empty($pub)) {
+                    $pub = $pub[0]["Valeur"];
+                    $irc->notice($nick, "\002Publicité\002 -- " . $pub);
+                }
             }
 
             //On update aussi le lastlogin du compte
