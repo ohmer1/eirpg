@@ -416,7 +416,7 @@ class core
             if ($db->nbLignes("SELECT Nom FROM $tbPerso WHERE Util_Id = (SELECT Id_Utilisateurs FROM $tbUtil
                                WHERE Username = '$username')") == 0
             ) { //Si aucun perso
-                $irc->notice($nick, "\002AUTHENTIFICATION RÉUSSIE!\002 Vous êtes maintenant authentifié sous le "
+                $irc->notice($nick, "\002AUTHENTIFICATION RÉUSSIE !\002 Vous êtes maintenant authentifié sous le "
                     . "compte \002$username\002, mais sous aucun personnage.");
                 $irc->notice($nick, "Pour commencer à jouer, créez votre premier personnage à l'aide de la "
                     . "commande \002CREATE\002.");
@@ -473,7 +473,7 @@ class core
                     $i++;
                 }
 
-                $irc->notice($nick, "\002AUTHENTIFICATION RÉUSSIE!\002 Vous êtes maintenant authentifié sous "
+                $irc->notice($nick, "\002AUTHENTIFICATION RÉUSSIE !\002 Vous êtes maintenant authentifié sous "
                     . "le compte \002$username\002.");
 
                 if ($i == 1) {
