@@ -22,8 +22,8 @@
  * Commandes d'administration'
  *
  * @author cedricpc
- * @created 22 Mars 2007
- * @modified 29 Mars 2010
+ * @created   Jeudi    22 Mars      2007
+ * @modified  Dimanche 16 Septembre 2012 @ 01:40 (CEST)
  */
 class admin
 {
@@ -47,7 +47,7 @@ class admin
 
         /* Renseignement des variables importantes */
         $this->name    = "mod_admin";
-        $this->version = "0.3.2";
+        $this->version = "0.3.3";
         $this->desc    = "Commandes d'administration'";
         $this->depend  = array("core/0.5.0");
 
@@ -227,12 +227,16 @@ class admin
         case "PULL":
             //Ajoute du temps au TTL d'un personnage
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
-                if (($nb < 2) || (!is_numeric($message[2]))) {
-                    $irc->notice($nick, "Syntaxe : PULL <personnage> <temps_en_secondes>");
-                } elseif ($message[2] > 0) {
-                    $this->cmdPull($nick, $message[1], $message[2]);
+                $temps    = ($nb < 2 ? null : preg_replace('/%+$/', '', $message[2]));
+                $pourcent = ($nb < 2 ? false : strpos($message[2] . ($nb > 2 ? $message[3] : ''), '%') !== FALSE);
+
+                if (($nb < 2) || !is_numeric($temps)) {
+                    $irc->notice($nick, 'Syntaxe : PULL <personnage> <temps_en_secondes|pourcentage %>');
+                } elseif ($temps > 0) {
+                    $this->cmdPull($nick, $message[1], $temps, $pourcent);
                 } else {
-                    $irc->notice($nick, "Le temps doit être strictement supérieur à 0.");
+                    $irc->notice($nick, 'Le ' . ($pourcent ? 'pourcentage' : 'temps')
+                        . ' doit être strictement supérieur à 0.');
                 }
             } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
@@ -242,12 +246,16 @@ class admin
         case "PUSH":
             //Enlève du temps au TTL d'un personnage
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
-                if (($nb < 2) || (!is_numeric($message[2]))) {
-                    $irc->notice($nick, "Syntaxe : PUSH <personnage> <temps_en_secondes>");
-                } elseif ($message[2] > 0) {
-                    $this->cmdPush($nick, $message[1], $message[2]);
+                $temps    = ($nb < 2 ? null : preg_replace('/%+$/', '', $message[2]));
+                $pourcent = ($nb < 2 ? false : strpos($message[2] . ($nb > 2 ? $message[3] : ''), '%') !== FALSE);
+
+                if (($nb < 2) || !is_numeric($temps)) {
+                    $irc->notice($nick, 'Syntaxe : PUSH <personnage> <temps_en_secondes|pourcentage %>');
+                } elseif ($temps > 0) {
+                    $this->cmdPush($nick, $message[1], $temps, $pourcent);
                 } else {
-                    $irc->notice($nick, "Le temps doit être strictement supérieur à 0.");
+                    $irc->notice($nick, 'Le ' . ($pourcent ? 'pourcentage' : 'temps')
+                        . ' doit être strictement supérieur à 0.');
                 }
             } else {
                 $irc->notice($nick, "Désolé, vous n'avez pas accès à cette commande.");
@@ -671,7 +679,7 @@ class admin
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdPush($nick, $perso, $temps)
+    function cmdPush($nick, $perso, $temps, $pourcent = false)
     {
         global $irpg, $db, $irc;
 
@@ -685,26 +693,35 @@ class admin
         $data  = $db->getRows('SELECT `Id_Personnages`, `Util_Id`, `Nom`, `Level`, `Class`, `Next`
                                FROM `' . $table . '` WHERE `Nom` = \'' . $perso . '\'');
         $next  = $data[0]['Next'];
-        $temps = ($next > $temps ? $temps : $next);
+
+        if ($pourcent) {
+            $pourcent = min((float) $temps, 100);
+            $temps    = $next * $pourcent / 100;
+        } else {
+            $temps = ($next > $temps ? (int) $temps : $next);
+        }
 
         $db->req('UPDATE `' . $table . '` SET `Next` = `Next` - ' . $temps . ' WHERE `Nom` = \'' . $perso . '\'');
-        $irc->notice($nick, 'Le temps de ' . $perso . ' a bien été avancé de ' . $irpg->convSecondes($temps) . '.');
+        $irc->notice($nick, 'Le temps de ' . $perso . ' a bien été avancé de '
+            . ($pourcent ? $pourcent . ' % soit ' : '') . $irpg->convSecondes($temps) . '.');
         $irpg->Log(NULL, 'ADMIN', '0', $irpg->getUsernameByNick($nick) . ' (' . $nick
-            . ') a utilisé la commande PUSH (' . $perso . ' -> ' . $temps . ')');
+            . ') a utilisé la commande PUSH (' . $perso . ' -> ' . ($pourcent ? $pourcent . ' % -> ' : '')
+            . $temps . ')');
         if ($temps >= $next) {
             $irc->privmsg($irc->home, $nick . ' a accéléré la progression de ' . $perso . ' de '
-                . $irpg->convSecondes($temps) . '.');
+                . ($pourcent ? $pourcent . ' % soit ' : '') . $irpg->convSecondes($temps) . '.');
             $data[0]['Next'] = 0;
             $irpg->mod['idle']->cmdLvlUp($data[0]['Id_Personnages'], array($data[0]));
         } else {
             $irc->privmsg($irc->home, $nick . ' a accéléré la progression de ' . $perso . ' de '
-                . $irpg->convSecondes($temps) . '. Prochain niveau dans ' . $irpg->convSecondes($next - $temps) . '.');
+                . ($pourcent ? $pourcent . ' % soit ' : '') . $irpg->convSecondes($temps) . '. Prochain niveau dans '
+                . $irpg->convSecondes($next - $temps) . '.');
         }
     }
 
 ///////////////////////////////////////////////////////////////
 
-    function cmdPull($nick, $perso, $temps)
+    function cmdPull($nick, $perso, $temps, $pourcent = false)
     {
         global $irpg, $db, $irc;
 
@@ -715,14 +732,28 @@ class admin
 
         $table = $db->prefix . 'Personnages';
 
+        if ($pourcent) {
+            $data  = $db->getRows('SELECT `Id_Personnages`, `Util_Id`, `Nom`, `Level`, `Class`, `Next` FROM `'
+                   . $table . '` WHERE `Nom` = \'' . $perso . '\'');
+            $next  = $data[0]['Next'];
+
+            $pourcent = (float) $temps;
+            $temps    = $next * $pourcent / 100;
+        } else {
+            $temps = (int) $temps;
+        }
+
         $db->req('UPDATE `' . $table . '` SET `Next` = `Next` + ' . $temps . ' WHERE `Nom` = \'' . $perso . '\'');
-        $irc->notice($nick, 'Le temps de ' . $perso . ' a bien été reculé de ' . $irpg->convSecondes($temps) . '.');
+        $irc->notice($nick, 'Le temps de ' . $perso . ' a bien été reculé de '
+            . ($pourcent ? $pourcent . ' % soit ' : '') . $irpg->convSecondes($temps) . '.');
         $irpg->Log(NULL, 'ADMIN', '0', $irpg->getUsernameByNick($nick) . ' (' . $nick
-            . ') a utilisé la commande PULL (' . $perso . ' -> ' . $temps . ')');
+            . ') a utilisé la commande PULL (' . $perso . ' -> ' . ($pourcent ? $pourcent . ' % -> ' : '')
+            . $temps . ')');
 
         $data = $db->getRows('SELECT `Next` FROM `' . $table . '` WHERE `Nom` = \'' . $perso . '\'');
         $irc->privmsg($irc->home, $nick . ' a ralenti la progression de ' . $perso . ' vers son prochain niveau de '
-            . $irpg->convSecondes($temps) . '. Prochain niveau dans ' . $irpg->convSecondes($data[0]['Next']) . '.');
+            . ($pourcent ? $pourcent . ' % soit ' : '') . $irpg->convSecondes($temps) . '. Prochain niveau dans '
+            . $irpg->convSecondes($data[0]['Next']) . '.');
     }
 
 ///////////////////////////////////////////////////////////////
