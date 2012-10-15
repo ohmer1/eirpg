@@ -65,7 +65,7 @@ class DB
         $this->charset = $charset;
 
         $irpg->alog("Connexion au serveur de bases de données...", true);
-        if (mysql_connect($this->host, $this->login, $this->pass)) {
+        if (@mysql_connect($this->host, $this->login, $this->pass)) {
             if (!empty($this->charset) && function_exists('mysql_set_charset')) {
                 mysql_set_charset($this->charset);
                 $irpg->alog('Définition du jeu de caractère ' . $this->charset . '... '
@@ -80,6 +80,7 @@ class DB
                 return false;
             }
         } else {
+            $irpg->alog('Échouée : ' . mysql_error(), true);
             return false;
         }
     }
