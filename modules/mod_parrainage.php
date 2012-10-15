@@ -2,7 +2,7 @@
 
 /*
  * EpiKnet Idle RPG (EIRPG)
- * Copyright (C) 2005-2007 Francis D (Homer) & EpiKnet
+ * Copyright (C) 2005-2012 Francis D (Homer), cedricpc & EpiKnet
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 as
@@ -19,7 +19,7 @@
 
 /*
  * Modification à apporter à la BD
- * ALTER TABLE  `Utilisateurs` ADD  `pidParrain` INT( 5 ) NULL DEFAULT NULL ;
+ * ALTER TABLE  `Utilisateurs` ADD  `pidParrain` INT( 5 ) NULL DEFAULT NULL;
  *
  * et à irpg.conf :
  *
@@ -35,6 +35,7 @@
  * Gères la fonctionnalité de parrainage sur le bot.
  *
  * @author Homer
+ * @author cedricpc
  * @created 18 avril 2010
  */
 class parrainage
@@ -121,7 +122,7 @@ class parrainage
         case "REGISTER2":
             //Création d'un compte sur le bot à l'aide d'un parrain
             if ($nb == 4) {
-                $this->cmdRegister2($nick, $message[1], $message[2], $message[3]);
+                $this->cmdRegister2($nick, $message[1], $message[2], $message[3], $message[4]);
             } else {
                 $irc->notice($nick, "Syntaxe incorrecte. Syntaxe : "
                     . "REGISTER2 <utilisateur> <mot de passe> <courriel> <parrain>");
@@ -303,8 +304,7 @@ class parrainage
                     $level        = $leParrain[0]['Level'];
                     $next         = $leParrain[0]['Next'];
 
-                    $bonus = ($this->pctBonus / 100) * $next;
-                    $bonus = round($bonus, 0):
+                    $bonus  = round(($this->pctBonus / 100) * $pNext, 0);
                     $cbonus = $irpg->convSecondes($cbonus);
                     $nouveauNext = $next - $bonus;
                     $cnouveauNext = $irpg->convSecondes($cnouveauNext);
