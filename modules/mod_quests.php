@@ -293,24 +293,16 @@ class quests
                     }
 
                     $participants = $this->listerParticipants($this->participants[$this->queteEnCours]);
-                    if ($listeParticipants[0] > 1) {
-                        if ($this->queteEnCours == 1) {
-                            $message = "{$participants[1]} sont revenus de leur quête et ont rempli l'objectif ! "
-                                     . "Bravo, voici votre récompense : $pourcent % de vos TTL sont enlevés !";
-                        } else {
-                            $message = "{$participants[1]} sont revenus de leur quête à temps. Le royaume est "
-                                     . "sauvé... Ils seront largement récompensés : $pourcent % de leurs TTL sont "
-                                     . "enlevés !";
-                        }
+                    if ($this->queteEnCours == 1) {
+                        $message = "{$participants[1]} {e}s(on)t revenu(s) de {sa}(leur) quête et {a}(ont) rempli "
+                                 . "l'objectif ! Bravo, voici {ta}(votre) récompense : $pourcent % de {ton}(vos) "
+                                 . "TTL sont enlevés !";
                     } else {
-                        if ($this->queteEnCours == 1) {
-                            $message = "{$participants[1]} est revenu de sa quête et a rempli l'objectif ! Bravo, "
-                                     . "voilà ta récompense : $pourcent % de ton TTL sont enlevés !";
-                        } else {
-                            $message = "{$participants[1]} est revenu de sa quête à temps. Le royaume est sauvé... "
-                                     . "Il sera largement récompensé : $pourcent % de son TTL sont enlevés !";
+                        $message = "{$participants[1]} {e}s(on)t revenu(s) de {sa}(leur) quête à temps. Le royaume "
+                                 . "est sauvé... Il(s) ser{a}(ont) largement récompensé(s) : $pourcent % de "
+                                 . "(leur)s{on} TTL sont enlevés !";
                     }
-                    $irc->privmsg($irc->home, $message);
+                    $irc->privmsg($irc->home, $this->accorder($message, $listeParticipants[0]));
 
                     $this->queteEnCours = -1;
                     unset($this->participants[$this->queteEnCours]);
@@ -357,12 +349,8 @@ class quests
 
         //On établi la liste des participants dans une chaine.
         $participants = $this->listerParticipants($participants);
-        if ($participants[0] > 1) {
-            $irc->privmsg($irc->home, "{$participants[1]} ont été choisis pour $message Ils ont $temps pour en "
-                . 'revenir...');
-        } else {
-            $irc->privmsg($irc->home, "{$participants[1]} a été choisi pour $message Il a $temps pour en revenir...");
-        }
+        $irc->privmsg($irc->home, $this->accorder("{$participants[1]} {a}(ont) été choisi(s) pour $message Il(s) "
+            . "{a}(ont) $temps pour en revenir...", $participants[0]));
 
         return 1;
     }
@@ -402,13 +390,8 @@ class quests
 
         //On établi la liste des participants dans une chaine.
         $participants = $this->listerParticipants($participants);
-        if ($participants[0] > 1) {
-            $irc->privmsg($irc->home, "Quête de Royaume ! {$participants[1]} ont été choisis pour $message Ils ont "
-                . "$temps pour en revenir...");
-        } else {
-            $irc->privmsg($irc->home, "Quête de Royaume ! {$participants[1]} a été choisi pour $message Il a "
-                . "$temps pour en revenir...");
-        }
+        $irc->privmsg($irc->home, $this->accorder("Quête de Royaume ! {$participants[1]} {a}(ont) été choisi(s) "
+            . "pour $message Il(s) {a}(ont) $temps pour en revenir...", $participants[0]));
 
         return 2;
     }
@@ -475,7 +458,8 @@ class quests
                             . ($proba > $this->probaQueteA ? 'du Royaume !' : "d'Aventure !"));
                     }
                 } else {
-                    $irc->notice($nick, 'Il y a déjà une quête en cours !');
+                    $irc->notice($nick, $this->accorder('Il y a déjà {une}(des) quête(s) en cours !',
+                        count($this->participants)));
                     $this->cmdQuest($nick);
                 }
             } else {
@@ -540,10 +524,11 @@ class quests
                     $participants = $this->listerParticipants($this->participants[$queteId]);
 
                     $irpg->Log($pid, 'QUETE_ABANDONNÉE', $penalite, $queteId);
-                    $irc->privmsg($irc->home, $irpg->getNomPersoByPID($pid)
-                        . ($queteId > 0 ? ' rebrousse chemin dans cette quête ardue... Taxé par ses '
-                        . 'compatriotes de couardise, le voilà blamé !' : ' abandonne lâchement sa lutte contre '
-                        . 'ses valeureux adversaire... Il a donc été châtié par ces derniers !'));
+                    $irc->privmsg($irc->home, $this->accorder($irpg->getNomPersoByPID($pid)
+                        . ($queteId > 0 ? ' rebrousse chemin dans cette quête ardue... Taxé par (se)s{on} '
+                        . 'compatriote(s) de couardise, le voilà blamé !' : ' abandonne lâchement sa lutte contre '
+                        . '(se)s{on} valeureux adversaire(s)... Il a donc été châtié par ce(s) dernier(s) !'),
+                        $participants[0]));
 
                     //S'il n'y a plus de participant à la quête après l'abandon du joueur, on considère que la quête
                     // est abandonnée.
@@ -615,6 +600,17 @@ class quests
             implode(' et ', array(implode(', ', array_slice($participants, 0, -1)), end($participants))),
             array_map('reset', $listeParticipants)
         );
+    }
+
+///////////////////////////////////////////////////////////////
+
+    function accorder($texte, $nombre) {
+        if ($nombre < 2) {
+            $texte = preg_replace('#(?<!\\\)\(.*?[^\\\]?\)#', '', $texte);
+        } else {
+            $texte = preg_replace('#(?<!\\\)\{.*?[^\\\]?\}#', '', $texte);
+        }
+        return preg_replace('#(?<!\\\)([)(}{])|\\\(?=[)(}{])#', '', $texte);
     }
 
 ///////////////////////////////////////////////////////////////
