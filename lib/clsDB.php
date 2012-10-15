@@ -24,7 +24,7 @@
  * @author Homer
  * @author    cedricpc
  * @created 30 mai 2005
- * @modified  Monday 01 November 2010 @ 21:50 (CET)
+ * @modified  Monday 23 November 2010 @ 02:55 (CET)
  */
 class DB
 {
@@ -106,7 +106,7 @@ class DB
             if (mysql_ping()) {
                 return mysql_query($query);
             } else {
-                $this->connected = false;
+                $this->deconnexion();
                 $irpg->pause = true;
                 $irpg->alog("Perte de la connexion au serveur de base de données !", true);
                 $irc->privmsg($irc->home, "Attention, jeu automatiquement désactivé !! "
