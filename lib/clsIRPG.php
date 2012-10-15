@@ -355,8 +355,8 @@ class IRPG
             global $db;
             $table = $db->prefix . "Utilisateurs";
             $uid = $db->getRows("SELECT Id_Utilisateurs FROM $table WHERE Username = '$username'");
-            $uid = $uid[0]["Id_Utilisateurs"];
-            return array($username, $uid);
+
+            return array($username, (empty($uid) ? null : $uid[0]["Id_Utilisateurs"]));
         } else {
             return $username;
         }
@@ -373,7 +373,8 @@ class IRPG
 
         $nick = $db->getRows("SELECT Nick FROM $tbIRC WHERE Pers_Id = (SELECT Id_Personnages FROM $tbPerso
                               WHERE Util_Id='$uid' LIMIT 0,1)");
-        return $nick[0]["Nick"];
+
+        return (empty($nick) ? false : $nick[0]["Nick"]);
     }
 
  ///////////////////////////////////////////////////////////////
@@ -383,12 +384,9 @@ class IRPG
         global $db;
 
         $tbUtil = $db->prefix . "Utilisateurs";
-        $q = "SELECT Username FROM $tbUtil WHERE Id_Utilisateurs = '$uid' LIMIT 0,1";
-        if ($db->nbLignes($q) == 1) {
-            $username = $db->getRows($q);
-        } else {
-            return false;
-        }
+        $username = $db->getRows("SELECT Username FROM $tbUtil WHERE Id_Utilisateurs = '$uid' LIMIT 0,1");
+
+        return (empty($username) ? false : $username[0]['Username']);
     }
 
 ///////////////////////////////////////////////////////////////
@@ -398,13 +396,9 @@ class IRPG
         global $db;
 
         $tbPerso = $db->prefix . "Personnages";
-        $q = "SELECT Nom FROM $tbPerso WHERE Id_Personnages = '$pid'";
-        if ($db->nbLignes($q) == 1) {
-            $result = $db->getRows($q);
-            return $result[0]["Nom"];
-        } else {
-            return false;
-        }
+        $result = $db->getRows("SELECT Nom FROM $tbPerso WHERE Id_Personnages = '$pid'");
+
+        return (empty($result) ? false : $result[0]['Nom']);
     }
 
 ///////////////////////////////////////////////////////////////
@@ -414,13 +408,9 @@ class IRPG
         global $db;
 
         $tbPerso = $db->prefix . "Personnages";
-        $q = "SELECT Id_Personnages FROM $tbPerso WHERE Nom = '$perso'";
-        if ($db->nbLignes($q) == 1) {
-            $result = $db->getRows($q);
-            return $result[0]["Id_Personnages"];
-        } else {
-            return false;
-        }
+        $result = $db->getRows("SELECT Id_Personnages FROM $tbPerso WHERE Nom = '$perso'");
+
+        return (empty($result) ? false : $result[0]['Id_Personnages']);
     }
 
 ///////////////////////////////////////////////////////////////
@@ -437,7 +427,8 @@ class IRPG
 
         $tb  = $db->prefix . "Personnages";
         $res = $db->getRows("SELECT Util_Id FROM $tb WHERE Id_Personnages='$pid'");
-        return $res[0]["Util_Id"];
+
+        return (empty($res) ? false : $res[0]['Util_Id']);
     }
 
 ///////////////////////////////////////////////////////////////
@@ -448,7 +439,8 @@ class IRPG
 
         $tbUtil = $db->prefix . "Utilisateurs";
         $uid = $db->getRows("SELECT Id_Utilisateurs FROM $tbUtil WHERE Username='$username'");
-        return $uid[0]["Id_Utilisateurs"];
+
+        return (empty($uid) ? false : $uid[0]['Id_Utilisateurs']);
     }
 
 ///////////////////////////////////////////////////////////////
@@ -472,13 +464,9 @@ class IRPG
         global $db;
 
         $tbUtil = $db->prefix . "Utilisateurs";
-        $req = "SELECT Admin FROM $tbUtil WHERE Id_Utilisateurs = '$uid'";
-        if ($db->nbLignes($req) != 1) {
-            return 0;
-        } else {
-            $resultat = $db->getRows($req);
-            return $resultat[0]["Admin"];
-        }
+        $resultat = $db->getRows("SELECT Admin FROM $tbUtil WHERE Id_Utilisateurs = '$uid'");
+
+        return (empty($resultat) ? 0 : $resultat[0]['Admin']);
     }
 
 ///////////////////////////////////////////////////////////////
