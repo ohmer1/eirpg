@@ -22,8 +22,8 @@
  *
  * @author Homer
  * @author cedricpc
- * @created 30 mai 2005
- * @modified  Sunday 07 August 2011 @ 15:05 (CEST)
+ * @created   Lundi 30 Mai       2005
+ * @modified  Mardi 18 Septembre 2012 @ 08:35 (CEST)
  */
 class IRC
 {
@@ -673,28 +673,9 @@ class IRC
 
             $this->updateTimeout();
 
-            if (!strpos($buf, "\n")) { //Si ne contient aucun retour, on bufferise
-                $buffer = $buffer . $buf;
-                $data   = ""; //rien à envoyer
-            } else {
-                //Si contient au moins un retour,
-                //on vérifie que le dernier caractère en est un
-                if (substr($buf, -1, 1) == "\n") {
-                    //alors on additionne ces données au buffer
-                    $data   = $buffer . $buf;
-                    $buffer = ""; //on vide le buffer
-                } else {
-                    //si le dernier caractère n'est pas un retour à la
-                    //ligne, alors on envoit tout jusqu'au dernier retour
-                    //puis on bufferise le reste
-                    $buffer = $buffer . substr($buf, (int) strrchr($buf, "\n"));
-                    $data   = substr($buf, 0, (int) strrchr($buf, "\n"));
-                    $data   = $buffer . $data;
-                    $buffer = ""; //on vide le buffer
-                }
-            }
-
-            $data = explode("\n", $data);
+            $data = explode("\n", $buf);
+            $data[0] = $buffer . $data[0];
+            $buffer = array_pop($data);
 
             for ($i = 0; $i < count($data); $i++) {
                 if ($this->debug) {
