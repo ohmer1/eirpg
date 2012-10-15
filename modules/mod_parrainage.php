@@ -231,15 +231,15 @@ class parrainage
             $irc->notice($nick, "Désolé, vous devez être sur \002$irc->home\002 pour vous enregistrer.");
             return false;
         } elseif (strlen($username) > 30) { //Validation du nom d'utilisateur
-            $irc->notice($nick, "Désolé, votre nom d'utilisateur est trop long. La limite autorisée est "
-                . "de \00230\002 caractères.");
+            $irc->notice($nick, "Désolé, votre nom d'utilisateur est trop long. "
+                . "La limite autorisée est de \00230\002 caractères.");
             return false;
-        } elseif (!eregi("^[a-z0-9_-]+$", $username)) {
-            $irc->notice($nick, "Désolé, votre nom d'utilisateur contient des caractères interdits. Seuls "
-                . "les caractères \002alphanumériques\002, le \002tiret\002 et la \002barre de soulignement\002 "
-                . "sont autorisés.");
+        } elseif (!preg_match('/[a-z0-9_-]+$/i', $username)) {
+            $irc->notice($nick, "Désolé, votre nom d'utilisateur contient des caractères interdits. "
+                . "Seuls les caractères \002alphanumériques\002, le \002tiret\002 et la \002barre de "
+                . "soulignement\002 sont autorisés.");
             return false;
-        } elseif (((strtoupper($username) == "IRPG")) || ((strtoupper($username) == "EIRPG"))) {
+        } elseif ((strtoupper($username) == "IRPG") || (strtoupper($username) == "EIRPG")) {
             $irc->notice($nick, "Désolé, ce nom d'utilisateur est réservé.");
             return false;
         } else {
