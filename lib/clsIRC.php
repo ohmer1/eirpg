@@ -23,7 +23,7 @@
  * @author Homer
  * @author cedricpc
  * @created 30 mai 2005
- * @modified  Monday 23 November 2010 @ 02:20 (CET)
+ * @modified  Sunday 07 August 2011 @ 15:05 (CEST)
  */
 class IRC
 {
@@ -74,7 +74,7 @@ class IRC
         $this->home = $channel;
 
         //Applications des modes
-        $this->sendRaw("UMODE2 $modes");
+        $this->sendRaw("MODE $me $modes");
 
         //Identification à NS et on patiente 1 secondes
         if (!empty($nspass)) {
