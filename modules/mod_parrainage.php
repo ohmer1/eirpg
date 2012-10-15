@@ -256,15 +256,13 @@ class parrainage
         $password = md5($password);
 
         //Validation de l'adresse de courriel
-        if (!$this->validerMail($email)) {
+        if (!$irpg->mod['core']->validerMail($email)) {
             $irc->notice($nick, "Désolé, votre adresse de courriel n'est pas valide.");
             return false;
         }
 
         // on vérifie que le parrain existe
-        $table = $db->prefix . "Personnages";
-        $r = $db->req("SELECT Nom FROM $table WHERE Nom='$parrain'");
-        if (mysql_num_rows($r) == 0) {
+        if (!$pid = $irpg->getPIDByPerso($parrain)) {
             $irc->notice($nick, "Votre parrain n'a pas été trouvé. Vous devez utiliser son nom de personnage IRPG.");
             return false;
         }
@@ -285,37 +283,28 @@ class parrainage
     function modIdle_onLvlUp($nick, $uid, $pid, $level, $next) {
         global $irc, $irpg, $db;
 
-        $tbUtil  = $db->prefix . "Utilisateurs";
-        $tbPerso = $db->prefix . "Personnages";
+        $tbPerso = '`' . $db->prefix . 'Personnages`';
 
-        if ($level == $this->lvlBonus) {
-            $pidParrain = $db->getRow("SELECT pidParrain FROM $tbUtil WHERE uid=$uid");
-            if (mysql_num_rows($r) != 0) {
-                $pidParrain = $pidParrain[0]["pidParrain"];
-                if ($pidParrain != "") {
-                    // on donne le bonus au parrain
-                    $query = "SELECT Nom, Level, Next FROM $tbPerso WHERE Id_Personnages=$pidParrain";
-                    if ($db->nbLignes($query) != 1) {
-                        return false; //parrain non trouvé
-                    }
-                    $leParrain = $db->getRows($query);
-
-                    $persoParrain = $leParrain[0]['Nom'];
-                    $level        = $leParrain[0]['Level'];
-                    $next         = $leParrain[0]['Next'];
-
-                    $bonus  = round(($this->pctBonus / 100) * $pNext, 0);
-                    $cbonus = $irpg->convSecondes($cbonus);
-                    $nouveauNext = $next - $bonus;
-                    $cnouveauNext = $irpg->convSecondes($cnouveauNext);
-
-                    $db->req("UPDATE $tbPerso SET Next=Next-$bonus WHERE Id_Personnages=$pidParrain");
-
-                    $perso = getNomPersoByPID($pid);
-                    $irc->privmsg($irc->home, "$persoParrain, le parrain de $perso est récompensé par le retrait "
-                        . "de 5% de son TTL. Ce bonus l'accélère de $cbonus ! Prochain niveau dans $cnouveauNext.");
-                }
+        if (($level == $this->lvlBonus) && ($ppid = $this->getParrainPIDByUID($uid))) {
+            // on donne le bonus au parrain
+            if (!$parrain = $this->getPersoByParrainPID($ppid)) {
+                //parrain non trouvé
+                return false;
             }
+
+            $pPerso = $parrain['Nom'];
+            $pLevel = $parrain['Level'];
+            $pNext  = $parrain['Next'];
+
+            $bonus  = round(($this->pctBonus / 100) * $pNext, 0);
+            $ttl    = $pNext - $bonus;
+
+            $db->req('UPDATE ' . $tbPerso . ' SET `Next` = `Next` - ' . $bonus . ' WHERE `Id_Personnages` = ' . $ppid);
+
+            $perso = $irpg->getNomPersoByPID($pid);
+            $irc->privmsg($irc->home, $pPerso . ', le parrain de ' . $perso . ' est récompensé par le retrait de 5% '
+                . 'de son TTL. Ce bonus l\'accélère de ' . $irpg->convSecondes($bonus) . ' ! Prochain niveau dans '
+                . $irpg->convSecondes($ttl) . '.');
         }
     }
 
@@ -324,12 +313,22 @@ class parrainage
 
 /* Fonctions diverses */
 
-    function validerMail($mail)
-    {
-        return ereg('^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+'
-            . '@'
-            . '[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.'
-            . '[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$', $mail);
+    function getParrainPIDByUID($uid) {
+        global $db;
+
+        $req = $db->getRows('SELECT `pidParrain` FROM `' . $db->prefix . 'Utilisateurs` WHERE `Id_Utilisateurs` = '
+             . intval($uid));
+        return (count($req) > 0 ? $req[0]['pidParrain'] : false);
+    }
+
+////////////////////////////////////////////////////////////////
+
+    function getPersoByParrainPID($ppid) {
+        global $db;
+
+        $req = $db->getRows('SELECT * FROM `' . $db->prefix . 'Personnages` WHERE `ID_Personnages` = '
+             . intval($ppid));
+        return (count($req) > 0 ? $req[0] : false);
     }
 
 ////////////////////////////////////////////////////////////////
