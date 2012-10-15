@@ -165,7 +165,7 @@ class IRPG
 
         //Chargement des modules
         $this->modules = $this->readConfig("IRPG", "modules");
-        $this->modules = split(",", $this->modules);
+        $this->modules = explode(',', $this->modules);
 
         //On vérifie que les modules existent
         $i = 0;
@@ -283,7 +283,7 @@ class IRPG
         $i = 0;
         while ($i != count($dep)) {
             //Nom & version de la dépendance requise
-            $module        = split("/", $dep[$i]);
+            $module        = explode('/', $dep[$i]);
             $nomModule     = $module[0];
             $versionModule = $module[1];
 
@@ -298,13 +298,13 @@ class IRPG
                 //On vérifie que la version du module est suffisante
 
                 //Version requise par le module
-                $versionModule = split("\.", $versionModule);
+                $versionModule = explode('.', $versionModule);
                 $vr_majeur     = $versionModule[0];
                 $vr_mineur     = $versionModule[1];
                 $vr_revision   = $versionModule[2];
 
                 //Version actuelle du module
-                $versionActuelle = split("\.", $this->mod[$nomModule]->version);
+                $versionActuelle = explode('.', $this->mod[$nomModule]->version);
                 $va_majeur       = $versionActuelle[0];
                 $va_mineur       = $versionActuelle[1];
                 $va_revision     = $versionActuelle[2];

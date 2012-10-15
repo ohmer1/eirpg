@@ -2,7 +2,7 @@
 
 /*
  * EpiKnet Idle RPG (EIRPG)
- * Copyright (C) 2005-2012 Francis D (Homer) & EpiKnet
+ * Copyright (C) 2005-2012 Francis D (Homer), cedricpc & EpiKnet
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 as
@@ -26,7 +26,9 @@
  * - modCore_onLogin($nick, $uid, $pid, $level, $next)
  *
  * @author Homer
+ * @author    cedricpc
  * @created 23 juin 2005
+ * @modified  Monday 01 November 2010 @ 15:15 (CET)
  */
 class core
 {
@@ -56,7 +58,7 @@ class core
 
         /* Renseignement des variables importantes */
         $this->name    = "mod_core";
-        $this->version = "0.5.0";
+        $this->version = "0.5.1";
         $this->desc    = "Module de base EIRPG";
         $this->depend  = array();
 
@@ -335,7 +337,7 @@ class core
             $irc->notice($nick, "Désolé, votre nom d'utilisateur est trop long. "
                 . "La limite autorisée est de \00230\002 caractères.");
             return false;
-        } elseif (!eregi("^[a-z0-9_-]+$", $username)) {
+        } elseif (!preg_match('/[a-z0-9_-]+$/i', $username)) {
             $irc->notice($nick, "Désolé, votre nom d'utilisateur contient des caractères interdits. "
                 . "Seuls les caractères \002alphanumériques\002, le \002tiret\002 et la \002barre de "
                 . "soulignement\002 sont autorisés.");
@@ -691,10 +693,9 @@ class core
     /* Fonctions diverses */
     function validerMail($mail)
     {
-        return ereg('^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+'
-            . '@'
-            . '[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.'
-            . '[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$', $mail);
+        return preg_match('/^[a-z0-9!#$%&\'*+\/\\=?^`{|}~._-]+'
+            . '@[a-z0-9!#$%&\'*+\/\\=?^`{|}~_-]+'
+            . '\.[a-z0-9!#$%&\'*+\/\\=?^`{|}~._-]+$/i', $mail);
     }
 
 ////////////////////////////////////////////////////////////////

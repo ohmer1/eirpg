@@ -23,7 +23,7 @@
  * @author Homer
  * @author cedricpc
  * @created 30 mai 2005
- * @modified 19 Avril 2010
+ * @modified  Monday 01 November 2010 @ 16:50 (CET)
  */
 class IRC
 {
@@ -52,7 +52,7 @@ class IRC
 
     function onPing($data)
     {
-        $idping = split(":", $data);
+        $idping = explode(':', $data);
         $this->sendRaw("PONG $idping[1]");
     }
 
@@ -685,26 +685,26 @@ class IRC
                     //si le dernier caractère n'est pas un retour à la
                     //ligne, alors on envoit tout jusqu'au dernier retour
                     //puis on bufferise le reste
-                    $buffer = $buffer . substr($buf, strrchr($buf, "\n"));
-                    $data   = substr($buf, 0, strrchr($buf, "\n"));
+                    $buffer = $buffer . substr($buf, (int) strrchr($buf, "\n"));
+                    $data   = substr($buf, 0, (int) strrchr($buf, "\n"));
                     $data   = $buffer . $data;
                     $buffer = ""; //on vide le buffer
                 }
             }
 
-            $data = split("\n", $data);
+            $data = explode("\n", $data);
 
             for ($i = 0; $i < count($data); $i++) {
                 if ($this->debug) {
                     $irpg->alog("--> $data[$i]");
                 }
 
-                //On écharpe notre $data[$i] pour le traitement par regexp
+                //On échappe notre $data[$i] pour le traitement par regexp
                 $dataregexp = addslashes($data[$i]);
                 //$dataregexp = preg_quote($data[$i]);
 
                 //Ping! Pong!
-                if (ereg("^PING ", $dataregexp)) {
+                if (strpos($dataregexp, 'PING ') === 0) {
                     global $nbExecute;
                     unset($nbExecute); //Reset de la variable qui ne sert que pour onEndWho()
                     $this->onPing($dataregexp);
@@ -712,7 +712,7 @@ class IRC
                 }
 
                 //Message en provenance d'un serveur ou d'un utilisateur?
-                if (!ereg("^.*!.*@.* .*$", $dataregexp)) {
+                if (!preg_match('/^.*?!.*?@.*? .*$/', $dataregexp)) {
                     if (preg_match('`:(.*?) `', $dataregexp, $server)) {
                         $server = $server[1];
                     }
@@ -776,19 +776,19 @@ class IRC
                     preg_match("/@(.*?) /", $dataregexp, $host);
                     $host = $host[1];
 
-                    //On écharpe $userhost pour pas planter les regexp
-                    $userhost = preg_quote($userhost);
+                    //On échappe $userhost pour pas planter les regexp
+                    $userhostPreg = preg_quote($userhost);
 
                     //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
                     //Traitement des PRIVMSG & CTCP
-                    if (ereg("^:$userhost PRIVMSG #", $dataregexp)) {
+                    if (strpos($dataregexp, ":$userhost PRIVMSG #") === 0) {
                         /* Sur le canal */
                         //On extrait le message
                         //:Homer!Homer@server-admin.epiknet.org PRIVMSG #IRPG2 :dsgs : dgsdg : gdgdfg : dgsdgsd
                         $message = substr($dataregexp, strpos($dataregexp, ':', 1)+1);
                         $this->onPrivmsgCanal(trim($nick), trim($user), trim($host), trim($message));
-                    } elseif (ereg("^:$userhost PRIVMSG ", $dataregexp)) {
+                    } elseif (strpos($dataregexp, ":$userhost PRIVMSG ") === 0) {
                         /* En privé */
                         // On ne va pas plus loin si le pseudo ou l'host doit être ignoré !
                         if ((in_array($nick, $ignoresN)) || (in_array($host, $ignoresH))) {
@@ -796,7 +796,7 @@ class IRC
                         }
 
                         //PRIVMSG ou CTCP?
-                        if (preg_match("/^:$userhost PRIVMSG .* :\001(.*?)\001/", $dataregexp, $ctcp)) {
+                        if (preg_match("/^:$userhostPreg PRIVMSG .* :\001(.*?)\001/", $dataregexp, $ctcp)) {
                             $this->onCTCP(trim($nick), trim($user), trim($host), trim($ctcp[1]));
                         } else {
                             //On extrait le message
@@ -808,12 +808,12 @@ class IRC
                     //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
                      //Traitement des NOTICE
-                    if (ereg("^:$userhost NOTICE #", $dataregexp)) {
+                    if (strpos($dataregexp, ":$userhost NOTICE #") === 0) {
                         /* Sur le canal */
                         //On extrait le message
                         $message = substr($dataregexp, strpos($dataregexp, ':', 1)+1);
                         $this->onNoticeCanal(trim($nick), trim($user), trim($host), trim($message));
-                    } elseif (ereg("^:$userhost NOTICE ", $dataregexp)) {
+                    } elseif (strpos($dataregexp, ":$userhost NOTICE ") === 0) {
                         /* En privé */
                         // On ne va pas plus loin si le pseudo ou l'host doit être ignoré !
                         if ((in_array($nick, $ignoresN)) || (in_array($host, $ignoresH))) {
@@ -828,9 +828,9 @@ class IRC
                  //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
                  //Traitement du JOIN
-                 if (ereg("^:$userhost JOIN :#", $dataregexp)) {
+                 if (strpos($dataregexp, ":$userhost JOIN :#") === 0) {
                         //On extrait le canal
-                        $channel = split(":", $dataregexp);
+                        $channel = explode(':', $dataregexp);
                         $channel = $channel[2];
                         $this->onJoin(trim($nick), trim($user), trim($host), trim($channel));
                  }
@@ -838,9 +838,9 @@ class IRC
                  //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
                  //Traitement du PART
-                 if (ereg("^:$userhost PART #", $dataregexp)) {
+                 if (strpos($dataregexp, ":$userhost PART #") === 0) {
                         //On extrait le canal
-                        $channel = split(" ", $dataregexp);
+                        $channel = explode(' ', $dataregexp);
                         $channel = $channel[2];
                         $this->onPart(trim($nick), trim($user), trim($host), trim($channel));
                  }
@@ -848,9 +848,9 @@ class IRC
                  //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
                  //Traitement du NICK
-                 if (ereg("^:$userhost NICK :", $dataregexp)) {
+                 if (strpos($dataregexp, ":$userhost NICK :") === 0) {
                         //On extrait le nouveau nick
-                        $newnick = split(":", $dataregexp);
+                        $newnick = explode(':', $dataregexp);
                         $newnick = $newnick[2];
                         $this->onNick(trim($nick), trim($user), trim($host), trim($newnick));
                  }
@@ -858,9 +858,9 @@ class IRC
                  //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
                  //Traitement du KICK
-                 if (ereg("^:$userhost KICK #", $dataregexp)) {
+                 if (strpos($dataregexp, ":$userhost KICK #") === 0) {
                         //On extrait le canal et le kické
-                        $kick = split(" ", $dataregexp);
+                        $kick = explode(' ', $dataregexp);
                         $channel = $kick[2];
                         $nickkicked = $kick[3];
                         $this->onKick(trim($nick), trim($user), trim($host), trim($channel), trim($nickkicked));
@@ -869,9 +869,9 @@ class IRC
                  //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
                  //Traitement du QUIT
-                 if (ereg("^:$userhost QUIT :", $dataregexp)) {
+                 if (strpos($dataregexp, ":$userhost QUIT :") === 0) {
                         //On extrait la raison du QUIT
-                        preg_match("/^:$userhost QUIT :(.*?$)/", $dataregexp, $reason);
+                        preg_match("/^:$userhostPreg QUIT :(.*?$)/", $dataregexp, $reason);
                         $reason = $reason[1];
                         $this->onQuit(trim($nick), trim($user), trim($host), trim($reason));
                  }
