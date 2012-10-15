@@ -376,6 +376,7 @@ class IRC
 
         $channel = strtoupper($channel);
         if ($channel == $this->home) {
+            $table = $db->prefix . "IRC";
 
             if (empty($nbExecute)) {
                 $nbExecute = 0;
@@ -383,7 +384,6 @@ class IRC
 
             if ($nbExecute == 0) {
                 //On vire tous les persos identifiés de la table IRC
-                $table = $db->prefix . "IRC";
                 $db->req("DELETE FROM $table WHERE Not ISNULL(Pers_Id)");
             }
 
