@@ -46,7 +46,7 @@ class hog
 
         /* Renseignement des variables importantes */
         $this->name    = "mod_hog";
-        $this->version = "1.0.0";
+        $this->version = "1.0.1";
         $this->desc    = "Main de Dieu";
         $this->depend  = array("core/0.5.0");
 
