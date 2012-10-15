@@ -127,7 +127,8 @@ class DB
             $irpg->alog("SQL: " . $query);
         }
 
-        return ($result = $this->req($query, true) ? mysql_num_rows($result) : 0);
+        $result = $this->req($query, true);
+        return ($result ? mysql_num_rows($result) : 0);
     }
 
 ///////////////////////////////////////////////////////////////
