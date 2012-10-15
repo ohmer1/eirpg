@@ -23,7 +23,7 @@
  * @author Homer
  * @author cedricpc
  * @created 30 mai 2005
- * @modified  Monday 01 November 2010 @ 16:50 (CET)
+ * @modified  Monday 23 November 2010 @ 02:20 (CET)
  */
 class IRC
 {
@@ -474,7 +474,7 @@ class IRC
                 if ((!$db->connected) && (!$this->exit)) {
                     if ($db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"),
                         $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"),
-                        $irpg->readConfig("SQL", "prefix")
+                        $irpg->readConfig("SQL", "prefix"), $irpg->readConfig("SQL", "charset")
                     )) {
                         //On réinitialise notre table IRC et objets, comme si le bot venait
                         //d'être redémarré
