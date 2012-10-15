@@ -173,11 +173,7 @@ class core
         case "CREATE":
             //Création d'un personnage sur le bot
             if ($nb >= 2) {
-                $i = 2;
-                while ($i != count($message)) {
-                    $classe = "$classe $message[$i]";
-                    $i++;
-                }
+                $classe = implode(" ", array_slice($message, 2));
                 $this->cmdCreate($nick, $user, $host, $message[1], trim($classe));
             } else {
                 $irc->notice($nick, "Syntaxe incorrecte. Syntaxe : CREATE <nom personnage> <classe>");
