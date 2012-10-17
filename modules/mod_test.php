@@ -64,7 +64,7 @@ class test /* Le nom de la classe DOIT être du même nom que le module (sans le m
 
         /* Ne pas modifier ce qui suit; lecture et validation du fichier de configuration */
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die($this->name . ": Vérifiez votre fichier de configuration.\n");
+            die("$this->name: Vérifiez votre fichier de configuration.\n");
         }
 
         /*

@@ -477,7 +477,7 @@ class IRPG
         global $db;
 
         $tbLogs = $db->prefix . "Logs";
-        if ($pid == NULL) {
+        if ($pid == null) {
             $db->req("INSERT INTO $tbLogs (`Pers_Id`, `Date`, `Type`, `Modificateur`, `Desc1`, `Desc2`, `Desc3`)
                       VALUES (NULL, NOW(), '$type', '$modif', '$d1', '$d2', '$d3')");
         } else {

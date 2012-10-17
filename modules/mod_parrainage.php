@@ -76,7 +76,7 @@ class parrainage
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die ($this->name . ": Vérifiez votre fichier de configuration.\n");
+            die("$this->name: Vérifiez votre fichier de configuration.\n");
         }
 
         $this->actif    = $irpg->readConfig($this->name, "actif");

@@ -889,7 +889,7 @@ class IRC
             }
 
             //$read = array($this->sirc);
-            //socket_select($read, $write = NULL, $except = NULL, 0);
+            //socket_select($read, $write = null, $except = null, 0);
             //if (count($read) > 0) {
             //    $this->nbReadError++;
             //    print "READ ERROR!!: " . socket_strerror(socket_last_error()) . "\n\n";

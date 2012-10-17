@@ -72,7 +72,7 @@ class core
         $cfgKeysOpt = array("motd");
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die($this->name . ": Vérifiez votre fichier de configuration.\n");
+            die("$this->name: Vérifiez votre fichier de configuration.\n");
         }
 
         //Initialisation de l'array $this->users et $this->autologged
@@ -424,7 +424,7 @@ class core
                 $y = 0;
                 while ($y != count($irpg->mod)) {
                     if (method_exists($irpg->mod[$irpg->modules[$y]], "modCore_onLogin")) {
-                        $irpg->mod[$irpg->modules[$y]]->modCore_onLogin($nick, $uid, NULL, NULL, NULL);
+                        $irpg->mod[$irpg->modules[$y]]->modCore_onLogin($nick, $uid, null, null, null);
                     }
                     $y++;
                 }

@@ -62,7 +62,7 @@ class godsends
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die($this->name . ": Vérifiez votre fichier de configuration.\n");
+            die("$this->name: Vérifiez votre fichier de configuration.\n");
         }
 
         //Initialisation des paramètres du fichier de configuration

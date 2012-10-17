@@ -228,7 +228,7 @@ class admin
             //Ajoute du temps au TTL d'un personnage
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 $temps    = ($nb < 2 ? null : preg_replace('/%+$/', '', $message[2]));
-                $pourcent = ($nb < 2 ? false : strpos($message[2] . ($nb > 2 ? $message[3] : ''), '%') !== FALSE);
+                $pourcent = ($nb < 2 ? false : strpos($message[2] . ($nb > 2 ? $message[3] : ''), '%') !== false);
 
                 if (($nb < 2) || !is_numeric($temps)) {
                     $irc->notice($nick, 'Syntaxe : PULL <personnage> <temps_en_secondes|pourcentage %>');
@@ -247,7 +247,7 @@ class admin
             //Enlève du temps au TTL d'un personnage
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 $temps    = ($nb < 2 ? null : preg_replace('/%+$/', '', $message[2]));
-                $pourcent = ($nb < 2 ? false : strpos($message[2] . ($nb > 2 ? $message[3] : ''), '%') !== FALSE);
+                $pourcent = ($nb < 2 ? false : strpos($message[2] . ($nb > 2 ? $message[3] : ''), '%') !== false);
 
                 if (($nb < 2) || !is_numeric($temps)) {
                     $irc->notice($nick, 'Syntaxe : PUSH <personnage> <temps_en_secondes|pourcentage %>');
@@ -365,7 +365,7 @@ class admin
 
         $raison = stripslashes($raison);
         $irpg->Log(
-            NULL, "ADMIN", "0", "$user ($nick) a utilisé la commande SHUTDOWN" . ($raison != Null ? " ($raison)" : "")
+            null, "ADMIN", "0", "$user ($nick) a utilisé la commande SHUTDOWN" . ($raison != Null ? " ($raison)" : "")
         );
         $irc->deconnexion("Arrêt du bot demandé par $nick ($user)" . ($raison != Null ? " : $raison" : ""));
         $db->deconnexion();
@@ -381,7 +381,7 @@ class admin
 
         $raison = stripslashes($raison);
         $irpg->Log(
-            NULL, "ADMIN", "0", "$user ($nick) a utilisé la commande RESTART" . ($raison != Null ? " ($raison)" : "")
+            null, "ADMIN", "0", "$user ($nick) a utilisé la commande RESTART" . ($raison != Null ? " ($raison)" : "")
         );
         $deconnexionIrc = $irc->deconnexion(
             "Redémarrage du bot demandé par $nick ($user)" . ($raison != Null ? " : $raison" : "")
@@ -413,7 +413,7 @@ class admin
             $irc->notice($nick, "Le mot de passe de $user a bien été changé.");
         }
         $irpg->Log(
-            NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGPASS ($user)"
+            null, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGPASS ($user)"
         );
     }
 
@@ -436,7 +436,7 @@ class admin
         $table = $db->prefix . "Personnages";
         $db->req("UPDATE `$table` SET `Class` = '$newClass' WHERE `Nom` = '$perso'");
         $irc->notice($nick, "La classe de $perso a bien été changée.");
-        $irpg->Log(NULL, "ADMIN", "0",
+        $irpg->Log(null, "ADMIN", "0",
             "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGCLASS ($perso -> $newClass)"
         );
     }
@@ -476,7 +476,7 @@ class admin
         $table = $db->prefix . "Personnages";
         $db->req("UPDATE `$table` SET `Nom` = '$newPerso' WHERE `Nom` = '$perso'");
         $irc->notice($nick, "Le nom de" . ($persoIsMine ? " votre personnage" : "") . " $perso a bien été changé.");
-        $irpg->Log(NULL, "ADMIN", "0",
+        $irpg->Log(null, "ADMIN", "0",
             "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGPERSO ($perso -> $newPerso)"
         );
         //TODO: donner une penalité pour mettre à jour tous les modules.
@@ -525,7 +525,7 @@ class admin
         } else {
             $irc->notice($nick, "Le nom d'utilisateur de $user a bien été changé.");
         }
-        $irpg->Log(NULL, "ADMIN", "0",
+        $irpg->Log(null, "ADMIN", "0",
             "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande CHGUSER ($user -> $newUser)"
         );
         //TODO: donner une penalité pour mettre à jour tous les modules.
@@ -558,7 +558,7 @@ class admin
         $db->req("DELETE FROM `$table` WHERE `Nom` = '$perso'");
         $irc->notice($nick, ($persoIsMine ? "Votre" : "Le") . " personnage $perso a bien été supprimé.");
         $irpg->Log(
-            NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELPERSO ($perso)"
+            null, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELPERSO ($perso)"
         );
         //TODO: mettre une penalité tel un kick à l'utilisateur qui est supprimé
         //      pour mettre à jour tous les autres modules
@@ -590,7 +590,7 @@ class admin
         $db->req("DELETE FROM `$table` WHERE `Username` = '$user'");
         $irc->notice($nick, "L'utilisateur $user a bien été supprimé.");
         $irpg->Log(
-            NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELUSER ($user)"
+            null, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELUSER ($user)"
         );
         //TODO: mettre une penalité tel un kick à l'utilisateur qui est supprimé
         //      pour mettre à jour tous les autres modules
@@ -624,7 +624,7 @@ class admin
         $db->req("UPDATE `$table` SET `Admin` = '0' WHERE `Username` = '$user'");
         $irc->notice($nick, "Les privilèges d'administrateur de $user ont bien été supprimés.");
         $irpg->Log(
-            NULL, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELADMIN ($user)"
+            null, "ADMIN", "0", "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande DELADMIN ($user)"
         );
         //TODO: Avertir l'utilisateur de la démission de ses fonctions.
     }
@@ -666,7 +666,7 @@ class admin
 
         $table = $db->prefix . "Utilisateurs";
         $db->req("UPDATE `$table` SET `Admin` = '$niveau' WHERE `Username` = '$user'");
-        $irpg->Log(NULL, "ADMIN", "0",
+        $irpg->Log(null, "ADMIN", "0",
             "$irpg->getUsernameByNick($nick) ($nick) a utilisé la commande ADDADMIN ($user -> $niveau)"
         );
         if ($userNiveau > 0) {
@@ -704,7 +704,7 @@ class admin
         $db->req('UPDATE `' . $table . '` SET `Next` = `Next` - ' . $temps . ' WHERE `Nom` = \'' . $perso . '\'');
         $irc->notice($nick, 'Le temps de ' . $perso . ' a bien été avancé de '
             . ($pourcent ? $pourcent . ' % soit ' : '') . $irpg->convSecondes($temps) . '.');
-        $irpg->Log(NULL, 'ADMIN', '0', $irpg->getUsernameByNick($nick) . ' (' . $nick
+        $irpg->Log(null, 'ADMIN', '0', $irpg->getUsernameByNick($nick) . ' (' . $nick
             . ') a utilisé la commande PUSH (' . $perso . ' -> ' . ($pourcent ? $pourcent . ' % -> ' : '')
             . $temps . ')');
         if ($temps >= $next) {
@@ -746,7 +746,7 @@ class admin
         $db->req('UPDATE `' . $table . '` SET `Next` = `Next` + ' . $temps . ' WHERE `Nom` = \'' . $perso . '\'');
         $irc->notice($nick, 'Le temps de ' . $perso . ' a bien été reculé de '
             . ($pourcent ? $pourcent . ' % soit ' : '') . $irpg->convSecondes($temps) . '.');
-        $irpg->Log(NULL, 'ADMIN', '0', $irpg->getUsernameByNick($nick) . ' (' . $nick
+        $irpg->Log(null, 'ADMIN', '0', $irpg->getUsernameByNick($nick) . ' (' . $nick
             . ') a utilisé la commande PULL (' . $perso . ' -> ' . ($pourcent ? $pourcent . ' % -> ' : '')
             . $temps . ')');
 

@@ -56,7 +56,7 @@ class test2
         $cfgKeys    = array(""); //Clés obligatoires
         $cfgKeysOpt = array(""); //Clés optionelles
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die($this->name . ": Vérifiez votre fichier de configuration.\n");
+            die("$this->name: Vérifiez votre fichier de configuration.\n");
         }
     }
 
