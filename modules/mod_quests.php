@@ -534,7 +534,7 @@ class quests
                     // est abandonnée.
                     if ($participants[0] < 1) {
                         if ($queteId == 1) {
-                            $irc->privmsg($irc->home, 'La quête a echouée... Les aventuriers sont tous revenus '
+                            $irc->privmsg($irc->home, 'La quête a échouée... Les aventuriers sont tous revenus '
                                 . 'bredouilles...');
                         } elseif ($queteId == 2) {
                             $penalite = 1 + rand($this->MinPenaliteAll, $this->MaxPenaliteAll) / 100;
@@ -547,7 +547,7 @@ class quests
                                 $irpg->Log($penalise[0], 'QUETE_ROYAUME_ECHOUÉE', $penalite, 2);
                             }
 
-                            $irc->privmsg($irc->home, 'La quête a echouée... Le royaume est menacé et chaque '
+                            $irc->privmsg($irc->home, 'La quête a échouée... Le royaume est menacé et chaque '
                                 . 'habitant en subira les conséquences...');
                         }
                         $this->queteEnCours = -1;

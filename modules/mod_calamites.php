@@ -219,7 +219,7 @@ class calamites
         $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
         $message = $db->getRows("SELECT Valeur FROM $tbTxt WHERE Type='C' ORDER BY RAND() LIMIT 0,1");
         $message = $message[0][0];
-        $irc->privmsg($irc->home, "$perso $message. Ce terrible incident le ralentis de $ctime du niveau $level2. "
+        $irc->privmsg($irc->home, "$perso $message. Ce terrible incident le ralentit de $ctime du niveau $level2. "
             . "Prochain niveau dans $cnext.");
     }
 
