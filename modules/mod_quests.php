@@ -302,7 +302,7 @@ class quests
                                  . "est sauvé... Il(s) ser{a}(ont) largement récompensé(s) : $pourcent % de "
                                  . "(leur)s{on} TTL sont enlevés !";
                     }
-                    $irc->privmsg($irc->home, $this->accorder($message, $listeParticipants[0]));
+                    $irc->privmsg($irc->home, $this->accorder($message, $participants[0]));
 
                     $this->queteEnCours = -1;
                     unset($this->participants[$this->queteEnCours]);
