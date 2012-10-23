@@ -21,10 +21,10 @@
  * Module mod_batailles.php
  * Gestion des batailles dans le jeu
  *
- * @author Homer
- * @author cedricpc
- * @created 13 mai 2006
- * @modified 22 Avril 2010
+ * @author    Homer
+ * @author    cedricpc
+ * @created   Samedi   13 Mai       2006
+ * @modified  Mercredi 24 Octobre   2012 @ 01:05 (CEST)
  */
 class batailles
 {
@@ -103,6 +103,19 @@ class batailles
         switch (strtoupper($message[0])) {
         case 'CHALLENGE':
         case 'COMBAT':
+            $username = array_search($nick, $irpg->mod["core"]->users);
+            if (is_string($username)) {
+                $tblPerso = $db->prefix . "Personnages";
+                $tblUtil  = $db->prefix . "Utilisateurs";
+
+                $perso = $db->getRows("SELECT COUNT(*) AS `nb`, `Nom` FROM `{$tblPerso}` LEFT JOIN `{$tblUtil}`
+                                       ON `Util_Id` = `Id_Utilisateurs` WHERE `Username` = '{$username}'");
+                if ($perso[0]['nb'] == 1) {
+                    $this->cmdBataille($nick, $perso[0]['Nom'], ($nb < 1 ? null : $message[1]), true);
+                    break;
+                }
+            }
+
             if ($nb < 1) {
                 $irc->notice($nick, 'Syntaxe : COMBAT <personnage> [adversaire]');
             }
@@ -317,7 +330,7 @@ class batailles
      *
      * @return void  ou false en cas de problème
      */
-    function cmdBataille($nick, $perso, $opposant = null) {
+    function cmdBataille($nick, $perso, $opposant = null, $persoUnique = false) {
         global $db, $irc, $irpg;
 
         $tblPerso = $db->prefix . "Personnages";
@@ -365,7 +378,8 @@ class batailles
                 . "voir votre personnage affronter. Si vous omettez de le préciser, son adversaire sera choisi "
                 . "aléatoirement. Enfin, il est impératif d'indiquer votre personnage que vous souhaitez envoyer "
                 . "à la bataille.");
-            $irc->notice($nick, "La syntaxe de la commande est la suivante : COMBAT <personnage> [adversaire]");
+            $irc->notice($nick, "La syntaxe de la commande est la suivante : COMBAT "
+                . ($persoUnique ? "" : "<personnage> ") . "[adversaire]");
 
             $db->req("UPDATE `{$tblPerso}` SET `ChallengeTimes` = 1 WHERE `Id_Personnages` = '{$pid}'");
 
