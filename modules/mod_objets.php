@@ -387,7 +387,7 @@ class objets
                 }
                 $i++;
             }
-            $irc->notice($nick, "Les objets de $perso sont: $lstObj.    La somme est de \002$sum\002.");
+            $irc->notice($nick, "Les objets de $perso sont: $lstObj. La somme est de \002$sum\002.");
         }
     }
 

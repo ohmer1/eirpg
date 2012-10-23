@@ -215,7 +215,7 @@ class top10
         $irc->privmsg($irc->home, "Top $nb des meilleurs idlers :");
         while ($i != count($res)) {
             $msg = "#" . ($i+1) . " " . $res[$i]["Nom"] . ", " . $res[$i]["Class"] . " de niveau "
-                 . $res[$i]["Level"] . ".    Prochain niveau dans " . $irpg->convSecondes($res[$i]["Next"]) . ".";
+                 . $res[$i]["Level"] . ". Prochain niveau dans " . $irpg->convSecondes($res[$i]["Next"]) . ".";
             $irc->privmsg($irc->home, $msg);
             $i++;
         }
