@@ -9,8 +9,16 @@ Légende
 ! correction de bug
 
 
+Version 0.6.0-rc2
+24 octobre 2012
+-----------------
+* Modification de la commande COMBAT afin de ne plus demander à l'utilisateur le nom de son personnage lorsqu'il
+    n'en a qu'un. [mod_batailles]
+* Correction de quelques fautes restantes. [doc/textes_mod_quests.sql, mod_objets, mod_top10]
+
+
 Version 0.6.0-rc1
-15 septembre 2012
+18 octobre 2012
 -----------------
 ! Correction de convSecondes() qui utilisait le pluriel avec les durées inférieures à 1 jour. [clsIRPG]
 ! Correction de diverses erreurs : E_NOTICE, E_DEPRECATED, E_WARNING. [clsDb, clsIRC, clsIRPG]
