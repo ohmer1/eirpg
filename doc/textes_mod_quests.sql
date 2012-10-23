@@ -21,7 +21,7 @@
 
 INSERT INTO `Textes` (`Id`, `Type`, `Valeur`) VALUES
 (NULL, 'Qs', 'rentrer dans un état de transe.'),
-(NULL, 'Qs', 'courir le plus loin possible afin de prévenir les contrées les plus eloignées du terrible danger qui les menaces !'),
+(NULL, 'Qs', 'courir le plus loin possible afin de prévenir les contrées les plus éloignées du terrible danger qui les menace !'),
 (NULL, 'Qs', 'porter Homer et cedricpc le plus longtemps possible. Celui qui arrêtera le premier sera écrasé sous leur poids !'),
 (NULL, 'Qa', 'trouver le sanctuaire de Bloubigoulba afin de tuer le monstre Casimir.'),
 (NULL, 'Qa', 'attraper une hydre à 14 têtes vivante.'),
@@ -37,7 +37,7 @@ INSERT INTO `Textes` (`Id`, `Type`, `Valeur`) VALUES
 (NULL, 'Qr', 'trouver un remède qui sauvera le Roy de sa mort annoncée par les devins de la cours.'),
 (NULL, 'Qr', 'aller prêter main forte aux légions du Royaume qui se battent aux frontières.'),
 (NULL, 'Qr', 'tuer le dragon qui menace la grande cité Azerty de la destruction.'),
-(NULL, 'Qr', 'assassiner le Roy du royaume de Géhèsyèrpégé voulant nous envahir!'),
+(NULL, 'Qr', 'assassiner le Roy du royaume de Géhèsyèrpégé voulant nous envahir !'),
 (NULL, 'Qr', 'repousser cet envahisseur du Royaume de Pèrleuh dont personne ne comprend le dialecte.'),
 (NULL, 'Qr', 'mettre fin à une épidemie de peste qui ravage le royaume de toute part.'),
 (NULL, 'Qr', 'trouver une fiole de sang de Septim qui permettrait de rallumer les feux de Dragon qui protège le Royaume.'),
