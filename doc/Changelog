@@ -9,6 +9,14 @@ Légende
 ! correction de bug
 
 
+Version 0.6.0-rc3
+25 octobre 2012
+-----------------
+! Correction d'erreurs de type E_STRICT provoquées par l'utilisation de la fonction mktime() sans
+    arguments. [clsIRC, mod_core]
+! Correction d'un bug empêchant la reconnexion automatique au serveur IRC en cas de perte de la connexion. [clsIRC]
+
+
 Version 0.6.0-rc2
 24 octobre 2012
 -----------------
