@@ -22,8 +22,8 @@
  *
  * @author Homer
  * @author cedricpc
- * @created   Lundi 30 Mai       2005
- * @modified  Mardi 18 Septembre 2012 @ 08:35 (CEST)
+ * @created   Lundi    30 Mai       2005
+ * @modified  Jeudi    25 Octobre   2012 @ 02:05 (CEST)
  */
 class IRC
 {
@@ -502,7 +502,7 @@ class IRC
 
     function checkTimeout()
     {
-        if ($this->lastData + 180 < mktime()) {
+        if ($this->lastData + 180 < time()) {
             $this->deconnexion("Perte de connexion vers le serveur IRC... Reconnexion.");
             return true;
         } else {
@@ -514,7 +514,7 @@ class IRC
 
     function updateTimeout()
     {
-        $this->lastData = mktime();
+        $this->lastData = time();
     }
 
     ///////////////////////////////////////////////////////////////
@@ -579,9 +579,9 @@ class IRC
     /**
      * Constructeur; connexion à un serveur IRC
      *
-     * @author Homer
-     * @created 30 mai 2005
-     * @modified 1er juin 2005
+     * @author    Homer
+     * @created   Lundi    30 Mai       2005
+     * @modified  Jeudi    25 Octobre   2012 @ 02:05 (CEST)
      * @param server   - Adresse du serveur IRC
      * @param port     - Port de connexion au serveur
      * @param realname - Realname du bot
@@ -595,7 +595,7 @@ class IRC
         global $irpg;
 
         $this->debug    = $debug;
-        $this->lastData = mktime();
+        $this->lastData = time();
         $this->exit     = false;
 
         if (!$this->sirc = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) {

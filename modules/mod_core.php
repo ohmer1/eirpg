@@ -25,10 +25,10 @@
  * * Méthodes inter-modules crées dans ce module:
  * - modCore_onLogin($nick, $uid, $pid, $level, $next)
  *
- * @author Homer
+ * @author    Homer
  * @author    cedricpc
- * @created 23 juin 2005
- * @modified  Monday 01 November 2010 @ 15:15 (CET)
+ * @created   Jeudi    23 Juin      2005
+ * @modified  Jeudi    25 Octobre   2012 @ 02:15 (CEST)
  */
 class core
 {
@@ -308,7 +308,7 @@ class core
         //ne se déconnecte (par la protection anti-timeout) en cas d'inactivité
         $this->timerPing++;
         if ($this->timerPing >=4) {
-            $irc->sendRaw("PING EIRPG" . mktime());
+            $irc->sendRaw("PING EIRPG" . time());
             $this->timerPing = 0;
         }
 
