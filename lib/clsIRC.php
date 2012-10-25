@@ -23,7 +23,7 @@
  * @author Homer
  * @author cedricpc
  * @created   Lundi    30 Mai       2005
- * @modified  Jeudi    25 Octobre   2012 @ 02:05 (CEST)
+ * @modified  Jeudi    25 Octobre   2012 @ 02:20 (CEST)
  */
 class IRC
 {
@@ -504,6 +504,7 @@ class IRC
     {
         if ($this->lastData + 180 < time()) {
             $this->deconnexion("Perte de connexion vers le serveur IRC... Reconnexion.");
+            $this->exit = false;
             return true;
         } else {
             return false;
