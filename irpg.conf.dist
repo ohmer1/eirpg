@@ -113,7 +113,7 @@ voicelvl = "1"    ;Niveau requis pour être Voice
 tempsQueteA = "10800"      ;Temps Minimum en seconde d'une Quete d'Aventure
 tempsQueteR = "25200"      ;Temps Minimum en seconde d'une Quete de Royaume
 recompenseA = "20"         ;Recompense en pourcent d'une quete d'Aventure
-recompenseR = "30          ;Recompense en pourcent d'une quete de Royaume
+recompenseR = "30"         ;Recompense en pourcent d'une quete de Royaume
 recompenseS = "30"         ;Recompense en pourcent d'une quete de Royaume
 MinPenalite = "10"         ;Penalité minimal pour le participant d'une quete
 MaxPenalite = "15"         ;Penalité maximal pour le participant d'une quete
@@ -133,7 +133,7 @@ probaQueteA = "80"         ;Probabilité en % qu'une quete aventure se declare. e
 [mod_notice]
 ; Ce module permet l'envoi d'une notice lors d'un JOIN
 actif = "1"
-message = "Bienvenue sur le canal du jeu IRPG. Pour savoir comment jouer, visite http://www.eirpg.com. Pour toutes questions, join le canal #IRPG-CHAT (personne ne répondera sur le canal #IRPG)."
+message = "Bienvenue sur le canal du jeu IRPG. Pour savoir comment jouer, visite http://www.eirpg.com. Pour toute question, rejoins le canal #IRPG-CHAT (personne ne répondra sur le canal #IRPG)."
 
 ; -------------------------------------------------
 
