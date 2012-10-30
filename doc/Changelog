@@ -9,6 +9,15 @@ Légende
 ! correction de bug
 
 
+Version 0.6.0-rc4
+30 octobre 2012
+-----------------
+! Correction d'un bug qui provoquait le passage au niveau suivant d'un personnage fantôme lorsque la requête
+    récupérant les personnages échoue — typiquement lorsque la base de donnée n'a pas été initialisée. [mod_idle]
+! Correction d'une erreur dans le fichier de configuration d'exemple à cause d'un guillemet manquant. [irpg.conf.dist]
+! Correction de quelques fautes dans le message de bienvenue de base. [irpg.conf.dist]
+
+
 Version 0.6.0-rc3
 25 octobre 2012
 -----------------
