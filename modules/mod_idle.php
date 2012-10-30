@@ -26,8 +26,9 @@
  * - modIdle_onLvlUp($nick, $uid, $pid, $level2, $next)
  *
  * @author Homer
- * @created 10 septembre 2005
- * @modified 08 Janvier 2008 (cedricpc)
+ * @author cedricpc
+ * @created   Samedi   10 Septembre 2005
+ * @modified  Mardi    30 Octobre   2012 @ 02:40 (CET)
  */
 class idle
 {
@@ -192,8 +193,12 @@ class idle
         //On fait passer au niveau suivant les personnages qui doivent l'être.
         $persos = $db->getRows('SELECT `Id_Personnages`, `Util_Id`, `Nom`, `Level`, `Class`, `Next`
                                 FROM `' . $tbPerso . '` WHERE `Next` <= 0');
-        for ($i = 0; $i != count($persos); $i++) {
-            $this->cmdLvlUp($persos[$i]['Id_Personnages'], array($persos[$i]));
+        if (!is_array($persos)) {
+            return;
+        }
+
+        foreach ($persos as $perso) {
+            $this->cmdLvlUp($perso['Id_Personnages'], array($perso));
         }
     }
 
