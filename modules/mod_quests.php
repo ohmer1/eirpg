@@ -21,7 +21,7 @@
  * Module mod_quests
  * @author Womby
  * @author    cedricpc
- * @modified  Thursday 04 November 2010 @ 03:25 (CET)
+ * @modified  Samedi   10 Novembre  2012 @ 03:00 (CET)
  */
 class quests
 {
@@ -597,7 +597,7 @@ class quests
         $participants = array_map('end', $listeParticipants);
         return array(
             count($listeParticipants),
-            implode(' et ', array(implode(', ', array_slice($participants, 0, -1)), end($participants))),
+            implode(' et ', array_filter(array(implode(', ', array_slice($participants, 0, -1)), end($participants)))),
             array_map('reset', $listeParticipants)
         );
     }
