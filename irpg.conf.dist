@@ -52,7 +52,7 @@ debug = "0"            ;Active (1) ou pas (0) le débugage
 background = "1"       ;Démarre le bot en background (1) ou non (0)
 purge = "30"           ;Temps en jours avant la suppression d'un compte inactif
 charset = "UTF-8"      ;Charset à utiliser pour l'envoi de texte sur la console
-version = "0.6.0-rc4"  ;Version du bot
+version = "0.6.0-rc5"  ;Version du bot
 
 ;Modules à charger séparés par des virgules, sans espaces et sans le prefix "mod_"
 ;L'ordre a son importance pour le gestionnaire des dépendances.

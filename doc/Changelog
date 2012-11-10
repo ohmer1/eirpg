@@ -9,6 +9,14 @@ Légende
 ! correction de bug
 
 
+Version 0.6.0-rc5
+10 novembre 2012
+-----------------
+! Correction d'un bug dans la liste affichée des participants à une quête lorsqu'il n'y en a plus qu'un. [mod_quests]
+! Correction d'un bug faisant croire qu'une quête du survivant a été lancée même s'il n'y avait pas assez de joueurs
+    pour y participer. [mod_quests]
+
+
 Version 0.6.0-rc4
 30 octobre 2012
 -----------------
