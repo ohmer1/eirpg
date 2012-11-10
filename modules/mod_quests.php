@@ -21,7 +21,7 @@
  * Module mod_quests
  * @author Womby
  * @author    cedricpc
- * @modified  Samedi   10 Novembre  2012 @ 03:00 (CET)
+ * @modified  Samedi   10 Novembre  2012 @ 03:05 (CET)
  */
 class quests
 {
@@ -417,7 +417,7 @@ class quests
         // Si le nombre de personnage retourné est inferieur au nombre voulut on ne peut pas commencé la quête
         // Sinon, on stock les infos retournées par la requête.
         if (!is_array($participants) || (count($participants) != $this->nbrParticipants)) {
-            return -1;
+            return 0;
         }
         $this->participants[0] = $participants;
 
