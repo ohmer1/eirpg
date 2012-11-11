@@ -30,9 +30,9 @@ class bonus
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dépendants
+    var $depend;  //Modules dont nous sommes dÃ©pendants
 
-    //Variables supplémentaires
+    //Variables supplÃ©mentaires
     var $timer;
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
@@ -41,7 +41,7 @@ class bonus
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'éxécute lors du (re)chargement du bot ou d'un REHASH
+        //S'Ã©xÃ©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
@@ -50,28 +50,28 @@ class bonus
         $this->desc    = "Bonus pour les dondateurs IRPG";
         $this->depend  = array("core/0.5.0");
 
-        //Recherche de dépendances
+        //Recherche de dÃ©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dépendance non résolue\n");
+            die("$this->name: dÃ©pendance non rÃ©solue\n");
         }
 
-        //Validation du fichier de configuration spécifique au module
+        //Validation du fichier de configuration spÃ©cifique au module
         $cfgKeys    = array();
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: Vérifiez votre fichier de configuration.\n");
+            die("$this->name: VÃ©rifiez votre fichier de configuration.\n");
         }
 
-        //Initialisation des paramètres du fichier de configuration
+        //Initialisation des paramÃ¨tres du fichier de configuration
     }
 
 ///////////////////////////////////////////////////////////////
 
     function unloadModule()
     {
-        //Destructeur; décharge le module
-        //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; dÃ©charge le module
+        //S'Ã©xÃ©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
     }
 
@@ -207,7 +207,7 @@ class bonus
         $tbIRC   = $db->prefix . "IRC";
         $tbDon   = $db->prefix . "Dons";
 
-        //on sélectionne d'abord un personnage en ligne
+        //on sÃ©lectionne d'abord un personnage en ligne
         $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages
                   IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) AND Util_Id
                   IN (SELECT Util_Id FROM $tbDon WHERE Expiration>=NOW()) ORDER BY RAND() LIMIT 0,1";
@@ -232,7 +232,7 @@ class bonus
         $cnext = $irpg->convSecondes($next);
         $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
         $irpg->Log($pid, "BONUS_DONATEUR", "", "-$time");
-        $irc->privmsg($irc->home, "Le maître de l'idle remercie ses supporteurs et récompense $perso en lui "
+        $irc->privmsg($irc->home, "Le maÃ®tre de l'idle remercie ses supporteurs et rÃ©compense $perso en lui "
             . "enlevant $ctime avant d'arriver au niveau $level2. Prochain niveau dans $cnext.");
     }
 

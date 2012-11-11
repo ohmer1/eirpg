@@ -18,10 +18,10 @@
  */
 
 /*
- * Modification à apporter à la BD
+ * Modification Ã  apporter Ã  la BD
  * ALTER TABLE  `Utilisateurs` ADD  `pidParrain` INT( 5 ) NULL DEFAULT NULL;
  *
- * et à irpg.conf :
+ * et Ã  irpg.conf :
  *
  * [mod_parrainage]
  * actif = "1"
@@ -32,7 +32,7 @@
 
 /**
  * Module mod_parrainage
- * Gères la fonctionnalité de parrainage sur le bot.
+ * GÃ¨res la fonctionnalitÃ© de parrainage sur le bot.
  *
  * @author Homer
  * @author cedricpc
@@ -44,12 +44,12 @@ class parrainage
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dépendants
+    var $depend;  //Modules dont nous sommes dÃ©pendants
 
-    //Variables supplémentaires
-    var $actif;    //Si la fonctionalité de parainage est active.
-    var $lvlBonus; //Le level requis par le joueur invité avant de donner le bonus au parrain.
-    var $pctBonus; //Le % du TTL retiré au parrain.
+    //Variables supplÃ©mentaires
+    var $actif;    //Si la fonctionalitÃ© de parainage est active.
+    var $lvlBonus; //Le level requis par le joueur invitÃ© avant de donner le bonus au parrain.
+    var $pctBonus; //Le % du TTL retirÃ© au parrain.
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
 ///////////////////////////////////////////////////////////////
@@ -57,26 +57,26 @@ class parrainage
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'éxécute lors du (re)chargement du bot ou d'un REHASH
+        //S'Ã©xÃ©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
         $this->name    = "mod_parrainage";
         $this->version = "0.1.0";
-        $this->desc    = "Module gérant les fonctionalités de parrainage.";
+        $this->desc    = "Module gÃ©rant les fonctionalitÃ©s de parrainage.";
         $this->depend  = array("idle/1.0.0");
 
-        //Recherche de dépendances
+        //Recherche de dÃ©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dépendance non résolue\n");
+            die("$this->name: dÃ©pendance non rÃ©solue\n");
         }
 
-        //Validation du fichier de configuration spécifique au module
+        //Validation du fichier de configuration spÃ©cifique au module
         $cfgKeys    = array("actif", "lvlBonus", "pctBonus");
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: Vérifiez votre fichier de configuration.\n");
+            die("$this->name: VÃ©rifiez votre fichier de configuration.\n");
         }
 
         $this->actif    = $irpg->readConfig($this->name, "actif");
@@ -88,8 +88,8 @@ class parrainage
 
     function unloadModule()
     {
-        //Destructeur; décharge le module
-        //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; dÃ©charge le module
+        //S'Ã©xÃ©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
     }
 
@@ -120,7 +120,7 @@ class parrainage
 
         switch (strtoupper($message[0])) {
         case "REGISTER2":
-            //Création d'un compte sur le bot à l'aide d'un parrain
+            //CrÃ©ation d'un compte sur le bot Ã  l'aide d'un parrain
             if ($nb == 4) {
                 $this->cmdRegister2($nick, $message[1], $message[2], $message[3], $message[4]);
             } else {
@@ -211,43 +211,43 @@ class parrainage
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 
-/* Fonctions reliés aux commandes reçues par le bot */
+/* Fonctions reliÃ©s aux commandes reÃ§ues par le bot */
 
-    //TODO: il serait préférable de laisser mod_core créer le compte et de gérer le parrain
-    // suite à la réception d'un signal qu'un nouveau compte a été créé.
+    //TODO: il serait prÃ©fÃ©rable de laisser mod_core crÃ©er le compte et de gÃ©rer le parrain
+    // suite Ã  la rÃ©ception d'un signal qu'un nouveau compte a Ã©tÃ© crÃ©Ã©.
     function cmdRegister2($nick, $username, $password, $email, $parrain)
     {
         global $irc, $irpg, $db;
-        /* cmdREGISTER2 : crée un compte dans la base de données */
+        /* cmdREGISTER2 : crÃ©e un compte dans la base de donnÃ©es */
 
-        // on vérififie si le module est actif
+        // on vÃ©rififie si le module est actif
         if ($this->actif != "1") {
-            $irc->notice($nick, "Désolé, la fonctionalité de parrainage n'est pas en fonction.");
+            $irc->notice($nick, "DÃ©solÃ©, la fonctionalitÃ© de parrainage n'est pas en fonction.");
             return false;
         }
 
-        //On vérifie si l'utilisateur est sur le canal
+        //On vÃ©rifie si l'utilisateur est sur le canal
         if (!$irc->isOn($irc->home, $nick)) {
-            $irc->notice($nick, "Désolé, vous devez être sur \002$irc->home\002 pour vous enregistrer.");
+            $irc->notice($nick, "DÃ©solÃ©, vous devez Ãªtre sur \002$irc->home\002 pour vous enregistrer.");
             return false;
         } elseif (strlen($username) > 30) { //Validation du nom d'utilisateur
-            $irc->notice($nick, "Désolé, votre nom d'utilisateur est trop long. "
-                . "La limite autorisée est de \00230\002 caractères.");
+            $irc->notice($nick, "DÃ©solÃ©, votre nom d'utilisateur est trop long. "
+                . "La limite autorisÃ©e est de \00230\002 caractÃ¨res.");
             return false;
         } elseif (!preg_match('/[a-z0-9_-]+$/i', $username)) {
-            $irc->notice($nick, "Désolé, votre nom d'utilisateur contient des caractères interdits. "
-                . "Seuls les caractères \002alphanumériques\002, le \002tiret\002 et la \002barre de "
-                . "soulignement\002 sont autorisés.");
+            $irc->notice($nick, "DÃ©solÃ©, votre nom d'utilisateur contient des caractÃ¨res interdits. "
+                . "Seuls les caractÃ¨res \002alphanumÃ©riques\002, le \002tiret\002 et la \002barre de "
+                . "soulignement\002 sont autorisÃ©s.");
             return false;
         } elseif ((strtoupper($username) == "IRPG") || (strtoupper($username) == "EIRPG")) {
-            $irc->notice($nick, "Désolé, ce nom d'utilisateur est réservé.");
+            $irc->notice($nick, "DÃ©solÃ©, ce nom d'utilisateur est rÃ©servÃ©.");
             return false;
         } else {
-            //On vérifie que le nom n'existe pas déjà
+            //On vÃ©rifie que le nom n'existe pas dÃ©jÃ 
             $table = $db->prefix . "Utilisateurs";
             $r = $db->req("SELECT Username FROM $table WHERE Username='$username'");
             if (mysql_num_rows($r) != 0) {
-                $irc->notice($nick, "Désolé, ce nom d'utilisateur existe déjà. Veuillez en choisir un autre.");
+                $irc->notice($nick, "DÃ©solÃ©, ce nom d'utilisateur existe dÃ©jÃ . Veuillez en choisir un autre.");
                 return false;
             }
         }
@@ -257,24 +257,24 @@ class parrainage
 
         //Validation de l'adresse de courriel
         if (!$irpg->mod['core']->validerMail($email)) {
-            $irc->notice($nick, "Désolé, votre adresse de courriel n'est pas valide.");
+            $irc->notice($nick, "DÃ©solÃ©, votre adresse de courriel n'est pas valide.");
             return false;
         }
 
-        // on vérifie que le parrain existe
+        // on vÃ©rifie que le parrain existe
         if (!$pid = $irpg->getPIDByPerso($parrain)) {
-            $irc->notice($nick, "Votre parrain n'a pas été trouvé. Vous devez utiliser son nom de personnage IRPG.");
+            $irc->notice($nick, "Votre parrain n'a pas Ã©tÃ© trouvÃ©. Vous devez utiliser son nom de personnage IRPG.");
             return false;
         }
 
-        //Requête SQL maintenant :)
+        //RequÃªte SQL maintenant :)
         $table = $db->prefix . "Utilisateurs";
         $db->req("INSERT INTO $table (`Username`, `Password`, `Email`, `Created`, `pidParrain`)
                   VALUES ('$username', '$password', '$email', NOW(), '$pid')");
-        $irc->notice($nick, "Votre compte \002$username\002 a été créé avec succès !");
-        $irc->notice($nick, "Vous pouvez à présent vous authentifier à l'aide de la commande \002LOGIN\002 "
-            . "puis ensuite créer votre premier personnage à l'aide de la commande \002CREATE\002.");
-        $irc->privmsg($irc->home, "Bienvenue à notre nouveau joueur $username invité par $parrain, connecté "
+        $irc->notice($nick, "Votre compte \002$username\002 a Ã©tÃ© crÃ©Ã© avec succÃ¨s !");
+        $irc->notice($nick, "Vous pouvez Ã  prÃ©sent vous authentifier Ã  l'aide de la commande \002LOGIN\002 "
+            . "puis ensuite crÃ©er votre premier personnage Ã  l'aide de la commande \002CREATE\002.");
+        $irc->privmsg($irc->home, "Bienvenue Ã  notre nouveau joueur $username invitÃ© par $parrain, connectÃ© "
             . "sous le pseudo $nick !");
     }
 
@@ -288,7 +288,7 @@ class parrainage
         if (($level == $this->lvlBonus) && ($ppid = $this->getParrainPIDByUID($uid))) {
             // on donne le bonus au parrain
             if (!$parrain = $this->getPersoByParrainPID($ppid)) {
-                //parrain non trouvé
+                //parrain non trouvÃ©
                 return false;
             }
 
@@ -302,8 +302,8 @@ class parrainage
             $db->req('UPDATE ' . $tbPerso . ' SET `Next` = `Next` - ' . $bonus . ' WHERE `Id_Personnages` = ' . $ppid);
 
             $perso = $irpg->getNomPersoByPID($pid);
-            $irc->privmsg($irc->home, $pPerso . ', le parrain de ' . $perso . ' est récompensé par le retrait de 5% '
-                . 'de son TTL. Ce bonus l\'accélère de ' . $irpg->convSecondes($bonus) . ' ! Prochain niveau dans '
+            $irc->privmsg($irc->home, $pPerso . ', le parrain de ' . $perso . ' est rÃ©compensÃ© par le retrait de 5% '
+                . 'de son TTL. Ce bonus l\'accÃ©lÃ¨re de ' . $irpg->convSecondes($bonus) . ' ! Prochain niveau dans '
                 . $irpg->convSecondes($ttl) . '.');
         }
     }

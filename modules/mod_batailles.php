@@ -32,9 +32,9 @@ class batailles
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dÈpendants
+    var $depend;  //Modules dont nous sommes d√©pendants
 
-    //Variables supplÈmentaires
+    //Variables suppl√©mentaires
 
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
@@ -43,7 +43,7 @@ class batailles
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'ÈxÈcute lors du (re)chargement du bot ou d'un REHASH
+        //S'√©x√©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
@@ -52,28 +52,28 @@ class batailles
         $this->desc    = "Module de gestion des batailles";
         $this->depend  = array("core/0.5.0", "idle/1.0.0", "objets/0.9.0");
 
-        //Recherche de dÈpendances
+        //Recherche de d√©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dÈpendance non rÈsolue\n");
+            die("$this->name: d√©pendance non r√©solue\n");
         }
 
-        //Validation du fichier de configuration spÈcifique au module
+        //Validation du fichier de configuration sp√©cifique au module
         $cfgKeys    = array();
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: VÈrifiez votre fichier de configuration.\n");
+            die("$this->name: V√©rifiez votre fichier de configuration.\n");
         }
 
-        //Initialisation des paramËtres du fichier de configuration
+        //Initialisation des param√®tres du fichier de configuration
     }
 
 ///////////////////////////////////////////////////////////////
 
     function unloadModule()
     {
-        //Destructeur; dÈcharge le module
-        //S'ÈxÈcute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; d√©charge le module
+        //S'√©x√©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
     }
 
@@ -215,7 +215,7 @@ class batailles
 
     function modIdle_onLvlUp($nick, $uid, $pid, $level, $next)
     {
-        // ¿ chaque montÈ de niveau,
+        // √Ä chaque mont√© de niveau,
         // .. il y a 25% de chance d'avoir une bataille lorsque niveau < 10
         // .. il y a 100% de chance d'avoir une bataille lorsque niveau >= 10
         if ($level >= 10) {
@@ -244,7 +244,7 @@ class batailles
         $ttl = $db->getRows("SELECT Next FROM $tPerso WHERE Id_Personnages='$pid'");
         $ttl = $ttl[0]["Next"];
 
-        // SÈlectionne un autre joueur en ligne pour duel
+        // S√©lectionne un autre joueur en ligne pour duel
         $q = "SELECT Pers_Id FROM $tIRC WHERE Pers_Id Not
               IN (SELECT Id_Personnages FROM $tPerso WHERE Util_Id='$uid') And Not IsNULL(Pers_Id)
               ORDER BY RAND() LIMIT 0,1";
@@ -262,12 +262,12 @@ class batailles
             $somme    = $this->calcSomme($pid);
             $sommeOpp = $this->calcSomme($pidOpp);
 
-            // Nombre alÈatoire entre 0 et la somme
+            // Nombre al√©atoire entre 0 et la somme
             $rand    = rand(0, $somme);
             $randOpp = rand(0, $sommeOpp);
 
             if ($rand > $randOpp) {
-                //gagnÈ..
+                //gagn√©..
                 $mod = $levelOpp / 4;
 
                 if ($mod < 7) {
@@ -281,11 +281,11 @@ class batailles
                 $cnext = $db->getRows("SELECT Next FROM $tPerso WHERE Id_Personnages='$pid'");
                 $cnext = $irpg->convSecondes($cnext[0]["Next"]);
 
-                $irpg->Log($pid, "DUEL_AUTO", "GAGN…", "-$mod");
+                $irpg->Log($pid, "DUEL_AUTO", "GAGN√â", "-$mod");
 
-                $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoquÈ en duel $opposant "
-                    . "[$randOpp/$sommeOpp] et a gagnÈ ! Cette victoire lui donne droit ‡ un bonus de $cmod "
-                    . "avant d'accÈder au niveau $level2. Prochain niveau dans $cnext.");
+                $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqu√© en duel $opposant "
+                    . "[$randOpp/$sommeOpp] et a gagn√© ! Cette victoire lui donne droit √† un bonus de $cmod "
+                    . "avant d'acc√©der au niveau $level2. Prochain niveau dans $cnext.");
             } elseif ($rand < $randOpp) {
                 //perdu..
                 $mod = $levelOpp / 7;
@@ -303,13 +303,13 @@ class batailles
 
                 $irpg->Log($pid, "DUEL_AUTO", "PERDU", "$mod");
 
-                $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoquÈ en duel $opposant "
-                    . "[$randOpp/$sommeOpp] et a perdu ! Cette dÈfaite lui donne droit ‡ une pÈnalitÈ de $cmod "
-                    . "avant d'accÈder au niveau $level2. Prochain niveau dans $cnext.");
+                $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqu√© en duel $opposant "
+                    . "[$randOpp/$sommeOpp] et a perdu ! Cette d√©faite lui donne droit √† une p√©nalit√© de $cmod "
+                    . "avant d'acc√©der au niveau $level2. Prochain niveau dans $cnext.");
             } else {
                 //match nul..
                 $irpg->Log($pid, "DUEL_AUTO", "NUL", 0);
-                $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoquÈ en duel $opposant "
+                $irc->privmsg($irc->home, "$perso [$rand/$somme] a provoqu√© en duel $opposant "
                     . "[$randOpp/$sommeOpp]. Match nul !");
             }
         }
@@ -318,7 +318,7 @@ class batailles
 /////////////////////////////////////////////////////////
 
     /**
-     * Lance un combat manuel ‡ la demande du joueur.
+     * Lance un combat manuel √† la demande du joueur.
      *
      * @author    cedricpc
      * @created   22 Avril 2010
@@ -326,9 +326,9 @@ class batailles
      *
      * @param string $nick      le pseudo de l'assaillant
      * @param string $perso     le personnage qui attaque
-     * @param string $opposant  le personnage ‡ attaquer
+     * @param string $opposant  le personnage √† attaquer
      *
-     * @return void  ou false en cas de problËme
+     * @return void  ou false en cas de probl√®me
      */
     function cmdBataille($nick, $perso, $opposant = null, $persoUnique = false) {
         global $db, $irc, $irpg;
@@ -336,22 +336,22 @@ class batailles
         $tblPerso = $db->prefix . "Personnages";
         $tblIRC   = $db->prefix . "IRC";
 
-        //VÈrifie si l'opposant n'est pas l'attaquant.
+        //V√©rifie si l'opposant n'est pas l'attaquant.
         if (!empty($opposant) && ($perso == $opposant)) {
-            $irc->notice($nick, "DÈsolÈ, votre personnage ne peut pas s'attaquer lui-mÍme.");
+            $irc->notice($nick, "D√©sol√©, votre personnage ne peut pas s'attaquer lui-m√™me.");
             return false;
         }
 
-        //RÈcupËre les informations du personnage s'il existe.
+        //R√©cup√®re les informations du personnage s'il existe.
         if (!$perso = current((array) $db->getRows("SELECT * FROM `{$tblPerso}` WHERE `Nom` = '{$perso}'"))) {
-            $irc->notice($nick, "DÈsolÈ, ce personnage n'a pu Ítre trouvÈ.");
+            $irc->notice($nick, "D√©sol√©, ce personnage n'a pu √™tre trouv√©.");
             return false;
         }
 
-        //VÈrifie si le personnage appartient au joueur.
+        //V√©rifie si le personnage appartient au joueur.
         list($user, $uid) = $irpg->getUsernameByNick($nick, true);
         if ($uid != $perso["Util_Id"]) {
-            $irc->notice($nick, "DÈsolÈ, vous ne pouvez pas ent‚mer un combat avec un personnage qui ne vous "
+            $irc->notice($nick, "D√©sol√©, vous ne pouvez pas ent√¢mer un combat avec un personnage qui ne vous "
                 . "appartient pas.");
             return false;
         }
@@ -366,18 +366,18 @@ class batailles
         //Envoi des informations pour le premier combat du personnage.
         if (!$nbChallenges) {
             $irc->notice($nick, "Bienvenue dans le module de combats manuels. Avant de commencer les choses "
-                . "sÈrieuses, voici quelques informations utiles ‡ savoir.");
-            $irc->notice($nick, "Bien que le nombre de combat ne soit pas limitÈ, vous devrez attendre un certain "
-                . "temps, qui augmente de maniËre exponentielle aprËs chaque combat, avant de pouvoir effectuer un "
+                . "s√©rieuses, voici quelques informations utiles √† savoir.");
+            $irc->notice($nick, "Bien que le nombre de combat ne soit pas limit√©, vous devrez attendre un certain "
+                . "temps, qui augmente de mani√®re exponentielle apr√®s chaque combat, avant de pouvoir effectuer un "
                 . "nouveau combat.");
-            $irc->notice($nick, "Le temps que votre personnage peut gagner, ou perdre, est proportionnel ‡ la somme "
+            $irc->notice($nick, "Le temps que votre personnage peut gagner, ou perdre, est proportionnel √† la somme "
                 . "des objets de son adversaire. Combattre un adversaire avec une plus grosse somme d'objets "
                 . "permettera donc de gagner plus de temps qu'avec un adversaire ayant une somme d'objets plus "
-                . "faible en cas de victoire, mais en fera aussi perdre d'avantage en cas de dÈfaite.");
-            $irc->notice($nick, "Ainsi, vous avez la possibilitÈ de spÈcifier le personnage que vous souhaitez "
-                . "voir votre personnage affronter. Si vous omettez de le prÈciser, son adversaire sera choisi "
-                . "alÈatoirement. Enfin, il est impÈratif d'indiquer votre personnage que vous souhaitez envoyer "
-                . "‡ la bataille.");
+                . "faible en cas de victoire, mais en fera aussi perdre d'avantage en cas de d√©faite.");
+            $irc->notice($nick, "Ainsi, vous avez la possibilit√© de sp√©cifier le personnage que vous souhaitez "
+                . "voir votre personnage affronter. Si vous omettez de le pr√©ciser, son adversaire sera choisi "
+                . "al√©atoirement. Enfin, il est imp√©ratif d'indiquer votre personnage que vous souhaitez envoyer "
+                . "√† la bataille.");
             $irc->notice($nick, "La syntaxe de la commande est la suivante : COMBAT "
                 . ($persoUnique ? "" : "<personnage> ") . "[adversaire]");
 
@@ -386,41 +386,41 @@ class batailles
             return false;
         }
 
-        //VÈrifie si le temps d'attente avant le prochain combat est terminÈ.
+        //V√©rifie si le temps d'attente avant le prochain combat est termin√©.
         if ($nextChallenge > 0) {
-            $irc->notice($nick, "DÈsolÈ, vous ne pouvez pas entreprendre de combats manuels pour le moment. Vous "
-                . "devez encore attendre {$irpg->convSecondes($nextChallenge)} avant d'ent‚mer un nouveau combat.");
+            $irc->notice($nick, "D√©sol√©, vous ne pouvez pas entreprendre de combats manuels pour le moment. Vous "
+                . "devez encore attendre {$irpg->convSecondes($nextChallenge)} avant d'ent√¢mer un nouveau combat.");
             return false;
         }
 
-        //Selectionne alÈatoirement un personnage ‡ combattre s'il n'a pas ÈtÈ spÈcifiÈ.
+        //Selectionne al√©atoirement un personnage √† combattre s'il n'a pas √©t√© sp√©cifi√©.
         if (empty($opposant)) {
             $q = "SELECT p.*, i.`Pers_Id` FROM `{$tblPerso}` AS p LEFT JOIN `{$tblIRC}` AS i
                   ON p.`Id_Personnages` = i.`Pers_Id` WHERE p.`Util_Id` != '{$uid}' AND i.`Pers_Id` IS NOT NULL
                   ORDER BY RAND() LIMIT 1";
             if (!$persoOpp = current((array) $db->getRows($q))) {
-                $irc->notice($nick, "DÈsolÈ, il n'y a actuellement pas d'autres joueurs connectÈs pour pouvoir "
+                $irc->notice($nick, "D√©sol√©, il n'y a actuellement pas d'autres joueurs connect√©s pour pouvoir "
                     . "effectuer un combat.");
                 return false;
             }
         } else {
-            //Recherche les informations de personnage spÈcifiÈ s'il existe, est connectÈ, n'appartient pas au joueur.
+            //Recherche les informations de personnage sp√©cifi√© s'il existe, est connect√©, n'appartient pas au joueur.
             $q = "SELECT p.*, i.`Pers_Id` FROM `{$tblPerso}` AS p LEFT JOIN `{$tblIRC}` AS i
                   ON p.`Id_Personnages` = i.`Pers_Id` WHERE p.`Nom` = '{$opposant}'";
             if (!$persoOpp = current((array) $db->getRows($q))) {
-                $irc->notice($nick, "DÈsolÈ, le personnage que vous dÈsirez combattre n'existe pas.");
+                $irc->notice($nick, "D√©sol√©, le personnage que vous d√©sirez combattre n'existe pas.");
                 return false;
             } elseif (is_null($persoOpp["Pers_Id"])) {
-                $irc->notice($nick, "DÈsolÈ, {$persoOpp['Nom']} n'est actuellement pas connectÈ, or vous ne pouvez "
-                    . "attaquer un personnage que s'il est connectÈ.");
+                $irc->notice($nick, "D√©sol√©, {$persoOpp['Nom']} n'est actuellement pas connect√©, or vous ne pouvez "
+                    . "attaquer un personnage que s'il est connect√©.");
                 return false;
             } elseif ($persoOpp["Util_Id"] == $uid) {
-                $irc->notice($nick, "DÈsolÈ, vous ne pouvez pas effectuer de combat un de vos personnages.");
+                $irc->notice($nick, "D√©sol√©, vous ne pouvez pas effectuer de combat un de vos personnages.");
                 return false;
             }
         }
 
-        //PrÈpare les donnÈes du combat.
+        //Pr√©pare les donn√©es du combat.
         $nomOpp = $persoOpp['Nom'];
         $pidOpp = $persoOpp["Id_Personnages"];
         $so    = $this->calcSomme($pid);
@@ -428,16 +428,16 @@ class batailles
         $rand    = rand(0, $so);
         $randOpp = rand(0, $soOpp);
 
-        //PrÈpare le message qui sera affichÈ sur le canal.
-        $msg = "{$nom} [{$rand}/{$so}] a provoquÈ en duel {$nomOpp} [{$randOpp}/{$soOpp}]";
+        //Pr√©pare le message qui sera affich√© sur le canal.
+        $msg = "{$nom} [{$rand}/{$so}] a provoqu√© en duel {$nomOpp} [{$randOpp}/{$soOpp}]";
 
         if ($rand > $randOpp) {
-            //PrÈpare le bonus pour la victoire.
+            //Pr√©pare le bonus pour la victoire.
             $mod  = round(($so >= $soOpp ? 0.15 * $soOpp / $so : 0.6 * (1 - $so / $soOpp)) * $next, 0);
-            $msg .= " et a gagnÈ ! Cette victoire accÈlËre sa course vers le niveau {$lvl} de "
+            $msg .= " et a gagn√© ! Cette victoire acc√©l√®re sa course vers le niveau {$lvl} de "
                   . "{$irpg->convSecondes($mod)}.";
 
-            //Effectue un Èventuel coup critique.
+            //Effectue un √©ventuel coup critique.
             if (rand(1, 35) == 1) {
                 $lvlOpp  = $persoOpp["Level"] + 1;
                 $modOpp  = round($persoOpp["Next"] * rand(5, 25) / 100, 0);
@@ -445,25 +445,25 @@ class batailles
                 $db->req("UPDATE {$tblPerso} SET `Next` = {$nextOpp} WHERE `Nom` = '{$nomOpp}'");
                 $irpg->Log($pidOpp, "COUP_CRITIQUE", 0, $modOpp, $nom);
 
-                $msg2 = "{$nom} assËne un violent COUP CRITIQUE sur le cr‚ne de {$nomOpp} ! Sa course est ainsi "
+                $msg2 = "{$nom} ass√®ne un violent COUP CRITIQUE sur le cr√¢ne de {$nomOpp} ! Sa course est ainsi "
                       . "ralentie de {$irpg->convSecondes($modOpp)} vers le niveau {$lvlOpp}. Prochain niveau dans "
                       . "{$irpg->convSecondes($nextOpp)}.";
                 $irc->notice($irpg->getNickByUID($persoOpp["Util_Id"]), "{$nom} vient de t'infliger un coup "
-                    . "critique ! Ta progression vers le niveau {$lvlOpp} est par consÈquent ralentie de "
+                    . "critique ! Ta progression vers le niveau {$lvlOpp} est par cons√©quent ralentie de "
                     . "{$irpg->convSecondes($modOpp)}. Prochain niveau dans {$irpg->convSecondes($nextOpp)}.");
             }
         } elseif ($rand < $randOpp) {
-            //PrÈpare la pÈnalitÈ pour la dÈfaite.
+            //Pr√©pare la p√©nalit√© pour la d√©faite.
             $mod  = round(($so >= $soOpp ? -0.12 * $soOpp / $so : -0.5 * (1 - $so / $soOpp)) * $next, 0);
-            $msg .= " et a perdu ! Cette dÈfaite lui inflige une pÈnalite de {$irpg->convSecondes(-$mod)} avant "
-                  . "d'accÈder au niveau {$lvl}.";
+            $msg .= " et a perdu ! Cette d√©faite lui inflige une p√©nalite de {$irpg->convSecondes(-$mod)} avant "
+                  . "d'acc√©der au niveau {$lvl}.";
         } else {
             $mod = 0;
-            $msg .= ". Le combat s'est soldÈ par un match nul.";
+            $msg .= ". Le combat s'est sold√© par un match nul.";
         }
         $irpg->Log($pid, "DUEL_MANUEL", 0, -$mod);
 
-        //Met ‡ jour le temps avant le prochain niveau/combat et le nombre de combat.
+        //Met √† jour le temps avant le prochain niveau/combat et le nombre de combat.
         $next = max(0, $next - $mod);
         $nbChallenges++;
         $nextChallenge = round(pow(($nbChallenges + 2), 4.3), 0);
@@ -480,10 +480,10 @@ class batailles
         //Envoi le message au joueur resumant le combat et le temps d'attente avant un nouveau combat.
         if ($mod) {
             $notice = "{$nom} vient de " . ($mod > 0 ? "gagner " : "perdre ") . $irpg->convSecondes(abs($mod))
-                    . " avant d'accÈder au niveau {$lvl} en " . ($mod > 0 ? "remportant" : "ratant")
+                    . " avant d'acc√©der au niveau {$lvl} en " . ($mod > 0 ? "remportant" : "ratant")
                     . " son combat contre {$nomOpp}.";
         } else {
-            $notice = "Le combat s'est terminÈ par un match nul, {$nom} n'a donc rien gagnÈ cette fois-ci.";
+            $notice = "Le combat s'est termin√© par un match nul, {$nom} n'a donc rien gagn√© cette fois-ci.";
         }
         $irc->notice($nick, $notice . " Vous devez maintenant attendre {$irpg->convSecondes($nextChallenge)} avant "
             . "de pouvoir effectuer un nouveau combat.");

@@ -18,7 +18,7 @@
  */
 
 /**
- * Classe IRC; gère tout le côté IRC du bot
+ * Classe IRC; gÃ¨re tout le cÃ´tÃ© IRC du bot
  *
  * @author Homer
  * @author cedricpc
@@ -28,27 +28,27 @@
 class IRC
 {
     ///////////////////////////////////////////////////////////////
-    // Variables privées
+    // Variables privÃ©es
     ///////////////////////////////////////////////////////////////
     var $sirc;     //Socket vers le serveur IRC
-    var $debug;    //Flag pour les informations de débuguage
-    var $users;    //Utilisateurs connectés sur les canaux
+    var $debug;    //Flag pour les informations de dÃ©buguage
+    var $users;    //Utilisateurs connectÃ©s sur les canaux
     var $me;       //Pseudo du bot sur IRC
     var $home;     //Canal principal du bot
-    var $ready;    //Prêt à démarrer !
-    var $lastData; //Timestamp UNIX du moment où une donnée a été reçu pour la dern fois
+    var $ready;    //PrÃªt Ã  dÃ©marrer !
+    var $lastData; //Timestamp UNIX du moment oÃ¹ une donnÃ©e a Ã©tÃ© reÃ§u pour la dern fois
     var $exit;     //Coupe la connexion IRC et coupe le bot !
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
 
     ///////////////////////////////////////////////////////////////
-    // Méthodes privées
-    // Mais PHP ne semble pas faire la différence entre
-    // privé et publique :)
+    // MÃ©thodes privÃ©es
+    // Mais PHP ne semble pas faire la diffÃ©rence entre
+    // privÃ© et publique :)
     ///////////////////////////////////////////////////////////////
 
-    /* Méthodes évènementielles */
+    /* MÃ©thodes Ã©vÃ¨nementielles */
 
     function onPing($data)
     {
@@ -70,13 +70,13 @@ class IRC
         //Qui suis-je?
         $this->me = $me;
 
-        //Où suis-je?
+        //OÃ¹ suis-je?
         $this->home = $channel;
 
         //Applications des modes
         $this->sendRaw("MODE $me $modes");
 
-        //Identification à NS et on patiente 1 secondes
+        //Identification Ã  NS et on patiente 1 secondes
         if (!empty($nspass)) {
             $this->sendRaw("NICKSERV IDENTIFY $nspass");
             sleep(1);
@@ -94,7 +94,7 @@ class IRC
             $i++;
         }
 
-        //On est maintenant prêt !
+        //On est maintenant prÃªt !
         $this->ready = true;
     }
 
@@ -248,13 +248,13 @@ class IRC
     {
         global $irpg;
 
-        //Réponse au CTCP VERSION
+        //RÃ©ponse au CTCP VERSION
         if ($ctcp == "VERSION") {
             /* Ne pas modifier ici, sinon BOOM! :) */
             $version = $irpg->readConfig("IRPG", "version");
             $this->sendRaw("NOTICE $nick :\001VERSION EIRPG v$version; http://www.eirpg.com\001");
 
-            //Liste des modules chargés
+            //Liste des modules chargÃ©s
             $i = 0;
             while ($i != count($irpg->mod)) {
                 if (empty($modules)) {
@@ -265,7 +265,7 @@ class IRC
 
                 $i++;
             }
-            $this->sendRaw("NOTICE $nick :\001VERSION Modules chargés: $modules\001");
+            $this->sendRaw("NOTICE $nick :\001VERSION Modules chargÃ©s: $modules\001");
         }
 
         //Appel aux modules
@@ -322,7 +322,7 @@ class IRC
         }
         */
 
-        //On envoit un /WHO pour récupérer les user@hosts de
+        //On envoit un /WHO pour rÃ©cupÃ©rer les user@hosts de
         //tous les utilisateurs et permettre l'auto-login
         $this->sendRaw("WHO #$channel");
     }
@@ -350,7 +350,7 @@ class IRC
             $nb = $db->nbLignes($query);
 
             if ($nb >= 1) {
-                //L'utilisateur peut donc être relogué automatiquement
+                //L'utilisateur peut donc Ãªtre reloguÃ© automatiquement
                 $username = $db->getRows("SELECT Username FROM $tbUtil WHERE Id_Utilisateurs = (
                     SELECT Util_Id FROM $tbPerso WHERE Id_Personnages = ($query LIMIT 0,1)
                 )");
@@ -383,12 +383,12 @@ class IRC
             }
 
             if ($nbExecute == 0) {
-                //On vire tous les persos identifiés de la table IRC
+                //On vire tous les persos identifiÃ©s de la table IRC
                 $db->req("DELETE FROM $table WHERE Not ISNULL(Pers_Id)");
             }
 
-            //Maintenant, on réinsert les persos autorelogués
-            //via les résultats du /who
+            //Maintenant, on rÃ©insert les persos autoreloguÃ©s
+            //via les rÃ©sultats du /who
             $i = 0;
             $lstAuto = array();
             while ($i != count($irpg->mod["core"]->autologged)) {
@@ -408,9 +408,9 @@ class IRC
             $lstAuto = implode($lstAuto, ', ');
 
             if (($i == 1) && (!empty($lstAuto))) {
-                $this->privmsg($this->home, "Le personnage suivant a été automatiquement relogué : $lstAuto.");
+                $this->privmsg($this->home, "Le personnage suivant a Ã©tÃ© automatiquement reloguÃ© : $lstAuto.");
             } elseif (($i > 1) && (!empty($lstAuto))) {
-                $this->privmsg($this->home, "Les personnages suivants ont été automatiquement relogués : $lstAuto.");
+                $this->privmsg($this->home, "Les personnages suivants ont Ã©tÃ© automatiquement reloguÃ©s : $lstAuto.");
             }
 
             $irpg->mod["core"]->resetAutoLogin();
@@ -421,7 +421,7 @@ class IRC
 
 ///////////////////////////////////////////////////////////////
 
-    /* Autres méthodes */
+    /* Autres mÃ©thodes */
     function Timer5Sec(&$dix, &$quinze)
     {
         global $irpg, $db, $last5sec;
@@ -476,8 +476,8 @@ class IRC
                         $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"),
                         $irpg->readConfig("SQL", "prefix"), $irpg->readConfig("SQL", "charset")
                     )) {
-                        //On réinitialise notre table IRC et objets, comme si le bot venait
-                        //d'être redémarré
+                        //On rÃ©initialise notre table IRC et objets, comme si le bot venait
+                        //d'Ãªtre redÃ©marrÃ©
                         $irpg->mod["core"]->users = array();
                         $irpg->mod["core"]->autologged = array();
 
@@ -486,10 +486,10 @@ class IRC
                         $db->req("DELETE FROM $table WHERE ISNULL(Pers_Id)");
 
                         //On envoit un NAMES pour s'assurer d'avoir
-                        //une bd à jour..
-                        $this->sendRaw("NAMES $this->home"); //TODO: Gérer le multi-chans
+                        //une bd Ã  jour..
+                        $this->sendRaw("NAMES $this->home"); //TODO: GÃ©rer le multi-chans
 
-                        $this->privmsg($this->home, "La connexion au serveur de bases de données a été rétablie. "
+                        $this->privmsg($this->home, "La connexion au serveur de bases de donnÃ©es a Ã©tÃ© rÃ©tablie. "
                             . "Le jeu est de nouveau actif. Bon idle !");
                         $irpg->pause = false; //C'est reparti !
                     }
@@ -522,17 +522,17 @@ class IRC
     ///////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////
-    // Méthodes publiques
+    // MÃ©thodes publiques
     ///////////////////////////////////////////////////////////////
 
     /**
-     * Envoi des données au serveur IRC
+     * Envoi des donnÃ©es au serveur IRC
      *
      * @author Homer
      * @created 30 mai 2005
      * @modified 19 juin 2005
-     * @param data     - Données à envoyer
-     * @return boolean - true si l'envoi a réussi, false sinon.
+     * @param data     - DonnÃ©es Ã  envoyer
+     * @return boolean - true si l'envoi a rÃ©ussi, false sinon.
      */
     function sendRaw($data)
     {
@@ -560,9 +560,9 @@ class IRC
      * @author Homer
      * @created 30 mai 2005
      * @modified 30 mai 2005
-     * @param channel  - Canal à joindre
-     * @param key      - Clé du canal à joindre (facultatif)
-     * @return boolean - true si la déconnexion réussie, false sinon.
+     * @param channel  - Canal Ã  joindre
+     * @param key      - ClÃ© du canal Ã  joindre (facultatif)
+     * @return boolean - true si la dÃ©connexion rÃ©ussie, false sinon.
      */
     function join($channel, $key = "")
     {
@@ -578,7 +578,7 @@ class IRC
 ///////////////////////////////////////////////////////////////
 
     /**
-     * Constructeur; connexion à un serveur IRC
+     * Constructeur; connexion Ã  un serveur IRC
      *
      * @author    Homer
      * @created   Lundi    30 Mai       2005
@@ -589,7 +589,7 @@ class IRC
      * @param nick     - Pseudo du bot
      * @param pass     - Mot de passe de connexion au serveur (facultatif)
      * @param debug    - Flag debug
-     * @return boolean - true si connexion réussie, false sinon.
+     * @return boolean - true si connexion rÃ©ussie, false sinon.
      */
     function connexion($server, $port, $user, $realname, $nick, $bind, $pass = "", $debug = false)
     {
@@ -600,7 +600,7 @@ class IRC
         $this->exit     = false;
 
         if (!$this->sirc = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) {
-            die("Impossible de créer le socket IRC\n");
+            die("Impossible de crÃ©er le socket IRC\n");
         }
 
         if ($bind != "") {
@@ -614,7 +614,7 @@ class IRC
         if ($this->sirc) {
             $irpg->alog("Connexion au serveur IRC...", true);
             if ($pass != "") {
-                $this->sendRaw("PASS $pass"); //Mot de passe d'accès au serveur
+                $this->sendRaw("PASS $pass"); //Mot de passe d'accÃ¨s au serveur
             }
             $this->sendRaw("NICK $nick");
             $ok = $this->sendRaw("USER $user localhost $server :$realname");
@@ -628,7 +628,7 @@ class IRC
 ///////////////////////////////////////////////////////////////
 
     /**
-     * Méthode d'écoute du socket IRC
+     * MÃ©thode d'Ã©coute du socket IRC
      * Boucle tant que le socket est ouvert
      *
      * @author Homer
@@ -642,7 +642,7 @@ class IRC
     {
         global $irpg;
 
-        $irpg->alog("Démarré avec succès.", true);
+        $irpg->alog("DÃ©marrÃ© avec succÃ¨s.", true);
         $last5sec = time();
         $dix      = 0;
         $quinze   = 0;
@@ -683,7 +683,7 @@ class IRC
                     $irpg->alog("--> $data[$i]");
                 }
 
-                //On échappe notre $data[$i] pour le traitement par regexp
+                //On Ã©chappe notre $data[$i] pour le traitement par regexp
                 $dataregexp = addslashes($data[$i]);
                 //$dataregexp = preg_quote($data[$i]);
 
@@ -704,7 +704,7 @@ class IRC
                     $userhost = $userhost[1];
                 }
 
-                //Traitement des évènements serveur<->bot
+                //Traitement des Ã©vÃ¨nements serveur<->bot
                 if (isset($server)) {
                     //Numeric 376 - Fin du /MOTD
                     //:proxy.epiknet.org 376 IRPG2 :End of /MOTD command.
@@ -742,17 +742,17 @@ class IRC
 
                     //Message "ERROR"
                     //if (ereg("^ERROR :.*", $dataregexp)) {
-                    //    $irpg->alog("RECEPTION d'un message ERROR, déconnexion du serveur.");
+                    //    $irpg->alog("RECEPTION d'un message ERROR, dÃ©connexion du serveur.");
                     //    socket_close($this->sirc);
                     //    return false;
                     //}
                 }
 
-                //Traitement des évènements utilisateur<->bot
+                //Traitement des Ã©vÃ¨nements utilisateur<->bot
                 if (isset($userhost)) {
                     //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
-                    //On extrait le $userhost, pour récupérer $Nick, $User et $Host
+                    //On extrait le $userhost, pour rÃ©cupÃ©rer $Nick, $User et $Host
                     preg_match("/:(.*?)!/", $dataregexp, $nick);
                     $nick = $nick[1];
                     preg_match("/.*!(.*?)@/", $dataregexp, $user);
@@ -760,7 +760,7 @@ class IRC
                     preg_match("/@(.*?) /", $dataregexp, $host);
                     $host = $host[1];
 
-                    //On échappe $userhost pour pas planter les regexp
+                    //On Ã©chappe $userhost pour pas planter les regexp
                     $userhostPreg = preg_quote($userhost);
 
                     //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -773,8 +773,8 @@ class IRC
                         $message = substr($dataregexp, strpos($dataregexp, ':', 1)+1);
                         $this->onPrivmsgCanal(trim($nick), trim($user), trim($host), trim($message));
                     } elseif (strpos($dataregexp, ":$userhost PRIVMSG ") === 0) {
-                        /* En privé */
-                        // On ne va pas plus loin si le pseudo ou l'host doit être ignoré !
+                        /* En privÃ© */
+                        // On ne va pas plus loin si le pseudo ou l'host doit Ãªtre ignorÃ© !
                         if ((in_array($nick, $ignoresN)) || (in_array($host, $ignoresH))) {
                             continue;
                         }
@@ -798,8 +798,8 @@ class IRC
                         $message = substr($dataregexp, strpos($dataregexp, ':', 1)+1);
                         $this->onNoticeCanal(trim($nick), trim($user), trim($host), trim($message));
                     } elseif (strpos($dataregexp, ":$userhost NOTICE ") === 0) {
-                        /* En privé */
-                        // On ne va pas plus loin si le pseudo ou l'host doit être ignoré !
+                        /* En privÃ© */
+                        // On ne va pas plus loin si le pseudo ou l'host doit Ãªtre ignorÃ© !
                         if ((in_array($nick, $ignoresN)) || (in_array($host, $ignoresH))) {
                             continue;
                         }
@@ -843,7 +843,7 @@ class IRC
 
                  //Traitement du KICK
                  if (strpos($dataregexp, ":$userhost KICK #") === 0) {
-                        //On extrait le canal et le kické
+                        //On extrait le canal et le kickÃ©
                         $kick = explode(' ', $dataregexp);
                         $channel = $kick[2];
                         $nickkicked = $kick[3];
@@ -866,7 +866,7 @@ class IRC
 
                 $this->Timer5Sec($dix, $quinze);
 
-                //Réinitialisation de variables
+                //RÃ©initialisation de variables
                 unset($server, $userhost, $message, $newnick, $reason, $nickkicked, $channel);
             }
 
@@ -894,8 +894,8 @@ class IRC
      * @author Homer
      * @created 30 mai 2005
      * @modified 30 mai 2005
-     * @param reason   - Raison de la déconnexion
-     * @return boolean - true si la déconnexion réussie, false sinon.
+     * @param reason   - Raison de la dÃ©connexion
+     * @return boolean - true si la dÃ©connexion rÃ©ussie, false sinon.
      */
     function deconnexion($reason)
     {
@@ -919,7 +919,7 @@ class IRC
      * @created 20 juin 2005
      * @modified 20 juin 2005
      * @param dest       - Destinataire (un pseudo ou un canal)
-     * @param message    - Message à envoyer
+     * @param message    - Message Ã  envoyer
      * @return none
      */
     function privmsg($dest, $message)
@@ -936,7 +936,7 @@ class IRC
      * @created 20 juin 2005
      * @modified 20 juin 2005
      * @param dest       - Destinataire (un pseudo ou un canal)
-     * @param message    - Message à envoyer
+     * @param message    - Message Ã  envoyer
      * @return none
      */
     function notice($dest, $message)
@@ -956,14 +956,14 @@ class IRC
 ///////////////////////////////////////////////////////////////
 
     /**
-     * Vérifie la présence d'un utilisateur sur un canal
+     * VÃ©rifie la prÃ©sence d'un utilisateur sur un canal
      *
      * @author Homer
      * @created 12 juillet 2005
      * @modified 12 juillet 2005
-     * @param channel     - Canal à vérifier
-     * @param nickname    - Pseudo à vérifier
-     * @return boolean    - true si présent, False si absent
+     * @param channel     - Canal Ã  vÃ©rifier
+     * @param nickname    - Pseudo Ã  vÃ©rifier
+     * @return boolean    - true si prÃ©sent, False si absent
      */
     function isOn($channel, $nickname)
     {

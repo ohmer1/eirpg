@@ -30,9 +30,9 @@ class credits
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dépendants
+    var $depend;  //Modules dont nous sommes dÃ©pendants
 
-    //Variables supplémentaires
+    //Variables supplÃ©mentaires
 
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
@@ -41,21 +41,21 @@ class credits
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'éxécute lors du (re)chargement du bot ou d'un REHASH
+        //S'Ã©xÃ©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
         $this->name    = "mod_credits";
         $this->version = "0.9.0";
-        $this->desc    = "Module de gestion des crédits";
+        $this->desc    = "Module de gestion des crÃ©dits";
         $this->depend  = array("core/0.5.0");
 
-        //Recherche de dépendances
+        //Recherche de dÃ©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dépendance non résolue\n");
+            die("$this->name: dÃ©pendance non rÃ©solue\n");
         }
 
-        //Validation du fichier de configuration spécifique au module
+        //Validation du fichier de configuration spÃ©cifique au module
         $cfgKeys    = array(
             "parain1_credits", "parain2_credits", "parain3_credits", "parain1_niveau", "parain2_niveau",
             "parain3_niveau", "parain_invite", "levelup_x", "levelup_y", "levelup_z", "quete_survivant",
@@ -64,18 +64,18 @@ class credits
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: Vérifiez votre fichier de configuration.\n");
+            die("$this->name: VÃ©rifiez votre fichier de configuration.\n");
         }
 
-        //Initialisation des paramètres du fichier de configuration
+        //Initialisation des paramÃ¨tres du fichier de configuration
     }
 
 ///////////////////////////////////////////////////////////////
 
     function unloadModule()
     {
-        //Destructeur; décharge le module
-        //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; dÃ©charge le module
+        //S'Ã©xÃ©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
     }
 
@@ -101,7 +101,7 @@ class credits
 
     function modIdle_onLvlUp($nick, $uid, $pid, $level2, $next)
     {
-        // ajout des crédits sur le levelup...
+        // ajout des crÃ©dits sur le levelup...
         global $db, $irc, $irpg;
 
         $tbLst = $db->prefix . "ListeObjets";
@@ -120,14 +120,14 @@ class credits
             $niveau = $obj[$i]["Niveau"];
 
             if (rand(1, $proba) == 1) {
-                //Objet unique trouvé
-                //On vérifie si on a pas déjà cet objet..
+                //Objet unique trouvÃ©
+                //On vÃ©rifie si on a pas dÃ©jÃ  cet objet..
                 if ($db->nbLignes("SELECT Id_Objets FROM $tbObj WHERE Pers_Id='$pid' And LObj_Id = '$oid'") != 0) {
                     $i++;
-                    continue; //on a déjà l'objet
+                    continue; //on a dÃ©jÃ  l'objet
                 } else {
                     $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES ('$pid', '$oid', '$niveau')");
-                    $irc->notice($nick, "Félicitations ! Ton personnage \002$nomPerso\002 vient de trouver un "
+                    $irc->notice($nick, "FÃ©licitations ! Ton personnage \002$nomPerso\002 vient de trouver un "
                         . "objet unique : \002$name\002 de niveau \002$niveau\002 !");
 
                     $req = "SELECT Id_Objets, Level FROM $tbObj WHERE Pers_Id='$pid' And LObj_Id
@@ -168,8 +168,8 @@ class credits
             $i++;
         }
 
-        //On recherche si le personnage a déjà cet objet,
-        //et si oui, on vérifie si le niveau est moins élevé
+        //On recherche si le personnage a dÃ©jÃ  cet objet,
+        //et si oui, on vÃ©rifie si le niveau est moins Ã©levÃ©
         $req = "SELECT Level, Id_Objets FROM $tbObj WHERE Pers_Id='$pid' And LObj_Id = '$oid'";
         if ($db->nbLignes($req) == 1) {
             $obj    = $db->getRows($req);
@@ -180,16 +180,16 @@ class credits
                 //Nouvel objet plus grand
                 $db->req("UPDATE $tbObj SET Level='$lvlObj' WHERE Id_Objets='$oid'");
                 $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver l'objet \002$nom\002 de "
-                    . "niveau \002$lvlObj\002. Tu possédais déjà cet objet, mais avec un niveau $niveau, la "
-                    . "chance est de ton côté !");
+                    . "niveau \002$lvlObj\002. Tu possÃ©dais dÃ©jÃ  cet objet, mais avec un niveau $niveau, la "
+                    . "chance est de ton cÃ´tÃ© !");
                 $irpg->Log($pid, "OBJ", 0, "$nom (niveau $lvlObj)");
             } else {
-                //Objet plus petit que ce qu'on a déjà
+                //Objet plus petit que ce qu'on a dÃ©jÃ 
                 $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver l'objet \002$nom\002 de "
-                    . "niveau \002$lvlObj\002. Malheureusement, tu as déjà cet objet avec un niveau $niveau.");
+                    . "niveau \002$lvlObj\002. Malheureusement, tu as dÃ©jÃ  cet objet avec un niveau $niveau.");
             }
         } else {
-            //Nouvel objet trouvé
+            //Nouvel objet trouvÃ©
             $db->req("INSERT INTO $tbObj (`Pers_Id`, `LObj_Id`, `Level`) VALUES ('$pid', '$oid', '$lvlObj')");
             $irc->notice($nick, "Ton personnage \002$nomPerso\002 vient de trouver un nouvel objet ! Il s'agit "
                 . "de l'objet \002$nom\002 de niveau \002$lvlObj\002.");
@@ -223,11 +223,11 @@ class credits
                 if ($irpg->getPIDByPerso($perso)) {
                     $this->envoyerInfoObjets($nick, $perso);
                 } else {
-                    $irc->notice($nick, "Désolé, je ne connais pas $perso.");
+                    $irc->notice($nick, "DÃ©solÃ©, je ne connais pas $perso.");
                 }
             }
         } else {
-            $irc->notice($nick, "Désolé, vous devez être authentifié pour utiliser cette commande.");
+            $irc->notice($nick, "DÃ©solÃ©, vous devez Ãªtre authentifiÃ© pour utiliser cette commande.");
         }
     }
 
@@ -273,7 +273,7 @@ class credits
     {
         global $db, $irpg, $irc;
 
-        //On retourne les stats pour le personnage spécifié
+        //On retourne les stats pour le personnage spÃ©cifiÃ©
         $pid    = $irpg->getPIDByPerso($perso);
         $objets = $this->infoObjets($pid, true);
         $sum    = $objets[0];

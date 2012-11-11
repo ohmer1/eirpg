@@ -30,9 +30,9 @@ class hog
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dÈpendants
+    var $depend;  //Modules dont nous sommes d√©pendants
 
-    //Variables supplÈmentaires
+    //Variables suppl√©mentaires
 
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
@@ -41,7 +41,7 @@ class hog
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'ÈxÈcute lors du (re)chargement du bot ou d'un REHASH
+        //S'√©x√©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
@@ -50,28 +50,28 @@ class hog
         $this->desc    = "Main de Dieu";
         $this->depend  = array("core/0.5.0");
 
-        //Recherche de dÈpendances
+        //Recherche de d√©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dÈpendance non rÈsolue\n");
+            die("$this->name: d√©pendance non r√©solue\n");
         }
 
-        //Validation du fichier de configuration spÈcifique au module
+        //Validation du fichier de configuration sp√©cifique au module
         $cfgKeys    = array();
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: VÈrifiez votre fichier de configuration.\n");
+            die("$this->name: V√©rifiez votre fichier de configuration.\n");
         }
 
-        //Initialisation des paramËtres du fichier de configuration
+        //Initialisation des param√®tres du fichier de configuration
     }
 
 ///////////////////////////////////////////////////////////////
 
     function unloadModule()
     {
-        //Destructeur; dÈcharge le module
-        //S'ÈxÈcute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; d√©charge le module
+        //S'√©x√©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
     }
 
@@ -106,7 +106,7 @@ class hog
             if ($irpg->getAdminLvl($uid[1]) >= 5) {
                 $this->cmdHog($nick);
             } else {
-                $irc->notice($nick, "DÈsolÈ, vous n'avez pas accËs ‡ la commande HOG.");
+                $irc->notice($nick, "D√©sol√©, vous n'avez pas acc√®s √† la commande HOG.");
             }
             break;
         }
@@ -206,7 +206,7 @@ class hog
         $tbPerso = $db->prefix . "Personnages";
         $tbIRC   = $db->prefix . "IRC";
 
-        //on sÈlectionne d'abord un personnage en ligne
+        //on s√©lectionne d'abord un personnage en ligne
         $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages
                   IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
         if ($db->nbLignes($query) != 1) {
@@ -224,11 +224,11 @@ class hog
         $time = rand(5, 75);
 
         if (!empty($nick)) {
-            $irc->privmsg($irc->home, "$nick a invoquÈ la main de Dieu...");
+            $irc->privmsg($irc->home, "$nick a invoqu√© la main de Dieu...");
         }
 
         //Il y a 80% de chance que la hog soit positive
-        //et 20% qu'elle soit nÈgative pour le personnage..
+        //et 20% qu'elle soit n√©gative pour le personnage..
         if (rand(1, 5) <= 4) {
             //hog positive
             $time  = round($next * ($time/100), 0);
@@ -236,16 +236,16 @@ class hog
             $next  = $next - $time;
             $cnext = $irpg->convSecondes($next);
             $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
-            $irc->privmsg($irc->home, "Dieu s'est levÈ du bon pied ce matin et dÈcide d'aider $perso en lui "
+            $irc->privmsg($irc->home, "Dieu s'est lev√© du bon pied ce matin et d√©cide d'aider $perso en lui "
                 . "enlevant $ctime avant d'arriver au niveau $level2. Prochain niveau dans $cnext.");
         } else {
-            //hog nÈgative
+            //hog n√©gative
             $time  = round($next * ($time / 100), 0);
             $ctime = $irpg->convSecondes($time);
             $next  = $next + $time;
             $cnext = $irpg->convSecondes($next);
             $db->req("UPDATE $tbPerso SET Next=$next WHERE Id_Personnages='$pid'");
-            $irc->privmsg($irc->home, "Dieu en a marre de ne plus vous voir ‡ l'…glise et se venge sur $perso "
+            $irc->privmsg($irc->home, "Dieu en a marre de ne plus vous voir √† l'√âglise et se venge sur $perso "
                 . "en lui ajoutant $ctime avant d'arriver au niveau $level2. Prochain niveau dans $cnext.");
         }
     }

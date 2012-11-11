@@ -22,7 +22,7 @@
 INSERT INTO `ListeObjets` VALUES (1, 'anneau', 0, 'N', 0, NULL, NULL);
 INSERT INTO `ListeObjets` VALUES (2, 'amulette', 0, 'N', 0, NULL, NULL);
 INSERT INTO `ListeObjets` VALUES (3, 'arme', 0, 'N', 0, NULL, NULL);
-INSERT INTO `ListeObjets` VALUES (4, 'b‚ton', 0, 'N', 0, NULL, NULL);
+INSERT INTO `ListeObjets` VALUES (4, 'b√¢ton', 0, 'N', 0, NULL, NULL);
 INSERT INTO `ListeObjets` VALUES (5, 'tunique', 0, 'N', 0, NULL, NULL);
 INSERT INTO `ListeObjets` VALUES (6, 'gants', 0, 'N', 0, NULL, NULL);
 INSERT INTO `ListeObjets` VALUES (7, 'cuissardes', 0, 'N', 0, NULL, NULL);

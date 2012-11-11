@@ -30,9 +30,9 @@ class top10
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dÈpendants
+    var $depend;  //Modules dont nous sommes d√©pendants
 
-    //Variables supplÈmentaires
+    //Variables suppl√©mentaires
     var $timer;
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
@@ -41,7 +41,7 @@ class top10
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'ÈxÈcute lors du (re)chargement du bot ou d'un REHASH
+        //S'√©x√©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
@@ -50,20 +50,20 @@ class top10
         $this->desc    = "Top10 des joueurs";
         $this->depend  = array("core/0.5.0");
 
-        //Recherche de dÈpendances
+        //Recherche de d√©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dÈpendance non rÈsolue\n");
+            die("$this->name: d√©pendance non r√©solue\n");
         }
 
-        //Validation du fichier de configuration spÈcifique au module
+        //Validation du fichier de configuration sp√©cifique au module
         $cfgKeys    = array();
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: VÈrifiez votre fichier de configuration.\n");
+            die("$this->name: V√©rifiez votre fichier de configuration.\n");
         }
 
-        //Initialisation des paramËtres du fich de configuration
+        //Initialisation des param√®tres du fich de configuration
         $this->timer = 0;
     }
 
@@ -71,8 +71,8 @@ class top10
 
     function unloadModule()
     {
-        //Destructeur; dÈcharge le module
-        //S'ÈxÈcute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; d√©charge le module
+        //S'√©x√©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
     }
 
@@ -111,7 +111,7 @@ class top10
                     $this->top($message[1]);
                 }
             } else {
-                $irc->notice($nick, "DÈsolÈ, vous n'avez pas accËs ‡ cette commande.");
+                $irc->notice($nick, "D√©sol√©, vous n'avez pas acc√®s √† cette commande.");
             }
             break;
         }

@@ -29,7 +29,7 @@ CREATE TABLE `Equipes` (
   `Valid` int(1) NOT NULL default '0',
   PRIMARY KEY  (`Id_Equipes`),
   KEY `Pers_Id` (`Pers_Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les équipes' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les Ã©quipes' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -118,7 +118,7 @@ CREATE TABLE `Penalites` (
   `Logout` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id_Penalites`),
   UNIQUE KEY `Pers_Id` (`Pers_Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les pénalités reçu par un personnage';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les pÃ©nalitÃ©s reÃ§u par un personnage';
 
 -- --------------------------------------------------------
 
@@ -179,7 +179,7 @@ CREATE TABLE `Textes` (
   `Type` varchar(255) NOT NULL default '',
   `Valeur` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stocke différents textes (calamités, godsends..)';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stocke diffÃ©rents textes (calamitÃ©s, godsends..)';
 
 --
 -- Contraintes pour la table `Equipes`

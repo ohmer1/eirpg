@@ -22,7 +22,7 @@
  * Calcul de l'idle des joueurs
  * Module indispensable au fonctionnement du jeu.
  *
- * Méthodes inter-modules crées dans ce module:
+ * MÃ©thodes inter-modules crÃ©es dans ce module:
  * - modIdle_onLvlUp($nick, $uid, $pid, $level2, $next)
  *
  * @author Homer
@@ -36,9 +36,9 @@ class idle
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dépendants
+    var $depend;  //Modules dont nous sommes dÃ©pendants
 
-    //Variables supplémentaires
+    //Variables supplÃ©mentaires
     var $idleBase; //Niveau de base (lu du fichier de config)
     var $expLvlUp; //Valeur exponentiel de calcul de niveau (lu du fich. de config)
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -48,7 +48,7 @@ class idle
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'éxécute lors du (re)chargement du bot ou d'un REHASH
+        //S'Ã©xÃ©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
@@ -57,20 +57,20 @@ class idle
         $this->desc    = "Module calculant l'idle";
         $this->depend  = array("core/0.5.0");
 
-        //Recherche de dépendances
+        //Recherche de dÃ©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dépendance non résolue\n");
+            die("$this->name: dÃ©pendance non rÃ©solue\n");
         }
 
-        //Validation du fichier de configuration spécifique au module
+        //Validation du fichier de configuration spÃ©cifique au module
         $cfgKeys    = array("idleBase", "expLvlUp");
         $cfgKeysOpt = array("");
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: Vérifiez votre fichier de configuration.\n");
+            die("$this->name: VÃ©rifiez votre fichier de configuration.\n");
         }
 
-        //Initialisation des paramètres du fichier de configuration
+        //Initialisation des paramÃ¨tres du fichier de configuration
         $this->idleBase = $irpg->readConfig($this->name, "idleBase");
         $this->expLvlUp = $irpg->readConfig($this->name, "expLvlUp");
     }
@@ -79,11 +79,11 @@ class idle
 
     function unloadModule()
     {
-        //Destructeur; décharge le module
-        //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; dÃ©charge le module
+        //S'Ã©xÃ©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
-        $irc->deconnexion("SHUTDOWN: mod_idle a été déchargé!");
+        $irc->deconnexion("SHUTDOWN: mod_idle a Ã©tÃ© dÃ©chargÃ©!");
         $db->deconnexion();
     }
 
@@ -184,13 +184,13 @@ class idle
     {
         global $irc, $irpg, $db;
 
-        //On retire 15 secondes à tous les personnages en ligne !
+        //On retire 15 secondes Ã  tous les personnages en ligne !
         $tbPerso = $db->prefix . 'Personnages';
         $tbIRC   = $db->prefix . 'IRC';
         $db->req('UPDATE `' . $tbPerso . '` SET `Next` = `Next` - 15, `Idled` = `Idled` + 15 WHERE `Id_Personnages`
                   IN (SELECT `Pers_Id` FROM `' . $tbIRC . '` WHERE NOT ISNULL(`Pers_Id`))');
 
-        //On fait passer au niveau suivant les personnages qui doivent l'être.
+        //On fait passer au niveau suivant les personnages qui doivent l'Ãªtre.
         $persos = $db->getRows('SELECT `Id_Personnages`, `Util_Id`, `Nom`, `Level`, `Class`, `Next`
                                 FROM `' . $tbPerso . '` WHERE `Next` <= 0');
         if (!is_array($persos)) {
@@ -234,7 +234,7 @@ class idle
             return false;
         }
 
-        //Calcul du nombre de seconde à idler pour atteindre le prochain niveau
+        //Calcul du nombre de seconde Ã  idler pour atteindre le prochain niveau
         $next += round($this->idleBase * pow($this->expLvlUp, $level), 0);
         $cnext = $irpg->convSecondes($next);
 

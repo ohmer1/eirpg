@@ -1,7 +1,7 @@
 Changelog
 =========================================
 
-Légende
+LÃ©gende
 -----------------
 + ajout
 - suppression
@@ -12,32 +12,32 @@ Légende
 Version 0.6.0-rc5
 10 novembre 2012
 -----------------
-! Correction d'un bug dans la liste affichée des participants à une quête lorsqu'il n'y en a plus qu'un. [mod_quests]
-! Correction d'un bug faisant croire qu'une quête du survivant a été lancée même s'il n'y avait pas assez de joueurs
+! Correction d'un bug dans la liste affichÃ©e des participants Ã  une quÃªte lorsqu'il n'y en a plus qu'un. [mod_quests]
+! Correction d'un bug faisant croire qu'une quÃªte du survivant a Ã©tÃ© lancÃ©e mÃªme s'il n'y avait pas assez de joueurs
     pour y participer. [mod_quests]
 
 
 Version 0.6.0-rc4
 30 octobre 2012
 -----------------
-! Correction d'un bug qui provoquait le passage au niveau suivant d'un personnage fantôme lorsque la requête
-    récupérant les personnages échoue — typiquement lorsque la base de donnée n'a pas été initialisée. [mod_idle]
-! Correction d'une erreur dans le fichier de configuration d'exemple à cause d'un guillemet manquant. [irpg.conf.dist]
+! Correction d'un bug qui provoquait le passage au niveau suivant d'un personnage fantÃ´me lorsque la requÃªte
+    rÃ©cupÃ©rant les personnages Ã©choue Â— typiquement lorsque la base de donnÃ©e n'a pas Ã©tÃ© initialisÃ©e. [mod_idle]
+! Correction d'une erreur dans le fichier de configuration d'exemple Ã  cause d'un guillemet manquant. [irpg.conf.dist]
 ! Correction de quelques fautes dans le message de bienvenue de base. [irpg.conf.dist]
 
 
 Version 0.6.0-rc3
 25 octobre 2012
 -----------------
-! Correction d'erreurs de type E_STRICT provoquées par l'utilisation de la fonction mktime() sans
+! Correction d'erreurs de type E_STRICT provoquÃ©es par l'utilisation de la fonction mktime() sans
     arguments. [clsIRC, mod_core]
-! Correction d'un bug empêchant la reconnexion automatique au serveur IRC en cas de perte de la connexion. [clsIRC]
+! Correction d'un bug empÃªchant la reconnexion automatique au serveur IRC en cas de perte de la connexion. [clsIRC]
 
 
 Version 0.6.0-rc2
 24 octobre 2012
 -----------------
-* Modification de la commande COMBAT afin de ne plus demander à l'utilisateur le nom de son personnage lorsqu'il
+* Modification de la commande COMBAT afin de ne plus demander Ã  l'utilisateur le nom de son personnage lorsqu'il
     n'en a qu'un. [mod_batailles]
 * Correction de quelques fautes restantes. [doc/textes_mod_quests.sql, mod_objets, mod_top10]
 
@@ -45,79 +45,79 @@ Version 0.6.0-rc2
 Version 0.6.0-rc1
 18 octobre 2012
 -----------------
-! Correction de convSecondes() qui utilisait le pluriel avec les durées inférieures à 1 jour. [clsIRPG]
+! Correction de convSecondes() qui utilisait le pluriel avec les durÃ©es infÃ©rieures Ã  1 jour. [clsIRPG]
 ! Correction de diverses erreurs : E_NOTICE, E_DEPRECATED, E_WARNING. [clsDb, clsIRC, clsIRPG]
-! Correction de la commande admin SAY qui affichait des antislashes d'échappement. [mod_admin]
-! Correction de la fonction alog() pour prendre en compte l'encodage spécifié et à défaut, utiliser l'encodage
+! Correction de la commande admin SAY qui affichait des antislashes d'Ã©chappement. [mod_admin]
+! Correction de la fonction alog() pour prendre en compte l'encodage spÃ©cifiÃ© et Ã  dÃ©faut, utiliser l'encodage
     ISO-8859-15. [clsIRPG]
-! Correction et amélioration de la gestion des quêtes parallèles qui écrasaient les participants de celle déjà en
+! Correction et amÃ©lioration de la gestion des quÃªtes parallÃ¨les qui Ã©crasaient les participants de celle dÃ©jÃ  en
     cours. [mod_quests]
-! Correction de la commande admin QUESTSTART qui pouvait échouer sans afficher d'erreur lorsque le nombre
-    d'utilisateurs requis n'était pas atteint. [mod_quests]
-! Correction d'un bug ne permettant qu'à un seul des personnages par joueur de pouvoir participer à une
-    quête. [mod_quests]
-! Correction de la connexion SQL qui n'était pas fermée en cas d'interruption de la liaison avec le serveur,
-    empêchant la reconnexion automatique. [clsDB]
-! Correction des modes d'IRPG qui n'étaient pas activés sur un serveur IRC sous InspIRCd. [clsIRC]
-! Correction d'une faille lors du traitement des données reçues pouvant mener à deux commandes corrompues si la
-    taille maximale du buffer a été atteinte, au lieu de rassembler la commande lors de la réception du prochain lot
-    de données. [clsIRC]
-! Correction d'un bug dans onEndWho() qui empêchait l'ajout des utilisateurs dans la base de données si la fonction
-    avait déjà été appelée auparavant. [clsIRC]
-! Correction du type du champ Next dans le fichier de la base SQL, qui empêchait de passer au niveau suivant si le
-    temps restant devait devenir négatif, en unsigned. [doc/irpg.sql]
-! Correction d'une erreur lors de l'appel à la fonction cmdRegister2 : l'argument parrain ne lui était pas
+! Correction de la commande admin QUESTSTART qui pouvait Ã©chouer sans afficher d'erreur lorsque le nombre
+    d'utilisateurs requis n'Ã©tait pas atteint. [mod_quests]
+! Correction d'un bug ne permettant qu'Ã  un seul des personnages par joueur de pouvoir participer Ã  une
+    quÃªte. [mod_quests]
+! Correction de la connexion SQL qui n'Ã©tait pas fermÃ©e en cas d'interruption de la liaison avec le serveur,
+    empÃªchant la reconnexion automatique. [clsDB]
+! Correction des modes d'IRPG qui n'Ã©taient pas activÃ©s sur un serveur IRC sous InspIRCd. [clsIRC]
+! Correction d'une faille lors du traitement des donnÃ©es reÃ§ues pouvant mener Ã  deux commandes corrompues si la
+    taille maximale du buffer a Ã©tÃ© atteinte, au lieu de rassembler la commande lors de la rÃ©ception du prochain lot
+    de donnÃ©es. [clsIRC]
+! Correction d'un bug dans onEndWho() qui empÃªchait l'ajout des utilisateurs dans la base de donnÃ©es si la fonction
+    avait dÃ©jÃ  Ã©tÃ© appelÃ©e auparavant. [clsIRC]
+! Correction du type du champ Next dans le fichier de la base SQL, qui empÃªchait de passer au niveau suivant si le
+    temps restant devait devenir nÃ©gatif, en unsigned. [doc/irpg.sql]
+! Correction d'une erreur lors de l'appel Ã  la fonction cmdRegister2 : l'argument parrain ne lui Ã©tait pas
     transmis. [mod_parrainage]
-! Correction d'une faute de frappe qui empêchait l'exécution du module. [mod_parrainage]
-+ Ajout d'informations en console relatives aux changements d'état de la base de données. [clsDB]
+! Correction d'une faute de frappe qui empÃªchait l'exÃ©cution du module. [mod_parrainage]
++ Ajout d'informations en console relatives aux changements d'Ã©tat de la base de donnÃ©es. [clsDB]
 + Ajout d'une fonction permettant d'effectuer le level up depuis un module autre que mod_idle. [mod_idle]
-+ Ajout d'une variable pour rééquilibrer la perte de temps dû au fait que le décompte du TTL soit lancé toutes les
++ Ajout d'une variable pour rÃ©Ã©quilibrer la perte de temps dÃ» au fait que le dÃ©compte du TTL soit lancÃ© toutes les
     15 secondes. [mod_idle]
-+ (Ré)Écriture de la fonction de combat manuel. [mod_batailles]
-+ Ajout d'une option permettant de choisir l'encodage utilisé pour la connexion SQL. [irpg.php, clsDB]
-+ Journalisation des pénalités affligées lors de l'échec d'une quête du Royaume. [mod_quests]
++ (RÃ©)Ã‰criture de la fonction de combat manuel. [mod_batailles]
++ Ajout d'une option permettant de choisir l'encodage utilisÃ© pour la connexion SQL. [irpg.php, clsDB]
++ Journalisation des pÃ©nalitÃ©s affligÃ©es lors de l'Ã©chec d'une quÃªte du Royaume. [mod_quests]
 + Ajout d'une syntaxe alternative pour passer un pourcentage aux commandes PUSH/PULL au lieu des secondes. [mod_admin]
-+ Ajout d'une version expérimentale d'un module de parrainage. [mod_parrainage]
++ Ajout d'une version expÃ©rimentale d'un module de parrainage. [mod_parrainage]
 * Uniformisations et nettoyages divers de la structure du code.
 * Prise en compte de l'option notice on/off lors du login/logout. [mod_core]
-* Amélioration de la fonction de lecture de la configuration. [clsIRPG]
-* Modification du message d'abandon d'une quête afin de différencier les quêtes d'Aventure et du Royaume de la quête
+* AmÃ©lioration de la fonction de lecture de la configuration. [clsIRPG]
+* Modification du message d'abandon d'une quÃªte afin de diffÃ©rencier les quÃªtes d'Aventure et du Royaume de la quÃªte
     du Survivant. [mod_quests]
 * Modification du niveau minimum requis pour invoquer la main de Dieu. [mod_hog]
-- Suppression du message de publicité s'il n'en existe pas lors de l'identification d'un joueur. [mod_core]
+- Suppression du message de publicitÃ© s'il n'en existe pas lors de l'identification d'un joueur. [mod_core]
 
-  [...] Consulter l'historique des modifications sur le dépôt git pour avoir la liste complète.
+  [...] Consulter l'historique des modifications sur le dÃ©pÃ´t git pour avoir la liste complÃ¨te.
 
 
 Version 0.5.5.X
-08 Janvier 2008 (non publiée)
+08 Janvier 2008 (non publiÃ©e)
 -----------------
-+ Module mod_admin corrigé et complété (cedricpc)
++ Module mod_admin corrigÃ© et complÃ©tÃ© (cedricpc)
 
 
 Version 0.5.5
-27 décembre 2007
+27 dÃ©cembre 2007
 -----------------
-+ Possibilité de choisir le charset à utiliser pour la sortie IRC et console (via irpg.conf) [bug #00027] (Homer)
++ PossibilitÃ© de choisir le charset Ã  utiliser pour la sortie IRC et console (via irpg.conf) [bug #00027] (Homer)
 + Nouveau module : mod_notice
-* Modification au schéma de la base de données [???] (causait problème avec les versions récentes de MySQL] (cedricpc)
-! Correction à la fonction d'ignore
-! La quête du survivant se faisait écraser par les autres types de quête (merci Excelsior !)
+* Modification au schÃ©ma de la base de donnÃ©es [???] (causait problÃ¨me avec les versions rÃ©centes de MySQL] (cedricpc)
+! Correction Ã  la fonction d'ignore
+! La quÃªte du survivant se faisait Ã©craser par les autres types de quÃªte (merci Excelsior !)
 
-(il y a peut-être des oublis...)
+(il y a peut-Ãªtre des oublis...)
 
 
 Version 0.5.0.1
-28 janvier 2007 (non publiée)
+28 janvier 2007 (non publiÃ©e)
 -----------------
 
 + mod_notice : nouveau module permettant de configurer une notice automatique on:join (Homer)
 + Fonction d'ignore IRC de base (Homer)
-! Le bot est maintenant en mesure de démarrer sans modifications au code (Homer)
-! Une quête de type "Survivant" ne se fait plus écraser par les autres types de quêtes (Excelsior)
+! Le bot est maintenant en mesure de dÃ©marrer sans modifications au code (Homer)
+! Une quÃªte de type "Survivant" ne se fait plus Ã©craser par les autres types de quÃªtes (Excelsior)
 
 
 Version 0.5.0
 27 janvier 2007
 -----------------
-Première version publiée
+PremiÃ¨re version publiÃ©e

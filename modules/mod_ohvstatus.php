@@ -30,9 +30,9 @@ class ohvstatus
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dépendants
+    var $depend;  //Modules dont nous sommes dÃ©pendants
 
-    //Variables supplémentaires
+    //Variables supplÃ©mentaires
     var $op, $hop, $voice, $oplvl, $hoplvl, $voicelvl;
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
@@ -41,7 +41,7 @@ class ohvstatus
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'éxécute lors du (re)chargement du bot ou d'un REHASH
+        //S'Ã©xÃ©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
@@ -50,20 +50,20 @@ class ohvstatus
         $this->desc    = "Op, halfop ou voice les joueurs";
         $this->depend  = array("core/0.5.0");
 
-        //Recherche de dépendances
+        //Recherche de dÃ©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dépendance non résolue\n");
+            die("$this->name: dÃ©pendance non rÃ©solue\n");
         }
 
-        //Validation du fichier de configuration spécifique au module
+        //Validation du fichier de configuration spÃ©cifique au module
         $cfgKeys    = array("op", "hop", "voice", "oplvl", "hoplvl", "voicelvl");
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: Vérifiez votre fichier de configuration.\n");
+            die("$this->name: VÃ©rifiez votre fichier de configuration.\n");
         }
 
-        //Initialisation des paramètres du fichier de configuration
+        //Initialisation des paramÃ¨tres du fichier de configuration
         $this->op       = $irpg->readConfig($this->name, "op");
         $this->hop      = $irpg->readConfig($this->name, "hop");
         $this->voice    = $irpg->readConfig($this->name, "voice");
@@ -76,8 +76,8 @@ class ohvstatus
 
     function unloadModule()
     {
-        //Destructeur; décharge le module
-        //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; dÃ©charge le module
+        //S'Ã©xÃ©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
     }
 
@@ -107,7 +107,7 @@ class ohvstatus
 
         switch (strtoupper($message[0])) {
         case "UP":
-            //Donne le status (op, hop, voice) approprié à l'utilisateur
+            //Donne le status (op, hop, voice) appropriÃ© Ã  l'utilisateur
             $this->cmdUp($nick);
             break;
         }
@@ -214,7 +214,7 @@ class ohvstatus
     {
         global $db, $irc, $irpg;
 
-        //TODO: Valider qu'avec les persos logués plutôt que les persos enregistrés seulement
+        //TODO: Valider qu'avec les persos loguÃ©s plutÃ´t que les persos enregistrÃ©s seulement
         $tbPerso = $db->prefix."Personnages";
         $uid = $irpg->getUsernameByNick($nick, true);
         $uid = $uid[1];
@@ -226,10 +226,10 @@ class ohvstatus
                 $level = $level[0]["Level"];
                 $this->Up($nick, $level);
             } else {
-                $irc->notice($nick, "Vous devez être authentifié sous un personnage pour utiliser cette commande.");
+                $irc->notice($nick, "Vous devez Ãªtre authentifiÃ© sous un personnage pour utiliser cette commande.");
             }
         } else {
-            $irc->notice($nick, "Vous devez être authentifié pour utiliser cette commande.");
+            $irc->notice($nick, "Vous devez Ãªtre authentifiÃ© pour utiliser cette commande.");
         }
     }
 
@@ -239,7 +239,7 @@ class ohvstatus
     {
         global $irc;
 
-        //TODO: vérifier si l'utilisateur n'est pas flagué NOOP
+        //TODO: vÃ©rifier si l'utilisateur n'est pas flaguÃ© NOOP
         if (($this->op == "1") && ($this->oplvl <= $level)) {
             $irc->sendRaw("MODE $irc->home +o $nick");
         } elseif (($this->hop == "1") && ($this->hoplvl <= $level)) {

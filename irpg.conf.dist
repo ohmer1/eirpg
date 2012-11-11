@@ -13,57 +13,57 @@
 ; -------------------------------------------------
 
 [SQL]
-; Section base de données
-host = "localhost"    ;Hôte du serveur SQL
+; Section base de donnÃ©es
+host = "localhost"    ;HÃ´te du serveur SQL
 login = ""            ;Login de connexion au serveur SQL
-password = ""         ;Mot de passe d'accès au serveur SQL
-base = ""             ;Base SQL utilisée par le bot
-prefix = ""           ;Préfix utilisé pour les noms des tables SQL
-charset = "latin1"    ;Jeu de caractère à utiliser avec le serveur SQL (PHP >= 5.23)
+password = ""         ;Mot de passe d'accÃ¨s au serveur SQL
+base = ""             ;Base SQL utilisÃ©e par le bot
+prefix = ""           ;PrÃ©fix utilisÃ© pour les noms des tables SQL
+charset = "latin1"    ;Jeu de caractÃ¨re Ã  utiliser avec le serveur SQL (PHP >= 5.23)
 
 ; -------------------------------------------------
 
 [IRC]
-; Section IRC - Où se connecter ?
-server = "montreal.ca.epiknet.org"              ;Hôte du serveur IRC
+; Section IRC - OÃ¹ se connecter ?
+server = "montreal.ca.epiknet.org"              ;HÃ´te du serveur IRC
 port = "6668"                                   ;Port du serveur IRC
-password = ""                                   ;Mot de passe d'accès au serveur IRC
+password = ""                                   ;Mot de passe d'accÃ¨s au serveur IRC
 channel = "#IRPG"                               ;Canal principal du jeu
-key = ""                                        ;Clé pour accéder au canal
-bind = ""                                       ;ip à utiliser (si la machine en possède plusieurs)
+key = ""                                        ;ClÃ© pour accÃ©der au canal
+bind = ""                                       ;ip Ã  utiliser (si la machine en possÃ¨de plusieurs)
 
-; Section IRC - Identité
+; Section IRC - IdentitÃ©
 nick = "IRPG"                                   ;Pseudo principal du bot
-altnick = "IRPG`"                               ;Pseudo à utiliser lorsque le principal n'est pas disponible
+altnick = "IRPG`"                               ;Pseudo Ã  utiliser lorsque le principal n'est pas disponible
 username = "IDLE"                               ;Username du bot
 realname = "Idle RPG (http://www.eirpg.com)"    ;Realname du bot
 
-; Section IRC - Autres paramètres
-modes = "+iB"                                   ;Modes utilisateurs du bot à appliquer
+; Section IRC - Autres paramÃ¨tres
+modes = "+iB"                                   ;Modes utilisateurs du bot Ã  appliquer
 nspass = ""                                     ;Mot de passe NickServ du pseudo du bot
-charset = "ISO-8859-15"                         ;Charset à utiliser pour l'envoi de texte sur IRC
+charset = "ISO-8859-15"                         ;Charset Ã Â utiliser pour l'envoi de texte sur IRC
 
 ; -------------------------------------------------
 
 [IRPG]
-; Section IRPG - Général
+; Section IRPG - GÃ©nÃ©ral
 admin = "Homer"        ;Nom d'utilisateur de l'admin principal
-debug = "0"            ;Active (1) ou pas (0) le débugage
-background = "1"       ;Démarre le bot en background (1) ou non (0)
+debug = "0"            ;Active (1) ou pas (0) le dÃ©bugage
+background = "1"       ;DÃ©marre le bot en background (1) ou non (0)
 purge = "30"           ;Temps en jours avant la suppression d'un compte inactif
-charset = "UTF-8"      ;Charset à utiliser pour l'envoi de texte sur la console
+charset = "UTF-8"      ;Charset Ã  utiliser pour l'envoi de texte sur la console
 version = "0.6.0-rc5"  ;Version du bot
 
-;Modules à charger séparés par des virgules, sans espaces et sans le prefix "mod_"
-;L'ordre a son importance pour le gestionnaire des dépendances.
+;Modules Ã  charger sÃ©parÃ©s par des virgules, sans espaces et sans le prefix "mod_"
+;L'ordre a son importance pour le gestionnaire des dÃ©pendances.
 modules = "core,idle,penalites,objets,admin,ohvstatus,hog,calamites,godsends,batailles,quests,notice,top10"
 
 ; -------------------------------------------------
 
 
 ; =================================================
-; Les sections suivantes sont associées à un
-; module spécifique.
+; Les sections suivantes sont associÃ©es Ã  un
+; module spÃ©cifique.
 ; =================================================
 
 ; -------------------------------------------------
@@ -71,8 +71,8 @@ modules = "core,idle,penalites,objets,admin,ohvstatus,hog,calamites,godsends,bat
 [mod_core]
 ; Module de base [OBLIGATOIRE!!]
 maxPerso = "1"          ;Nombre maximum de personnages par compte
-penLogout = "20"        ;Pénalité logout [x*(1.14^level)]
-expPenalite = "1.14"    ;Valeur exponentiel pour le calcul des pénalités
+penLogout = "20"        ;PÃ©nalitÃ© logout [x*(1.14^level)]
+expPenalite = "1.14"    ;Valeur exponentiel pour le calcul des pÃ©nalitÃ©s
 motd = "Bienvenue sur EIRPG ! - Pour plus d'infos, visitez www.eirpg.com"
 
 ; -------------------------------------------------
@@ -80,60 +80,60 @@ motd = "Bienvenue sur EIRPG ! - Pour plus d'infos, visitez www.eirpg.com"
 [mod_idle]
 ; Module qui calcul l'idle des joueurs [OBLIGATOIRE!!]
 idleBase = "600"     ;Secondes d'idle pour atteindre le premier niveau
-expLvlUp = "1.16"    ;Paramètre exponentiel pour calculer l'idle entre chaque niveau
+expLvlUp = "1.16"    ;ParamÃ¨tre exponentiel pour calculer l'idle entre chaque niveau
 
 ; -------------------------------------------------
 
 [mod_penalites]
-; Module qui gère les pénalités à appliquer [OBLIGATOIRE!!]
-expPenalite = "1.14"    ;Valeur exponentiel pour le calcul des pénalités
-penPrivmsg = "1"        ;Pénalité privmsg [(x*strlen(msg))*(expPenalite^level)]
-penNotice = "1"         ;Pénalité notice [(x*strlen(msg))*(expPenalite^level)]
-penNick = "0"           ;Pénalité nick [x*(expPenalite^level)]
-penQuit = "30"          ;Pénalité quit [x*(expPenalite^level)]
-penPart = "200"         ;Pénalité part [x*(expPenalite^level)]
-penKick = "250"         ;Pénalité kick [x*(expPenalite^level)]
-ignoreSplit = "1"       ;Ne pénalise pas les quits pour netsplit
+; Module qui gÃ¨re les pÃ©nalitÃ©s Ã  appliquer [OBLIGATOIRE!!]
+expPenalite = "1.14"    ;Valeur exponentiel pour le calcul des pÃ©nalitÃ©s
+penPrivmsg = "1"        ;PÃ©nalitÃ© privmsg [(x*strlen(msg))*(expPenalite^level)]
+penNotice = "1"         ;PÃ©nalitÃ© notice [(x*strlen(msg))*(expPenalite^level)]
+penNick = "0"           ;PÃ©nalitÃ© nick [x*(expPenalite^level)]
+penQuit = "30"          ;PÃ©nalitÃ© quit [x*(expPenalite^level)]
+penPart = "200"         ;PÃ©nalitÃ© part [x*(expPenalite^level)]
+penKick = "250"         ;PÃ©nalitÃ© kick [x*(expPenalite^level)]
+ignoreSplit = "1"       ;Ne pÃ©nalise pas les quits pour netsplit
 
 ; -------------------------------------------------
 
 [mod_ohvstatus]
-; Ce module gère les modes à appliquer aux utilisateurs selon leur niveau dans le jeu
-op = "1"          ;Active (1) ou désactive (0) le mode OP
-hop = "1"         ;Active (1) ou désactive (0) le mode HOP
-voice = "1"       ;Active (1) ou désactive (0) le mode Voice
-oplvl = "30"      ;Niveau requis pour être OP
-hoplvl = "20"     ;Niveau requis pour être HOP
-voicelvl = "1"    ;Niveau requis pour être Voice
+; Ce module gÃ¨re les modes Ã  appliquer aux utilisateurs selon leur niveau dans le jeu
+op = "1"          ;Active (1) ou dÃ©sactive (0) le mode OP
+hop = "1"         ;Active (1) ou dÃ©sactive (0) le mode HOP
+voice = "1"       ;Active (1) ou dÃ©sactive (0) le mode Voice
+oplvl = "30"      ;Niveau requis pour Ãªtre OP
+hoplvl = "20"     ;Niveau requis pour Ãªtre HOP
+voicelvl = "1"    ;Niveau requis pour Ãªtre Voice
 
 ; -------------------------------------------------
 
 [mod_quests]
-; ce module gère les quêtes
+; ce module gÃ¨re les quÃªtes
 tempsQueteA = "10800"      ;Temps Minimum en seconde d'une Quete d'Aventure
 tempsQueteR = "25200"      ;Temps Minimum en seconde d'une Quete de Royaume
 recompenseA = "20"         ;Recompense en pourcent d'une quete d'Aventure
 recompenseR = "30"         ;Recompense en pourcent d'une quete de Royaume
 recompenseS = "30"         ;Recompense en pourcent d'une quete de Royaume
-MinPenalite = "10"         ;Penalité minimal pour le participant d'une quete
-MaxPenalite = "15"         ;Penalité maximal pour le participant d'une quete
-MinPenaliteAll = "5"       ;Penalité minimal pour tout le monde lorsqu'une quete de Royaume est ratée.
-MaxPenaliteAll = "10"      ;Penalité maximal pour tout le monde lorsqu'une quete de Royaume est ratée.
-nbrParticipants = "3"      ;Nombre de participants prenant part à la quête.
-lvlMinimumA = "25"         ;Level minimum d'un personnage pour etre selectionné pour une quête d'aventure
-lvlMinimumR = "45"         ;Level minimum d'un personnage pour etre selectionné pour une quête de Royaume
-lvlMinimumS = "30"         ;Level minimum d'un personnage pour etre selectionné pour une quête de Survivant
-tempsMinIdleA = "21600"    ;(6hrs) Temps minimum d'idle d'un personnage pour etre selectionné pour une quete d'aventure.
-tempsMinIdleR = "86400"    ;(24hrs) Temps minimum d'idle d'un personnage pour etre selectionné pour une quete de Royaume.
-tempsMinIdleS = "43200"    ;(12hrs) Temps minimum d'idle d'un personnage pour etre selectionné pour une quete de Royaume.
-probaAllQuete = "500"      ;Probabilité qu'une quete se declare toutes les 15 secondes. ex: 1 chance sur 500 qu'une quete se declare.
-probaQueteA = "80"         ;Probabilité en % qu'une quete aventure se declare. ex.: 80% de chance qu'un quete aventure se declare et 20% une quete royaume
+MinPenalite = "10"         ;PenalitÃ© minimal pour le participant d'une quete
+MaxPenalite = "15"         ;PenalitÃ© maximal pour le participant d'une quete
+MinPenaliteAll = "5"       ;PenalitÃ© minimal pour tout le monde lorsqu'une quete de Royaume est ratÃ©e.
+MaxPenaliteAll = "10"      ;PenalitÃ© maximal pour tout le monde lorsqu'une quete de Royaume est ratÃ©e.
+nbrParticipants = "3"      ;Nombre de participants prenant part Ã  la quÃªte.
+lvlMinimumA = "25"         ;Level minimum d'un personnage pour etre selectionnÃ© pour une quÃªte d'aventure
+lvlMinimumR = "45"         ;Level minimum d'un personnage pour etre selectionnÃ© pour une quÃªte de Royaume
+lvlMinimumS = "30"         ;Level minimum d'un personnage pour etre selectionnÃ© pour une quÃªte de Survivant
+tempsMinIdleA = "21600"    ;(6hrs) Temps minimum d'idle d'un personnage pour etre selectionnÃ© pour une quete d'aventure.
+tempsMinIdleR = "86400"    ;(24hrs) Temps minimum d'idle d'un personnage pour etre selectionnÃ© pour une quete de Royaume.
+tempsMinIdleS = "43200"    ;(12hrs) Temps minimum d'idle d'un personnage pour etre selectionnÃ© pour une quete de Royaume.
+probaAllQuete = "500"      ;ProbabilitÃ© qu'une quete se declare toutes les 15 secondes. ex: 1 chance sur 500 qu'une quete se declare.
+probaQueteA = "80"         ;ProbabilitÃ© en % qu'une quete aventure se declare. ex.: 80% de chance qu'un quete aventure se declare et 20% une quete royaume
 ; -------------------------------------------------
 
 [mod_notice]
 ; Ce module permet l'envoi d'une notice lors d'un JOIN
 actif = "1"
-message = "Bienvenue sur le canal du jeu IRPG. Pour savoir comment jouer, visite http://www.eirpg.com. Pour toute question, rejoins le canal #IRPG-CHAT (personne ne répondra sur le canal #IRPG)."
+message = "Bienvenue sur le canal du jeu IRPG. Pour savoir comment jouer, visite http://www.eirpg.com. Pour toute question, rejoins le canal #IRPG-CHAT (personne ne rÃ©pondra sur le canal #IRPG)."
 
 ; -------------------------------------------------
 

@@ -18,8 +18,8 @@
  */
 
 /**
- * Classe IRPG; classe trËs large qui regroupe plusieurs
- * fonctions utilisÈes par le bot
+ * Classe IRPG; classe tr√®s large qui regroupe plusieurs
+ * fonctions utilis√©es par le bot
  *
  * @author Homer
  * @author cedricpc
@@ -29,20 +29,20 @@
 class IRPG
 {
     ///////////////////////////////////////////////////////////////
-    // Variables privÈes
+    // Variables priv√©es
     ///////////////////////////////////////////////////////////////
-    var $config;   //ParamËtres de configuration chargÈs en mÈmoire
-    var $mod;      //Modules chargÈs
-    var $modules;  //Noms des modules chargÈs
+    var $config;   //Param√®tres de configuration charg√©s en m√©moire
+    var $mod;      //Modules charg√©s
+    var $modules;  //Noms des modules charg√©s
     var $pause;    //Indique si le jeu est en pause ou non
-    var $ignoresN; //Liste des nicks ignorÈs en mÈmoire
-    var $ignoresH; //Liste des hosts ignorÈs en mÈmoire
+    var $ignoresN; //Liste des nicks ignor√©s en m√©moire
+    var $ignoresH; //Liste des hosts ignor√©s en m√©moire
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
 
     ///////////////////////////////////////////////////////////////
-    // MÈthodes privÈes, mÍme si PHP s'en fou !
+    // M√©thodes priv√©es, m√™me si PHP s'en fou !
     ///////////////////////////////////////////////////////////////
 
     /**
@@ -62,7 +62,7 @@ class IRPG
         $keys     = (array) $keys;
         $keys_opt = (array) $keys_opt;
 
-        //On traite les clÈs obligatoires
+        //On traite les cl√©s obligatoires
         foreach ( $keys as $key) {
             if (empty($key)) {
                 continue;
@@ -76,7 +76,7 @@ class IRPG
             }
         }
 
-        //Ensuite, les clÈs optionnelles
+        //Ensuite, les cl√©s optionnelles
         foreach ($keys_opt as $key) {
             if (empty($key)) {
                 continue;
@@ -85,7 +85,7 @@ class IRPG
             $this->config[$section][$key] = (isset($config[$section][$key]) ? $config[$section][$key] : '');
         }
 
-        //On est Èvidemment pas en pause !
+        //On est √©videmment pas en pause !
         $this->pause = false;
 
         //Si on s'est rendu ici c'est que tout fonctionne !
@@ -96,7 +96,7 @@ class IRPG
     ///////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////
-    // MÈthodes publiques
+    // M√©thodes publiques
     ///////////////////////////////////////////////////////////////
 
     /**
@@ -112,8 +112,8 @@ class IRPG
         $this->alog("Lecture du fichier de configuration...", true);
 
         //Traitement de la section DB
-        $keys     = array("host", "login", "password", "base"); //clÈs obligatoires
-        $keys_opt = array("prefix", "charset");                 //clÈs optionnelles
+        $keys     = array("host", "login", "password", "base"); //cl√©s obligatoires
+        $keys_opt = array("prefix", "charset");                 //cl√©s optionnelles
 
         $ok = $this->validationConfig("SQL", $keys, $keys_opt);
         if (!$ok) {
@@ -123,8 +123,8 @@ class IRPG
         //Traitement de la section IRC
         $keys     = array(
             "server", "port", "channel", "nick", "altnick", "username", "realname", "modes"
-        );                                                                 //clÈs obligatoires
-        $keys_opt = array("password", "nspass", "bind", "key", "charset"); //clÈs optionnelles
+        );                                                                 //cl√©s obligatoires
+        $keys_opt = array("password", "nspass", "bind", "key", "charset"); //cl√©s optionnelles
 
         $ok = $this->validationConfig("IRC", $keys, $keys_opt);
         if (!$ok) {
@@ -132,8 +132,8 @@ class IRPG
         }
 
         //Traitement de la section IRPG
-        $keys     = array("admin", "debug", "background", "purge", "version", "modules"); //clÈs obligatoires
-        $keys_opt = array("charset");                                                     //clÈs optionnelles
+        $keys     = array("admin", "debug", "background", "purge", "version", "modules"); //cl√©s obligatoires
+        $keys_opt = array("charset");                                                     //cl√©s optionnelles
 
         $ok = $this->validationConfig("IRPG", $keys, $keys_opt);
         if (!$ok) {
@@ -155,8 +155,8 @@ class IRPG
      * @author Homer
      * @created 20 juin 2005
      * @modified 20 juin 2005
-     * @param clsIRC      - RÈfÈrence ‡ l'objet IRC
-     * @param clsIRPG     - RÈfÈrence ‡ l'objet IRPG
+     * @param clsIRC      - R√©f√©rence √† l'objet IRC
+     * @param clsIRPG     - R√©f√©rence √† l'objet IRPG
      * @return none
      */
     function loadModules()
@@ -167,7 +167,7 @@ class IRPG
         $this->modules = $this->readConfig("IRPG", "modules");
         $this->modules = explode(',', $this->modules);
 
-        //On vÈrifie que les modules existent
+        //On v√©rifie que les modules existent
         $i = 0;
         while ($i != count($this->modules)) {
             if (!file_exists("modules/mod_" . $this->modules[$i] . ".php")) {
@@ -190,14 +190,14 @@ class IRPG
      * @author Homer
      * @created 22 juin 2005
      * @modified 22 juin 2005
-     * @param nom         - Nom du module ‡ charger (sans le prefixe mod_)
-     * @return boolean    - true si module chargÈ, false autrement
+     * @param nom         - Nom du module √† charger (sans le prefixe mod_)
+     * @return boolean    - true si module charg√©, false autrement
      */
     function loadModule($nom)
     {
-        if (!file_exists("modules/mod_" . $nom . ".php")) { //On vÈrifie que le module existe
+        if (!file_exists("modules/mod_" . $nom . ".php")) { //On v√©rifie que le module existe
             return false;
-        } elseif (in_array($nom, $this->modules)) { //On s'assure que le module ne soit pas dÈj‡ chargÈ
+        } elseif (in_array($nom, $this->modules)) { //On s'assure que le module ne soit pas d√©j√† charg√©
             return false;
         } else {
             include_once "modules/mod_" . $nom . ".php"; //TODO: rechercher le module sur REHASH (??)
@@ -212,7 +212,7 @@ class IRPG
 
     function unloadModule($nom)
     {
-        //On vÈrifie si le module existe
+        //On v√©rifie si le module existe
         if (!in_array($nom, $this->modules)) {
             return false; //module inexistant
         } else {
@@ -221,8 +221,8 @@ class IRPG
                 $y = 0;
                 while ($y != count($this->mod[$nom]->depend)) {
                     if ($this->mod[$nomModule]->depend[$y] == $nom . "/" . $this->mod[$nom]->version) {
-                        return false; // On ne peut dÈcharger ce module car il est requis
-                        break;        // par un autre module actuellement chargÈ
+                        return false; // On ne peut d√©charger ce module car il est requis
+                        break;        // par un autre module actuellement charg√©
                     }
                     $y++;
                 }
@@ -230,8 +230,8 @@ class IRPG
                 $i++;
             }
 
-            //On peut maintenant dÈcharger le module
-            //On appel l'ÈvËnement unloadmodule() avant de dÈcharger
+            //On peut maintenant d√©charger le module
+            //On appel l'√©v√®nement unloadmodule() avant de d√©charger
             $this->mod[$nom]->unloadmodule();
             //On retire le module des tableaux de modules
             unset($this->mod[$nom]);
@@ -244,15 +244,15 @@ class IRPG
 ///////////////////////////////////////////////////////////////
 
     /**
-     * Config; interprËte le fichier de configuration
+     * Config; interpr√®te le fichier de configuration
      *
      * @author Homer
      * @author cedricpc
      * @created 30 mai 2005
      * @modified 19 Avril 2010
      * @param section    - Section du fichier de config (SQL, IRC, IRPG...)
-     * @param key        - …lÈment du fichier que l'on recherche (server, port, login..)'
-     * @param fromFile   - Si vrai lis la configuration du fichier, sinon des donnÈes en mÈmoire
+     * @param key        - √âl√©ment du fichier que l'on recherche (server, port, login..)'
+     * @param fromFile   - Si vrai lis la configuration du fichier, sinon des donn√©es en m√©moire
      * @return string    - La valeur contenu dans le fichier de configuration
      */
     function readConfig($section, $key, $fromFile = false)
@@ -261,7 +261,7 @@ class IRPG
             $config = parse_ini_file("irpg.conf", true);
             return (isset($config[$section][$key]) ? $config[$section][$key] : null);
         } else {
-            //Retourne ce qui a ÈtÈ prÈablement chargÈ en mÈmoire
+            //Retourne ce qui a √©t√© pr√©ablement charg√© en m√©moire
             return (isset($this->config[$section][$key]) ? $this->config[$section][$key] : null);
         }
     }
@@ -269,20 +269,20 @@ class IRPG
 ///////////////////////////////////////////////////////////////
 
     /**
-     * VÈrifie si les dÈpendances d'un
+     * V√©rifie si les d√©pendances d'un
      * module sont satisfaites
      *
      * @author Homer
      * @created 20 juin 2005
      * @modified 22 juin 2005
-     * @param dep[]    - Tableau contenant les modules nÈcessaires
-     * @return boolean - True si dÈpendances satisfaites, false autrement.
+     * @param dep[]    - Tableau contenant les modules n√©cessaires
+     * @return boolean - True si d√©pendances satisfaites, false autrement.
      */
     function checkDepd($dep)
     {
         $i = 0;
         while ($i != count($dep)) {
-            //Nom & version de la dÈpendance requise
+            //Nom & version de la d√©pendance requise
             $module        = explode('/', $dep[$i]);
             $nomModule     = $module[0];
             $versionModule = $module[1];
@@ -291,11 +291,11 @@ class IRPG
                 return true;
             }
 
-            //On vÈrifie si le module est chargÈ
+            //On v√©rifie si le module est charg√©
             if (!in_array($nomModule, $this->modules)) {
                 return false;
             } else {
-                //On vÈrifie que la version du module est suffisante
+                //On v√©rifie que la version du module est suffisante
 
                 //Version requise par le module
                 $versionModule = explode('.', $versionModule);
@@ -334,7 +334,7 @@ class IRPG
 ///////////////////////////////////////////////////////////////
 
     function alog($msg, $print = false)
-    { //Gestion des logs et de l'affichage des info de dÈbuguage
+    { //Gestion des logs et de l'affichage des info de d√©buguage
         $date = date("j-m-Y H:i:s");
         if ((!$this->readConfig("IRPG", "background") || ($print))) {
             $charset = $this->readConfig("IRPG", "charset");
@@ -460,7 +460,7 @@ class IRPG
 
     function getAdminLvl($uid)
     {
-        //Retourne le niveau d'accËs admin d'un utilisateur
+        //Retourne le niveau d'acc√®s admin d'un utilisateur
         global $db;
 
         $tbUtil = $db->prefix . "Utilisateurs";
@@ -530,7 +530,7 @@ class IRPG
 
     function lireIgnores()
     {
-        // lecture de la liste d'ignore en mÈmoire
+        // lecture de la liste d'ignore en m√©moire
         $this->alog("Lecture de la liste des ignores...");
         $f = fopen("ignores.list", "r");
         while (!feof($f)) {
@@ -540,12 +540,12 @@ class IRPG
                 $nick = explode(":", $ligne);
                 $nick = trim($nick[1]);
                 $this->ignoresN[] = $nick;
-                $this->alog("Le pseudo $nick est ignorÈ...");
+                $this->alog("Le pseudo $nick est ignor√©...");
             } elseif (substr($ligne, 0, 4) == "HOST") {
                 $host = explode(":", $ligne);
                 $host = trim($host[1]);
                 $this->ignoresH[] = $host;
-                $this->alog("L'host $host est ignorÈ...");
+                $this->alog("L'host $host est ignor√©...");
             }
         }
         fclose($f);

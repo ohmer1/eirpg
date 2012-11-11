@@ -21,7 +21,7 @@
 
 /**
  * Module mod_penalites
- * Gestion des pÈnalitÈs
+ * Gestion des p√©nalit√©s
  * Module indispensable au fonctionnement du jeu.
  *
  * @author Homer
@@ -34,9 +34,9 @@ class penalites
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dÈpendants
+    var $depend;  //Modules dont nous sommes d√©pendants
 
-    //Variables supplÈmentaires
+    //Variables suppl√©mentaires
     var $expPenalite;
     var $penPrivmsg, $penNotice, $penNick, $penQuit, $penPart, $penKick;
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
@@ -46,29 +46,29 @@ class penalites
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'ÈxÈcute lors du (re)chargement du bot ou d'un REHASH
+        //S'√©x√©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
         $this->name    = "mod_penalites";
         $this->version = "0.9.0";
-        $this->desc    = "Module de gestion des pÈnalitÈs";
+        $this->desc    = "Module de gestion des p√©nalit√©s";
         $this->depend  = array("core/0.5.0");
 
-        //Recherche de dÈpendances
+        //Recherche de d√©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dÈpendance non rÈsolue\n");
+            die("$this->name: d√©pendance non r√©solue\n");
         }
 
-        //Validation du fichier de configuration spÈcifique au module
+        //Validation du fichier de configuration sp√©cifique au module
         $cfgKeys    = array("expPenalite", "penPrivmsg", "penNotice", "penNick", "penQuit", "penPart", "penKick");
         $cfgKeysOpt = array("");
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: VÈrifiez votre fichier de configuration.\n");
+            die("$this->name: V√©rifiez votre fichier de configuration.\n");
         }
 
-        //Initialisation des paramËtres du fichier de configuration
+        //Initialisation des param√®tres du fichier de configuration
         $this->expPenalite = $irpg->readConfig($this->name, "expPenalite");
         $this->penPrivmsg  = $irpg->readConfig($this->name, "penPrivmsg");
         $this->penNotice   = $irpg->readConfig($this->name, "penNotice");
@@ -82,8 +82,8 @@ class penalites
 
     function unloadModule()
     {
-        //Destructeur; dÈcharge le module
-        //S'ÈxÈcute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; d√©charge le module
+        //S'√©x√©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
     }
 
@@ -149,7 +149,7 @@ class penalites
             $channel = strtoupper($channel);
             $db->req("DELETE FROM $table WHERE Nick = '$nick' And Channel = '$channel'");
 
-            //On enlËve l'utilisateur du tableau des utilisateurs en ligne
+            //On enl√®ve l'utilisateur du tableau des utilisateurs en ligne
             $username = $irpg->getUsernameByNick($nick);
             unset($irpg->mod["core"]->users["$username"]);
         }
@@ -168,7 +168,7 @@ class penalites
         $db->req("UPDATE $table SET Nick='$newnick' WHERE Nick='$nick'");
         $irpg->mod["core"]->users["$username"] = $newnick;
 
-        //Fix entrÈ vide..
+        //Fix entr√© vide..
         unset($irpg->mod["core"]->users[""]);
 
         $this->penalite($newnick, "NICK", $this->penNick);
@@ -188,7 +188,7 @@ class penalites
             $channel = strtoupper($channel);
             $db->req("DELETE FROM $table WHERE Nick = '$nickkicked' And Channel = '$channel'");
 
-            //On enlËve l'utilisateur du tableau des utilisateurs en ligne
+            //On enl√®ve l'utilisateur du tableau des utilisateurs en ligne
             $username = $irpg->getUsernameByNick($nickkicked);
             unset($irpg->mod["core"]->users["$username"]);
         }
@@ -213,7 +213,7 @@ class penalites
         $table = $db->prefix . "IRC";
         if ($nick != $irc->me) {
             $db->req("DELETE FROM $table WHERE Nick = '$nick'");
-            //On enlËve l'utilisateur du tableau des utilisateurs en ligne
+            //On enl√®ve l'utilisateur du tableau des utilisateurs en ligne
             $username = $irpg->getUsernameByNick($nick);
             unset($irpg->mod["core"]->users["$username"]);
         }
@@ -270,8 +270,8 @@ class penalites
                 $cnext = $irpg->convSecondes($next);
                 $irpg->Log($pid, "PENAL_$quoi", "$penalite", "$next");
 
-                if ($quoi != "QUIT") { //Le contraire serait dÈbile, non? :)
-                    $irc->notice($nick, "PÈnalitÈ d'une durÈe de $cpenalite ajoutÈ ‡ votre personnage $perso "
+                if ($quoi != "QUIT") { //Le contraire serait d√©bile, non? :)
+                    $irc->notice($nick, "P√©nalit√© d'une dur√©e de $cpenalite ajout√© √† votre personnage $perso "
                         . "pour $quoi. Prochain niveau dans $cnext.");
                 }
             }

@@ -18,8 +18,8 @@
  */
 
 /**
- * Classe DB; classe de connexion et de requÍtes
- * vers la base de donnÈes mySQL
+ * Classe DB; classe de connexion et de requ√™tes
+ * vers la base de donn√©es mySQL
  *
  * @author Homer
  * @author    cedricpc
@@ -29,7 +29,7 @@
 class DB
 {
     ///////////////////////////////////////////////////////////////
-    // Variables privÈes
+    // Variables priv√©es
     ///////////////////////////////////////////////////////////////
     var $host;
     var $login;
@@ -37,20 +37,20 @@ class DB
     var $base;
     var $prefix;
     var $charset;
-    var $connected; //Indique si nous sommes connectÈs ‡ la bd SQL
+    var $connected; //Indique si nous sommes connect√©s √† la bd SQL
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
 
     ///////////////////////////////////////////////////////////////
-    // MÈthodes privÈes, mÍme si PHP s'en fou !
+    // M√©thodes priv√©es, m√™me si PHP s'en fou !
     ///////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////
-    // MÈthodes publiques
+    // M√©thodes publiques
     ///////////////////////////////////////////////////////////////
 
     function connexion($host, $login, $pass, $base, $prefix, $charset = null)
@@ -64,23 +64,23 @@ class DB
         $this->prefix  = $prefix;
         $this->charset = $charset;
 
-        $irpg->alog("Connexion au serveur de bases de donnÈes...", true);
+        $irpg->alog("Connexion au serveur de bases de donn√©es...", true);
         if (@mysql_connect($this->host, $this->login, $this->pass)) {
             if (!empty($this->charset) && function_exists('mysql_set_charset')) {
                 mysql_set_charset($this->charset);
-                $irpg->alog('DÈfinition du jeu de caractËre ' . $this->charset . '... '
+                $irpg->alog('D√©finition du jeu de caract√®re ' . $this->charset . '... '
                     . mysql_client_encoding(), true);
             }
 
             if (mysql_select_db($this->base)) {
-                $irpg->alog("ConnectÈ ! (" . $this->host . " ; " . $this->login . " ; " . $this->base . ")", true);
+                $irpg->alog("Connect√© ! (" . $this->host . " ; " . $this->login . " ; " . $this->base . ")", true);
                 $this->connected = true;
                 return true;
             } else {
                 return false;
             }
         } else {
-            $irpg->alog('…chouÈe : ' . mysql_error(), true);
+            $irpg->alog('√âchou√©e : ' . mysql_error(), true);
             return false;
         }
     }
@@ -109,9 +109,9 @@ class DB
             } else {
                 $this->deconnexion();
                 $irpg->pause = true;
-                $irpg->alog("Perte de la connexion au serveur de base de donnÈes !", true);
-                $irc->privmsg($irc->home, "Attention, jeu automatiquement dÈsactivÈ !! "
-                    . "Raison: perte de la connexion au serveur de bases de donnÈes. "
+                $irpg->alog("Perte de la connexion au serveur de base de donn√©es !", true);
+                $irc->privmsg($irc->home, "Attention, jeu automatiquement d√©sactiv√© !! "
+                    . "Raison: perte de la connexion au serveur de bases de donn√©es. "
                     . "Une nouvelle tentative se fera toutes les 15 secondes...");
             }
         }

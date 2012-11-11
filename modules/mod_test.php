@@ -19,22 +19,22 @@
 
 /**
  * Module mod_test
- * Module expÈrimental IRPG
+ * Module exp√©rimental IRPG
  *
  * @author Homer
  * @created 19 juin 2005
  * @modified 19 juin 2005
  */
-class test /* Le nom de la classe DOIT Ítre du mÍme nom que le module (sans le mod_) */
+class test /* Le nom de la classe DOIT √™tre du m√™me nom que le module (sans le mod_) */
 {
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
     /* Les variables obligatoires du module */
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dÈpendants
+    var $depend;  //Modules dont nous sommes d√©pendants
 
-    /* Variables supplÈmentaires ‡ la suite, si nÈcessaire */
+    /* Variables suppl√©mentaires √† la suite, si n√©cessaire */
 
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
@@ -43,33 +43,33 @@ class test /* Le nom de la classe DOIT Ítre du mÍme nom que le module (sans le m
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'ÈxÈcute lors du (re)chargement du bot ou d'un REHASH
+        //S'√©x√©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg;
 
         /* Renseignement des variables importantes */
-        $this->name    = "mod_test";            /* Nom du module, prÈfixÈ de mod_ */
+        $this->name    = "mod_test";            /* Nom du module, pr√©fix√© de mod_ */
         $this->version = "0.1.1";               /* Important de mettre la version sous forme x.y.z */
-        $this->desc    = "Module expÈrimental";
+        $this->desc    = "Module exp√©rimental";
         $this->depend  = array("test2/0.1.1");  /* Syntaxe : nomModule/version (x.y.z) */
 
-        //Recherche de dÈpendances
-        /* Ne pas modifier ce qui suit; procÈdure de vÈrification des dÈpendances */
+        //Recherche de d√©pendances
+        /* Ne pas modifier ce qui suit; proc√©dure de v√©rification des d√©pendances */
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dÈpendance non rÈsolue\n");
+            die("$this->name: d√©pendance non r√©solue\n");
         }
 
-        //Validation du fichier de configuration spÈcifique au module
-        $cfgKeys    = array("testparam"); //ClÈs obligatoires
-        $cfgKeysOpt = array("");          //ClÈs optionelles
+        //Validation du fichier de configuration sp√©cifique au module
+        $cfgKeys    = array("testparam"); //Cl√©s obligatoires
+        $cfgKeysOpt = array("");          //Cl√©s optionelles
 
         /* Ne pas modifier ce qui suit; lecture et validation du fichier de configuration */
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: VÈrifiez votre fichier de configuration.\n");
+            die("$this->name: V√©rifiez votre fichier de configuration.\n");
         }
 
         /*
-         * Ajoutez votre programmation ‡ exÈcuter lors du
-         * chargement du module ‡ partir d'ici
+         * Ajoutez votre programmation √† ex√©cuter lors du
+         * chargement du module √† partir d'ici
          *
          */
     }
@@ -78,11 +78,11 @@ class test /* Le nom de la classe DOIT Ítre du mÍme nom que le module (sans le m
 
     function unloadModule()
     {
-        //Destructeur; dÈcharge le module
-        //S'ÈxÈcute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; d√©charge le module
+        //S'√©x√©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg;
 
-        /* Placer les instructions de dÈchargement de module entre ici et la fin */
+        /* Placer les instructions de d√©chargement de module entre ici et la fin */
     }
 
 ///////////////////////////////////////////////////////////////
@@ -148,7 +148,7 @@ class test /* Le nom de la classe DOIT Ítre du mÍme nom que le module (sans le m
     {
         global $irc, $irpg;
 
-        $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quittÈ $channel");
+        $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quitt√© $channel");
     }
 
 ///////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ class test /* Le nom de la classe DOIT Ítre du mÍme nom que le module (sans le m
     {
         global $irc, $irpg;
 
-        $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a changÈ de pseudo pour $newnick");
+        $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a chang√© de pseudo pour $newnick");
     }
 
 ///////////////////////////////////////////////////////////////
@@ -166,7 +166,7 @@ class test /* Le nom de la classe DOIT Ítre du mÍme nom que le module (sans le m
     {
         global $irc, $irpg;
 
-        $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a kickÈ $nickkicked de $channel");
+        $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a kick√© $nickkicked de $channel");
     }
 
 ///////////////////////////////////////////////////////////////
@@ -184,7 +184,7 @@ class test /* Le nom de la classe DOIT Ítre du mÍme nom que le module (sans le m
     {
         global $irc, $irpg;
 
-        $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quittÈ IRC pour la raison suivante: $reason");
+        $irc->sendRaw("PRIVMSG Homer :$nick!$user@$host a quitt√© IRC pour la raison suivante: $reason");
     }
 
 ///////////////////////////////////////////////////////////////

@@ -30,9 +30,9 @@ class calamites
     var $name;    //Nom du module
     var $version; //Version du module
     var $desc;    //Description du module
-    var $depend;  //Modules dont nous sommes dépendants
+    var $depend;  //Modules dont nous sommes dÃ©pendants
 
-    //Variables supplémentaires
+    //Variables supplÃ©mentaires
 
 //**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
 
@@ -41,37 +41,37 @@ class calamites
     function loadModule()
     {
         //Constructeur; initialisateur du module
-        //S'éxécute lors du (re)chargement du bot ou d'un REHASH
+        //S'Ã©xÃ©cute lors du (re)chargement du bot ou d'un REHASH
         global $irc, $irpg, $db;
 
         /* Renseignement des variables importantes */
         $this->name    = "mod_calamites";
         $this->version = "1.0.0";
-        $this->desc    = "Calamités";
+        $this->desc    = "CalamitÃ©s";
         $this->depend  = array("core/0.5.0");
 
-        //Recherche de dépendances
+        //Recherche de dÃ©pendances
         if (!$irpg->checkDepd($this->depend)) {
-            die("$this->name: dépendance non résolue\n");
+            die("$this->name: dÃ©pendance non rÃ©solue\n");
         }
 
-        //Validation du fichier de configuration spécifique au module
+        //Validation du fichier de configuration spÃ©cifique au module
         $cfgKeys    = array();
         $cfgKeysOpt = array();
 
         if (!$irpg->validationConfig($this->name, $cfgKeys, $cfgKeysOpt)) {
-            die("$this->name: Vérifiez votre fichier de configuration.\n");
+            die("$this->name: VÃ©rifiez votre fichier de configuration.\n");
         }
 
-        //Initialisation des paramètres du fichier de configuration
+        //Initialisation des paramÃ¨tres du fichier de configuration
     }
 
 ///////////////////////////////////////////////////////////////
 
     function unloadModule()
     {
-        //Destructeur; décharge le module
-        //S'éxécute lors du SHUTDOWN du bot ou d'un REHASH
+        //Destructeur; dÃ©charge le module
+        //S'Ã©xÃ©cute lors du SHUTDOWN du bot ou d'un REHASH
         global $irc, $irpg, $db;
     }
 
@@ -163,7 +163,7 @@ class calamites
     {
         global $irc, $irpg;
 
-        //il y a une chance sur 4000 d'avoir une calamités.
+        //il y a une chance sur 4000 d'avoir une calamitÃ©s.
         if (rand(1, 4000) == 1) {
             $this->cmdCalamites();
         }
@@ -194,7 +194,7 @@ class calamites
         $tbIRC   = $db->prefix . "IRC";
         $tbTxt   = $db->prefix . "Textes";
 
-        //on sélectionne d'abord un personnage en ligne
+        //on sÃ©lectionne d'abord un personnage en ligne
         $query = "SELECT Id_Personnages, Nom, Level, Next FROM $tbPerso WHERE Id_Personnages
                   IN (SELECT Pers_Id FROM $tbIRC WHERE NOT ISNULL(Pers_Id)) ORDER BY RAND() LIMIT 0,1";
         if ($db->nbLignes($query) != 1) {
@@ -208,10 +208,10 @@ class calamites
         $level2 = $level + 1;
         $next   = $res[0]['Next'];
 
-        //La calamités peut modifier le TTL entre 5 et 12%
+        //La calamitÃ©s peut modifier le TTL entre 5 et 12%
         $time = rand(5, 12);
 
-        //Traitement de la calamité
+        //Traitement de la calamitÃ©
         $time  = round($next * ($time / 100), 0);
         $ctime = $irpg->convSecondes($time);
         $next  = $next + $time;

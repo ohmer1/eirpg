@@ -20,7 +20,7 @@
 
 /**
  * Fichier principal du bot IRPG
- * Fichier à exécuter pour démarrer le bot
+ * Fichier Ã  exÃ©cuter pour dÃ©marrer le bot
  *
  * @author Homer
  * @author    cedricpc
@@ -28,12 +28,12 @@
  * @modified  Monday 01 November 2010 @ 21:40 (CET)
  */
 
-//Librairies utilisées
-include "lib/clsIRPG.php";    //lib spécifique
-include "lib/clsIRC.php";     //lib spécialisée sur la connexion IRC
-include "lib/clsDB.php";      //lib spécialisée sur la base de données mySQL
+//Librairies utilisÃ©es
+include "lib/clsIRPG.php";    //lib spÃ©cifique
+include "lib/clsIRC.php";     //lib spÃ©cialisÃ©e sur la connexion IRC
+include "lib/clsDB.php";      //lib spÃ©cialisÃ©e sur la base de donnÃ©es mySQL
 
-print "Démarrage d'Idle RPG...\n";
+print "DÃ©marrage d'Idle RPG...\n";
 
 $pid = posix_getpid();
 
@@ -51,7 +51,7 @@ if (!$irpg->init()) {
 $irpg->lireIgnores();
 
 while (true) {
-    //Connexion à IRC
+    //Connexion Ã  IRC
     if (!$irc->connexion($irpg->readConfig("IRC","server"), $irpg->readConfig("IRC","port"),
         $irpg->readConfig("IRC","username"), $irpg->readConfig("IRC","realname"), $irpg->readConfig("IRC","nick"),
         $irpg->readConfig("IRC", "bind"), $irpg->readConfig("IRC","password"), $irpg->readConfig("IRPG","debug")
@@ -84,20 +84,20 @@ function start()
 {
     global $irpg, $irc, $db;
 
-    // On doit connecter la DB dans le même thread que la connexion IRC,
+    // On doit connecter la DB dans le mÃªme thread que la connexion IRC,
     // car la connexion est perdue avec PHP5 (fonctionne avec PHP4.3)
 
-    //Connexion à la base de données
+    //Connexion Ã  la base de donnÃ©es
     if (!$db->connexion($irpg->readConfig("SQL", "host"), $irpg->readConfig("SQL", "login"),
         $irpg->readConfig("SQL", "password"), $irpg->readConfig("SQL", "base"),
         $irpg->readConfig("SQL", "prefix"), $irpg->readConfig("SQL", "charset")
     )) {
-        die("Impossible de se connecter au serveur de bases de données.\n");
+        die("Impossible de se connecter au serveur de bases de donnÃ©es.\n");
     }
 
-    // Un module peut avoir besoin de la connexion à la base de données
+    // Un module peut avoir besoin de la connexion Ã  la base de donnÃ©es
     // pour s'initialiser, il faut donc charger les modules seulement
-    // après la connexion de celle-ci.
+    // aprÃ¨s la connexion de celle-ci.
 
     //Chargement des modules
     $irpg->loadModules();
@@ -106,7 +106,7 @@ function start()
         if (!$irc->boucle()) {
             if ($irc->exit) {
                 sleep(1);
-                die("SHUTDOWN du bot demandé.\n");
+                die("SHUTDOWN du bot demandÃ©.\n");
             }
 
             $irpg->alog("Connexion IRC perdue... Reconnexion dans 20 secondes.");
@@ -119,7 +119,7 @@ function start()
                 continue;
             }
         } else {
-            die("Déconnexion du bot, impossible d'entrer dans la boucle !\n");
+            die("DÃ©connexion du bot, impossible d'entrer dans la boucle !\n");
         }
     }
 }
