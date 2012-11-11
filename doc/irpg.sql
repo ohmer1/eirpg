@@ -182,6 +182,18 @@ CREATE TABLE `Textes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stocke différents textes (calamités, godsends..)';
 
 --
+-- Structure de la table `Modules`
+--
+
+CREATE TABLE `Modules` (
+  `Id` int(5) unsigned NOT NULL auto_increment,
+  `Module` varchar(255) NOT NULL default '',
+  `Parametre` varchar(255) NOT NULL default '',
+  `Valeur` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`Id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+--
 -- Contraintes pour la table `Equipes`
 --
 ALTER TABLE `Equipes`
