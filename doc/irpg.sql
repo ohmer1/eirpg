@@ -29,7 +29,7 @@ CREATE TABLE `Equipes` (
   `Valid` int(1) NOT NULL default '0',
   PRIMARY KEY  (`Id_Equipes`),
   KEY `Pers_Id` (`Pers_Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les équipes' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Informations sur les équipes' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -45,7 +45,7 @@ CREATE TABLE `IRC` (
   `Channel` varchar(30) NOT NULL default '',
   PRIMARY KEY  (`Id_IRC`),
   UNIQUE KEY `Pers_Id` (`Pers_Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations IRC sur les joueurs';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Informations IRC sur les joueurs';
 
 -- --------------------------------------------------------
 
@@ -64,7 +64,7 @@ CREATE TABLE `ListeObjets` (
   PRIMARY KEY  (`Id_ListeObjets`),
   UNIQUE KEY `LObj_Id` (`Type`),
   KEY `Minimum` (`Minimum`,`EstUnique`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Listes des objets disponibles';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Listes des objets disponibles';
 
 -- --------------------------------------------------------
 
@@ -83,7 +83,7 @@ CREATE TABLE `Logs` (
   `Desc3` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`Id_Logs`),
   KEY `Pers_Id` (`Pers_Id`,`Type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Logs divers (administratifs, objets, modificateurs..)';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Logs divers (administratifs, objets, modificateurs..)';
 
 -- --------------------------------------------------------
 
@@ -99,7 +99,7 @@ CREATE TABLE `Objets` (
   PRIMARY KEY  (`Id_Objets`),
   KEY `Pers_Id` (`Pers_Id`),
   KEY `LObj_Id` (`LObj_Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les objets de chaque personnage';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Informations sur les objets de chaque personnage';
 
 -- --------------------------------------------------------
 
@@ -118,7 +118,7 @@ CREATE TABLE `Penalites` (
   `Logout` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`Id_Penalites`),
   UNIQUE KEY `Pers_Id` (`Pers_Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les pénalités reçu par un personnage';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Informations sur les pénalités reçu par un personnage';
 
 -- --------------------------------------------------------
 
@@ -144,7 +144,7 @@ CREATE TABLE `Personnages` (
   UNIQUE KEY `Nom` (`Nom`),
   KEY `Util_Id` (`Util_Id`),
   KEY `Equi_Id` (`Equi_Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les personnages';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Informations sur les personnages';
 
 -- --------------------------------------------------------
 
@@ -168,7 +168,7 @@ CREATE TABLE `Utilisateurs` (
   UNIQUE KEY `Username` (`Username`),
   KEY `Admin` (`Admin`,`Notice`),
   KEY `NoOp` (`NoOp`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informations sur les utilisateurs du jeu';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Informations sur les utilisateurs du jeu';
 
 --
 -- Structure de la table `Textes`
@@ -179,7 +179,7 @@ CREATE TABLE `Textes` (
   `Type` varchar(255) NOT NULL default '',
   `Valeur` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stocke différents textes (calamités, godsends..)';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stocke différents textes (calamités, godsends..)';
 
 --
 -- Contraintes pour la table `Equipes`

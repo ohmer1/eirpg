@@ -19,7 +19,7 @@ login = ""            ;Login de connexion au serveur SQL
 password = ""         ;Mot de passe d'accès au serveur SQL
 base = ""             ;Base SQL utilisée par le bot
 prefix = ""           ;Préfix utilisé pour les noms des tables SQL
-charset = "latin1"    ;Jeu de caractère à utiliser avec le serveur SQL (PHP >= 5.23)
+charset = "utf8"    ;Jeu de caractère à utiliser avec le serveur SQL (PHP >= 5.23)
 
 ; -------------------------------------------------
 
@@ -41,7 +41,7 @@ realname = "Idle RPG (http://www.eirpg.com)"    ;Realname du bot
 ; Section IRC - Autres paramètres
 modes = "+iB"                                   ;Modes utilisateurs du bot à appliquer
 nspass = ""                                     ;Mot de passe NickServ du pseudo du bot
-charset = "ISO-8859-15"                         ;Charset à utiliser pour l'envoi de texte sur IRC
+charset = "UTF-8"                         ;Charset à utiliser pour l'envoi de texte sur IRC
 
 ; -------------------------------------------------
 
