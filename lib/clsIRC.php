@@ -23,7 +23,7 @@
  * @author Homer
  * @author cedricpc
  * @created   Lundi    30 Mai       2005
- * @modified  Jeudi    25 Octobre   2012 @ 02:20 (CEST)
+ * @modified  Mardi    13 Novembre  2012 @ 02:35 (CET)
  */
 class IRC
 {
@@ -528,9 +528,10 @@ class IRC
     /**
      * Envoi des données au serveur IRC
      *
-     * @author Homer
-     * @created 30 mai 2005
-     * @modified 19 juin 2005
+     * @author    Homer
+     * @author    cedricpc
+     * @created   Lundi    30 Mai       2005
+     * @modified  Mardi    13 Novembre  2012 @ 02:35 (CET)
      * @param data     - Données à envoyer
      * @return boolean - true si l'envoi a réussi, false sinon.
      */
@@ -542,8 +543,9 @@ class IRC
             $irpg->alog("<-- $data");
         }
 
-        //$charset = $irpg->readConfig("IRC", "charset");
-        //$ok = socket_write($this->sirc, iconv("ISO-8859-15", $charset, $data . "\n"));
+        $charset = $irpg->readConfig("IRC", "charset");
+        $data    = iconv("UTF-8", ($charset ? $charset : "ISO-8859-15") . "//TRANSLIT", $data);
+
         $ok = socket_write($this->sirc, $data . "\n");
         if ($ok) {
             return true;
