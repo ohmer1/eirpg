@@ -37,7 +37,7 @@ INSERT INTO `Textes` (`Id`, `Type`, `Valeur`) VALUES
 (NULL, 'C', 'rencontre Womby et glisse sur la flaque de sang qui en provient, ce qui le fait chuter du haut de ses 3 mètres de taille'),
 (NULL, 'C', 'rencontre un ogre tout nu guitariste qui lui fait des avances'),
 (NULL, 'C', 'se prend un sort Claptor de Mazrok en pleine poire'),
-(NULL, 'C', 'tombe sur une note : « Ha ha ha ! Je vous ai bien niqués ». C''est signé « IRPG » et se rend compte qu''il s''est fait avoir'),
+(NULL, 'C', 'tombe sur une note : « Ha ha ha ! Je vous ai bien niqués ». C''est signé « IRPG » ce qui lui fait réaliser qu''on l''a mené en bateau'),
 (NULL, 'C', 'rencontre Homer dans un couloir. Le couloir étant bloqué, cela le ralentit'),
 (NULL, 'C', 'rencontre Gwaihira qui lui sort des incantations flamandes'),
 (NULL, 'C', 'tombe sur un Chien2garde à 15 têtes'),
