@@ -23,7 +23,7 @@
  * @author Homer
  * @author cedricpc
  * @created   Lundi    30 Mai       2005
- * @modified  Mardi    13 Novembre  2012 @ 02:35 (CET)
+ * @modified  Mardi    13 Novembre  2012 @ 03:35 (CET)
  */
 class IRC
 {
@@ -633,10 +633,10 @@ class IRC
      * Méthode d'écoute du socket IRC
      * Boucle tant que le socket est ouvert
      *
-     * @author Homer
-     * @author cedricpc
-     * @created 20 juin 2005
-     * @modified 19 Avril 2010
+     * @author    Homer
+     * @author    cedricpc
+     * @created   Lundi    20 Juin      2005
+     * @modified  Mardi    13 Novembre  2012 @ 03:35 (CET)
      * @param none
      * @return none
      */
@@ -649,7 +649,6 @@ class IRC
         $dix      = 0;
         $quinze   = 0;
         socket_set_nonblock($this->sirc);
-        $charset = $irpg->readConfig("IRC", "charset");
 
         // lecture des ignores
         $ignoresN = $irpg->getIgnoresN();
@@ -662,8 +661,6 @@ class IRC
             }
 
             $buf = @socket_read($this->sirc, 4096);
-            //l'encodage interne du bot est en ISO-8859-15, il faut donc convertir ce qui vient d'IRC en ISO
-            //$buf = iconv($charset, "ISO-8859-15", $buf);
 
             if (empty($buf)) {
                 $this->Timer5Sec($dix, $quinze);
@@ -681,6 +678,11 @@ class IRC
             $buffer = array_pop($data);
 
             for ($i = 0; $i < count($data); $i++) {
+                //l'encodage interne du bot est en UTF-8, il faut donc convertir ce qui vient d'IRC en UTF-8
+                if (function_exists('mb_convert_encoding')) {
+                    $data[$i] = mb_convert_encoding($data[$i], "UTF-8", "UTF-8,ISO-8859-15,ASCII");
+                }
+
                 if ($this->debug) {
                     $irpg->alog("--> $data[$i]");
                 }
