@@ -109,15 +109,14 @@ function start()
                 die("SHUTDOWN du bot demandé.\n");
             }
 
-            $irpg->alog("Connexion IRC perdue... Reconnexion dans 20 secondes.");
-            sleep(20);
-            if ($irc->connexion($irpg->readConfig("IRC", "server"), $irpg->readConfig("IRC", "port"),
+            do {
+                $irpg->alog("Connexion IRC perdue... Reconnexion dans 20 secondes.");
+                sleep(20);
+            } while (!$irc->connexion($irpg->readConfig("IRC", "server"), $irpg->readConfig("IRC", "port"),
                 $irpg->readConfig("IRC", "username"), $irpg->readConfig("IRC", "realname"),
                 $irpg->readConfig("IRC", "nick"), $irpg->readConfig("IRC", "bind"),
                 $irpg->readConfig("IRC", "password"), $irpg->readConfig("IRPG", "debug")
-            )) {
-                continue;
-            }
+            ));
         } else {
             die("Déconnexion du bot, impossible d'entrer dans la boucle !\n");
         }
