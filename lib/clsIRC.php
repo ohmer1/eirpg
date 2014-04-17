@@ -583,8 +583,9 @@ class IRC
      * Constructeur; connexion à un serveur IRC
      *
      * @author    Homer
+     * @author    cedricpc
      * @created   Lundi    30 Mai       2005
-     * @modified  Jeudi    25 Octobre   2012 @ 02:05 (CEST)
+     * @modified  Jeudi    22 Novembre  2012 @ 00:15 (CET)
      * @param server   - Adresse du serveur IRC
      * @param port     - Port de connexion au serveur
      * @param realname - Realname du bot
@@ -601,16 +602,20 @@ class IRC
         $this->lastData = time();
         $this->exit     = false;
 
-        if (!$this->sirc = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) {
-            die("Impossible de créer le socket IRC\n");
+        if (!$this->sirc = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) {
+            $irpg->alog("Impossible de créer le socket IRC : " . socket_strerror(socket_last_error()), true);
+            socket_clear_error();
+            return false;
         }
 
         if ($bind != "") {
             socket_bind($this->sirc, $bind);
         }
 
-        if (!socket_connect($this->sirc, $server, $port)) {
-            die("Impossible de se connecter au serveur IRC\n");
+        if (!@socket_connect($this->sirc, $server, $port)) {
+            $irpg->alog("Impossible de se connecter au serveur IRC : " . socket_strerror(socket_last_error()), true);
+            socket_clear_error();
+            return false;
         }
 
         if ($this->sirc) {
