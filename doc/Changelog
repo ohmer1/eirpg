@@ -9,6 +9,22 @@ Légende
 ! correction de bug
 
 
+Version 0.6.0
+22 novembre 2012
+-----------------
+! Correction d'un message des mains de Dieu dans le fichier d'exemple SQL. [doc/textes_calamites_maindedieu.sql]
+! Correction d'une autre anomalie empêchant la reconnexion automatique au serveur IRC lorsque le serveur n'est pas
+    joignable. [clsIRC]
+! Correction de la fonction start() qui ne tentait pas la reconnexion au serveur IRC en boucle, ce qui provoquait
+    des erreurs en appellant la méthode boucle() de la classe IRC si la connexion IRC n'était pas rétablie
+    immédiatement. [irpg.php]
+! Correction d'une erreur dans la méthode connexion() provoquant la création d'un nouveau socket sans fermer au
+    préalable le précédent s'il existe. [clsIRC]
+! Correction de la méthode connexion() qui ne fermait pas le socket quand la connexion échouait ce qui ne permettait
+    pas de savoir si la connexion était active. [clsIRC]
+! Correction d'un bug dans la méthode boucle() qui ne s'interrompait pas si le socket n'existait pas. [clsIRC]
+
+
 Version 0.6.0-rc6
 13 novembre 2012
 -----------------
