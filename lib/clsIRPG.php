@@ -21,10 +21,10 @@
  * Classe IRPG; classe très large qui regroupe plusieurs
  * fonctions utilisées par le bot
  *
- * @author Homer
- * @author cedricpc
- * @created 30 mai 2005
- * @modified  Monday 01 November 2010 @ 21:50 (CET)
+ * @author    Homer
+ * @author    cedricpc
+ * @created   Lundi    30 Mai       2005
+ * @modified  Mardi    13 Novembre  2012 @ 02:25 (CET)
  */
 class IRPG
 {
@@ -338,7 +338,7 @@ class IRPG
         $date = date("j-m-Y H:i:s");
         if ((!$this->readConfig("IRPG", "background") || ($print))) {
             $charset = $this->readConfig("IRPG", "charset");
-            print iconv('ISO-8859-15', ($charset ? $charset : 'ISO-8859-15') . '//TRANSLIT', "[$date] $msg\n");
+            print iconv('UTF-8', ($charset ? $charset : 'ISO-8859-15') . '//TRANSLIT', "[$date] $msg\n");
         }
         $flog = fopen("irpg.log", "a+");
         fwrite($flog, "[$date] " . $msg . "\n");
