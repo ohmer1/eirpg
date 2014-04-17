@@ -9,6 +9,26 @@ Légende
 ! correction de bug
 
 
+Version 0.6.0-rc6
+13 novembre 2012
+-----------------
+! Correction de l'ordre des objets, ceux de base devant être insérés avant les objets uniques afin de satisfaire
+    les relations SQL. [doc/liste_objets.sql]
+! Correction de la méthode alog() de la classe IRPG pour prendre en compte le passage des fichiers en UTF-8. [clsIRPG]
++ Ajout d'un fichier SQL contenant les textes des calamités et des mains de Dieu
+    manquants. [doc/textes_calamites_maindedieu.sql]
++ Ajout de la table Modules au fichier d'initialisation de la base de données. [doc/irpg.sql]
++ Prise en compte du paramètre charset dans la classe IRC pour convertir les commandes envoyées au serveur
+    avec l'encodage désiré. [clsIRC]
+* Conversion de tous les fichiers en UTF-8.
+* Modification de l'encodage par défaut. [irpg.conf.dist]
+* Modification du fichier SQL afin de spécifier UTF-8 comme encodage. [doc/irpg.sql]
+* Modification des identifiants des objets pour correspondre à l'ordre d'insertion. [doc/liste_objets.sql]
+* Modification du fichier SQL pour insérer tous les objets en une requête. [doc/liste_objets.sql]
+* Modification de la méthode boucle() de la classe IRC pour tenter de convertir en UTF-8 les messages entrants qui
+    seraient en ISO-8859-15. [clsIRC]
+
+
 Version 0.6.0-rc5
 10 novembre 2012
 -----------------
