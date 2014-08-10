@@ -585,7 +585,7 @@ class IRC
      * @author    Homer
      * @author    cedricpc
      * @created   Lundi    30 Mai       2005
-     * @modified  Jeudi    22 Novembre  2012 @ 00:15 (CET)
+     * @modified  Jeudi    22 Novembre  2012 @ 00:55 (CET)
      * @param server   - Adresse du serveur IRC
      * @param port     - Port de connexion au serveur
      * @param realname - Realname du bot
@@ -602,6 +602,10 @@ class IRC
         $this->lastData = time();
         $this->exit     = false;
 
+        if ($this->sirc) {
+            socket_close($this->sirc);
+        }
+
         if (!$this->sirc = @socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) {
             $irpg->alog("Impossible de créer le socket IRC : " . socket_strerror(socket_last_error()), true);
             socket_clear_error();
@@ -615,21 +619,21 @@ class IRC
         if (!@socket_connect($this->sirc, $server, $port)) {
             $irpg->alog("Impossible de se connecter au serveur IRC : " . socket_strerror(socket_last_error()), true);
             socket_clear_error();
+
+            socket_close($this->sirc);
+            $this->sirc = null;
+
             return false;
         }
 
-        if ($this->sirc) {
-            $irpg->alog("Connexion au serveur IRC...", true);
-            if ($pass != "") {
-                $this->sendRaw("PASS $pass"); //Mot de passe d'accès au serveur
-            }
-            $this->sendRaw("NICK $nick");
-            $ok = $this->sendRaw("USER $user localhost $server :$realname");
-
-            return true;
-        } else {
-            return false;
+        $irpg->alog("Connexion au serveur IRC...", true);
+        if ($pass != "") {
+            $this->sendRaw("PASS $pass"); //Mot de passe d'accès au serveur
         }
+        $this->sendRaw("NICK $nick");
+        $ok = $this->sendRaw("USER $user localhost $server :$realname");
+
+        return true;
     }
 
 ///////////////////////////////////////////////////////////////
@@ -641,13 +645,17 @@ class IRC
      * @author    Homer
      * @author    cedricpc
      * @created   Lundi    20 Juin      2005
-     * @modified  Mardi    13 Novembre  2012 @ 03:35 (CET)
+     * @modified  Jeudi    22 Novembre  2012 @ 00:55 (CET)
      * @param none
      * @return none
      */
     function boucle()
     {
         global $irpg;
+
+        if (!$this->sirc) {
+            return true;
+        }
 
         $irpg->alog("Démarré avec succès.", true);
         $last5sec = time();
