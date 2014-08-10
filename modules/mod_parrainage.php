@@ -128,6 +128,11 @@ class parrainage
                     . "REGISTER2 <utilisateur> <mot de passe> <courriel> <parrain>");
             }
             break;
+            
+        case "INFOPARRAIN":
+			// Affiche de l'information sur le parrainage
+			$this->infoParrain($nick);
+			break;
         }
     }
 
@@ -277,6 +282,20 @@ class parrainage
         $irc->privmsg($irc->home, "Bienvenue à notre nouveau joueur $username invité par $parrain, connecté "
             . "sous le pseudo $nick !");
     }
+    
+    function infoParrain($nick)
+    {
+		global $irc;
+		if ($this->actif != "1") {
+            $irc->notice($nick, "Désolé, la fonctionalité de parrainage n'est pas en fonction.");
+            return false;
+        }
+        
+        $irc->notice($nick, "Le parrainage d'un joueur permet d'obtenir un bonus de " . $this->pctBonus . "% sur votre TTL lorsque le joueur parrainé obtient le niveau " . $this->lvlBonus . ".");
+        $irc->notice($nick, "Le joueur parrainé devra utiliser la commande suivante pour s'enregistrer :");
+        $irc->notice($nick, "\002REGISTER2 <utilisateur> <mot de passe> <courriel> <parrain>\002 où <parrain> correspond à votre nom de \002personnage\002 qui bénéficiera du bonus.");
+        $irc->notice($nick, "\002ATTENTION!\002 Un joueur ne respectant pas la nétiquette (exemple : spam) est passible de la suppression de son compte et d'un ban sur le canal.");
+	}
 
 ///////////////////////////////////////////////////////////////
 
