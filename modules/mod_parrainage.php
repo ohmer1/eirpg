@@ -302,7 +302,7 @@ class parrainage
             $db->req('UPDATE ' . $tbPerso . ' SET `Next` = `Next` - ' . $bonus . ' WHERE `Id_Personnages` = ' . $ppid);
 
             $perso = $irpg->getNomPersoByPID($pid);
-            $irc->privmsg($irc->home, $pPerso . ', le parrain de ' . $perso . ' est récompensé par le retrait de 5% '
+            $irc->privmsg($irc->home, $pPerso . ', le parrain de ' . $perso . ' est récompensé par le retrait de ' . $this->pctBonus . '% '
                 . 'de son TTL. Ce bonus l\'accélère de ' . $irpg->convSecondes($bonus) . ' ! Prochain niveau dans '
                 . $irpg->convSecondes($ttl) . '.');
         }
