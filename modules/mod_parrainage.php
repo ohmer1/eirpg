@@ -324,6 +324,8 @@ class parrainage
             $irc->privmsg($irc->home, $pPerso . ', le parrain de ' . $perso . ' est récompensé par le retrait de ' . $this->pctBonus . '% '
                 . 'de son TTL. Ce bonus l\'accélère de ' . $irpg->convSecondes($bonus) . ' ! Prochain niveau dans '
                 . $irpg->convSecondes($ttl) . '.');
+                
+            $irpg->Log($ppid, 'BONUS_PARRAIN', '0', $perso, -$bonus);
         }
     }
 
