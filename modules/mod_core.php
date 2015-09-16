@@ -187,6 +187,10 @@ class core
                 $irc->notice($nick, "Syntaxe incorrecte. Syntaxe : NOTICE <on/off>");
             }
             break;
+        case "COINCOIN":
+            // Encore une victoire de Canard.
+            $irc->notice($nick, ">o_/");
+            break;
         case "SENDPASS":
             //Envoi d'un mot de pass perdu par courriel
             if ($nb == 2) {
@@ -610,7 +614,55 @@ class core
     {
         global $irc;
 
-        $irc->notice($nick, "Aide non disponible.");
+        switch (strtoupper($message)) {
+        case "HELP":
+        case "AIDE":
+            $irc->notice($nick, "AIDE [commande]");
+            $irc->notice($nick, "Aide sommaire sur les commandes ou sur la commande précise.");
+            break;
+        case "LOGIN":
+            $irc->notice($nick, "LOGIN <utilisateur> <mot de passe> [personnage]");
+            $irc->notice($nick, "Le paramètre personnage est optionnel. Ce paramètre permet de s'authentifier "
+                . "sur un personnage précis. Si ce paramètre n'est pas indiqué, vous serez authentifié sur tous "
+                . "vos personnages créés sous votre compte.");
+            break;
+        case "LOGOUT":
+            $irc->notice($nick, "LOGOUT [utilisateur] [mot de passe]");
+            $irc->notice($nick, "Désauthentification au bot.");
+            break;
+        case "REGISTER":
+            $irc->notice($nick, "REGISTER <utilisateur> <mot de passe> <courriel>");
+            $irc->notice($nick, "Création d'un compte sur le bot.");
+            break;
+        case "CREATE":
+            $irc->notice($nick, "CREATE <nom personnage> <classe>");
+            $irc->notice($nick, "Création d'un personnage sur le bot.");
+            break;
+        case "NOTICE":
+            $irc->notice($nick, "NOTICE <on/off>");
+            $irc->notice($nick, "Préférence d'envoi en PRIVMSG ou NOTICE.");
+            break;
+        case "SENDPASS":
+            $irc->notice($nick, "SENDPASS <utilisateur> <courriel>");
+            $irc->notice($nick, "Envoi d'un mot de passe perdu par courriel.");
+            break;
+        case "WHOAMI":
+            $irc->notice($nick, "WHOAMI");
+            $irc->notice($nick, "Information sur votre compte/personnages.");
+            break;
+
+        default:
+            $irc->notice($nick, "AIDE [commande]  Aide sommaire sur les commandes ou sur la commande précise.");
+            $irc->notice($nick, "");
+            $irc->notice($nick, "LOGIN    Authentification au bot.");
+            $irc->notice($nick, "LOGOUT   Désauthentification au bot.");
+            $irc->notice($nick, "REGISTER Création d'un compte sur le bot.");
+            $irc->notice($nick, "CREATE   Création d'un personnage sur le bot.");
+            $irc->notice($nick, "NOTICE   Préférence d'envoi en PRIVMSG ou NOTICE.");
+            $irc->notice($nick, "SENDPASS Envoi d'un mot de passe perdu par courriel.");
+            $irc->notice($nick, "WHOAMI   Information sur le compte/personnages.");
+            break;
+        }
     }
 
 ///////////////////////////////////////////////////////////////
