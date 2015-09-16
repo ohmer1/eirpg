@@ -618,7 +618,7 @@ class core
         case "HELP":
         case "AIDE":
             $irc->notice($nick, "AIDE [commande]");
-            $irc->notice($nick, "Aide sommaire sur les commandes, ou sur la commande précise.");
+            $irc->notice($nick, "Aide sommaire sur les commandes ou sur la commande précise.");
             break;
         case "LOGIN":
             $irc->notice($nick, "LOGIN <utilisateur> <mot de passe> [personnage]");
@@ -628,49 +628,39 @@ class core
             break;
         case "LOGOUT":
             $irc->notice($nick, "LOGOUT [utilisateur] [mot de passe]");
-            $irc->notice($nick, "Désauthentification au bot");
+            $irc->notice($nick, "Désauthentification au bot.");
             break;
         case "REGISTER":
             $irc->notice($nick, "REGISTER <utilisateur> <mot de passe> <courriel>");
-            $irc->notice($nick, "Création d'un compte sur le bot");
+            $irc->notice($nick, "Création d'un compte sur le bot.");
             break;
         case "CREATE":
             $irc->notice($nick, "CREATE <nom personnage> <classe>");
-            $irc->notice($nick, "Création d'un personnage sur le bot");
+            $irc->notice($nick, "Création d'un personnage sur le bot.");
             break;
         case "NOTICE":
             $irc->notice($nick, "NOTICE <on/off>");
-            $irc->notice($nick, "Préférence d'envoi en PRIVMSG ou NOTICE");
+            $irc->notice($nick, "Préférence d'envoi en PRIVMSG ou NOTICE.");
             break;
         case "SENDPASS":
             $irc->notice($nick, "SENDPASS <utilisateur> <courriel>");
-            $irc->notice($nick, "Envoi d'un mot de passe perdu par courriel");
+            $irc->notice($nick, "Envoi d'un mot de passe perdu par courriel.");
             break;
         case "WHOAMI":
             $irc->notice($nick, "WHOAMI");
-            $irc->notice($nick, "Information sur le compte/personnages");
-            break;
-        case "INFOUSER":
-            $irc->notice($nick, "INFOUSER <user>");
-            $irc->notice($nick, "Ne fait rien… pour le moment. (:");
+            $irc->notice($nick, "Information sur votre compte/personnages.");
             break;
 
-        case "INFOPERSO":
-            $irc->notice($nick, "INFOPERSO <perso>");
-            $irc->notice($nick, "Ne fait rien. (:");
-            break;
-
-        default :
-            $irc->notice($nick, "AIDE [commande]  Aide sommaire sur les commandes, ou sur la commande précise.");
+        default:
+            $irc->notice($nick, "AIDE [commande]  Aide sommaire sur les commandes ou sur la commande précise.");
             $irc->notice($nick, "");
-            $irc->notice($nick, "LOGIN    Authentification au bot"
-            $irc->notice($nick, "LOGOUT   Désauthentification au bot");
-            $irc->notice($nick, "REGISTER Création d'un compte sur le bot");
-            $irc->notice($nick, "CREATE   Création d'un personnage sur le bot");
-            $irc->notice($nick, "NOTICE   Préférence d'envoi en PRIVMSG ou NOTICE");
-            $irc->notice($nick, "SENDPASS Envoi d'un mot de passe perdu par courriel");
-            $irc->notice($nick, "WHOAMI   Information sur le compte/personnages");
-            $irc->notice($nick, "INFOUSER Ne fait rien… pour le moment. (:");
+            $irc->notice($nick, "LOGIN    Authentification au bot.");
+            $irc->notice($nick, "LOGOUT   Désauthentification au bot.");
+            $irc->notice($nick, "REGISTER Création d'un compte sur le bot.");
+            $irc->notice($nick, "CREATE   Création d'un personnage sur le bot.");
+            $irc->notice($nick, "NOTICE   Préférence d'envoi en PRIVMSG ou NOTICE.");
+            $irc->notice($nick, "SENDPASS Envoi d'un mot de passe perdu par courriel.");
+            $irc->notice($nick, "WHOAMI   Information sur le compte/personnages.");
             break;
         }
     }
